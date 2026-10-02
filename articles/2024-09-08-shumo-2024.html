@@ -1596,403 +1596,403 @@ class="math inline">\(M\)</span>作简单修改，其他算法逻辑仍然适用
 <tr>
 <td style="text-align: left;"><p>"""计算点坐标与速度的类""" </p>
 <ol type="1">
-<li><p>class CalcuPoints:</p></li>
-<li><p>    def __init__(self, theta0, a, t, v, fwd):</p></li>
-<li><p>        self.theta0_ = theta0  <em># 龙头的初始位置</em></p></li>
-<li><p>        self.a_ = a            <em># 参数a</em></p></li>
-<li><p>        self.t_ = t            <em># 时间t</em></p></li>
-<li><p>        self.v_ = v            <em># 速度v</em></p></li>
-<li><p>        self.fwd_ = fwd        <em># 方向</em></p></li>
-<li><p>        </p></li>
-<li><p>        """板子尺寸""" </p></li>
-<li><p>        self.head_width = 0.3    <em># 龙头宽</em></p></li>
-<li><p>        self.head_length = 3.41  <em># 龙头长</em></p></li>
-<li><p>        self.head_edge = 0.275   <em># 龙头把手到边缘距离</em></p></li>
-<li><p>        self.head_real_length = 3.41 - 2 * 0.275   <em># 龙头两个把手的距离</em></p></li>
+
 <li></li>
-<li><p>        self.middle_width = 0.3    <em># 中间板宽</em></p></li>
-<li><p>        self.middle_length = 2.2  <em># 中间长</em></p></li>
-<li><p>        self.middle_edge = 0.275   <em># 中间把手到边缘距离</em></p></li>
-<li><p>        self.middle_real_length = 2.20 - 2 * 0.275   <em># 中间两个把手的距离</em></p></li>
-<li><p>        </p></li>
-<li><p>        """迭代中间量"""</p></li>
-<li><p>        self.theta_p = 0</p></li>
-<li><p>        self.theta_p_1 = 0</p></li>
-<li><p>        self.D = 0</p></li>
-<li><p>        self.v_p = 0</p></li>
-<li><p>        </p></li>
-<li><p>    </p></li>
-<li><p>    """计算龙头随时间变化的位置theta的方程""" </p></li>
-<li><p>    def func1(self, x):</p></li>
-<li><p>        x_array = np.array(x)</p></li>
-<li><p>        theta0_array = np.array([self.theta0_])</p></li>
-<li><p>        a_array = np.array([self.a_])</p></li>
-<li><p>        t_array = np.array([self.t_])</p></li>
-<li><p>        v_array = self.fwd_ * np.array([self.v_])</p></li>
-<li><p>        </p></li>
-<li><p>        return 0.5 * x_array * np.sqrt(x_array**2 + 1) + \</p></li>
-<li><p>               0.5 * np.log(np.fabs(x_array + np.sqrt(x_array**2 + 1))) - \</p></li>
-<li><p>               (1 / a_array) * v_array * t_array - \</p></li>
-<li><p>               0.5 * theta0_array * np.sqrt(theta0_array**2 + 1) - \</p></li>
-<li><p>               0.5 * np.log(np.fabs(theta0_array + np.sqrt(theta0_array**2 + 1)))</p></li>
-<li><p>    </p></li>
-<li><p>    """计算后续步骤迭代的方程""" </p></li>
-<li><p>    def func2(self, x):</p></li>
-<li><p>        x_array = np.array(x)</p></li>
-<li><p>        theta_p_array = np.array(self.theta_p)</p></li>
-<li><p>        delta_theta_array =  np.array(x - self.theta_p)</p></li>
-<li><p>        a_array = np.array([self.a_])</p></li>
-<li><p>        D_array = np.array([self.D])</p></li>
-<li><p>        <em>#print(f"theta_p = {self.theta_p}, a = {self.a_}, D = {self.D} , 1 = {(D_array/a_array)[0]}")</em></p></li>
-<li><p>        return theta_p_array**2 + x_array**2 - 2 * theta_p_array * x_array * np.cos(delta_theta_array) - (D_array/a_array)**2</p></li>
-<li><p>    </p></li>
-<li><p>    </p></li>
-<li><p>    """计算龙头随时间变化的位置(points + theta)"""</p></li>
-<li><p>    def calcu_head_pos(self):</p></li>
-<li><p>        <em># 计算龙头在任意时刻的位置</em></p></li>
-<li><p>        theta = fsolve(self.func1, [0 * np.pi])</p></li>
-<li><p>        <em>#print(f"theta:{theta}")</em></p></li>
-<li><p>        x = self.a_ * theta * fwd * np.cos(theta)</p></li>
-<li><p>        y = self.a_ * theta * fwd * np.sin(theta)</p></li>
 <li></li>
-<li><p>        return x, y, theta</p></li>
-<li><p>    </p></li>
-<li><p>    """计算后续点的位置迭代"""</p></li>
-<li><p>    def calcu_other_position(self, p) :</p></li>
-<li><p>        if(p==0):   <em># 是龙头</em></p></li>
-<li><p>            self.D = self.head_real_length</p></li>
-<li><p>        else:       <em># 不是龙头</em></p></li>
-<li><p>            self.D = self.middle_real_length       </p></li>
-<li><p>        <em># 解超越方程的数值解</em></p></li>
-<li><p>        theta_p_1 = fsolve(self.func2, [self.theta_p + 2])</p></li>
-<li><p>        x_p_1 = self.a_ * theta_p_1 * fwd * np.cos(theta_p_1)</p></li>
-<li><p>        y_p_1 = self.a_ * theta_p_1 * fwd * np.sin(theta_p_1)</p></li>
-<li><p>        </p></li>
-<li><p>        return x_p_1, y_p_1, theta_p_1</p></li>
-<li><p>    </p></li>
-<li><p>    """使用解析法求解速度"""</p></li>
-<li><p>    def calcu_vel_func(self):</p></li>
-<li><p>        upper_term = self.theta_p_1 * np.cos(self.theta_p_1 - self.theta_p) - self.theta_p + self.theta_p_1 * self.theta_p * np.sin(self.theta_p_1 - self.theta_p)</p></li>
-<li><p>        down_term = self.theta_p_1 - self.theta_p * np.cos(self.theta_p_1 - self.theta_p) + self.theta_p_1 * self.theta_p * np.sin(self.theta_p_1 - self.theta_p)</p></li>
-<li><p>        gamma = upper_term / down_term</p></li>
-<li><p>        v = (np.sqrt(1 + self.theta_p_1**2) / np.sqrt(1 + self.theta_p**2)) * gamma * self.v_p</p></li>
-<li><p>        <em>#print(M)</em></p></li>
-<li><p>        <em>#print(v)</em></p></li>
-<li><p>        return v</p></li>
-<li><p>        </p></li>
-<li><p>    """获取点坐标与速度的列表"""</p></li>
-<li><p>    def get_points(self):</p></li>
-<li><p>        <em># 所有点坐标的列表</em></p></li>
-<li><p>        points = []</p></li>
-<li><p>        thetas = []</p></li>
-<li><p>        <em># 所有的点速度的列表</em></p></li>
-<li><p>        points_v = []</p></li>
-<li><p>        </p></li>
-<li><p>        <em># 获取龙头点坐标</em></p></li>
-<li><p>        x_head, y_head, theta_head = self.calcu_head_pos()</p></li>
-<li><p>        thetas.append(theta_head)</p></li>
-<li><p>        points.append([x_head, y_head])</p></li>
-<li><p>        <em># 获取龙头点的速度</em></p></li>
-<li><p>        points_v.append(abs(self.v_))</p></li>
-<li><p>        </p></li>
-<li><p>        <em># 迭代求解后续点的坐标</em></p></li>
-<li><p>        iter_nums = 202 <em># 算上龙头和龙尾总共203个点，共需要迭代202次</em></p></li>
-<li><p>        self.theta_p = theta_head <em># 初始化</em></p></li>
-<li><p>        p = 0</p></li>
-<li><p>        self.v_p = self.v_</p></li>
-<li><p>        while(p &lt; iter_nums):</p></li>
-<li><p>            </p></li>
-<li><p>            <em># 计算坐标</em></p></li>
-<li><p>            x_p_1, y_p_1, self.theta_p_1 = self.calcu_other_position(p) </p></li>
-<li><p>            <em># 位置保存</em></p></li>
-<li><p>            thetas.append(self.theta_p_1)</p></li>
-<li><p>            points.append([x_p_1, y_p_1])</p></li>
-<li><p>            <em># 计算速度</em></p></li>
-<li><p>            v_p_1 = self.calcu_vel_func()</p></li>
-<li><p>            <em># 速度保存</em></p></li>
-<li><p>            points_v.append(abs(v_p_1))</p></li>
-<li><p>            <em># 更新theta_p</em></p></li>
-<li><p>            self.theta_p = self.theta_p_1</p></li>
-<li><p>            <em># 更新v_p</em></p></li>
-<li><p>            self.v_p = v_p_1</p></li>
-<li><p>            p += 1     </p></li>
-<li><p>            </p></li>
-<li><p>        return points, thetas, points_v</p></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+
+
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+
+
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+
+
+
+
+
+
+
+
+
+
+<li></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li></li>
+
+
+
+
+
+
+
+
+
+<li></li>
+<li></li>
+
+
+
+
+<li></li>
+
+<li></li>
+
+
+
+
+
+<li></li>
+
+
+
+
+
+
+
+
+
+<li></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li></li>
+
+<li></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li></li>
+
+<li></li>
+
+
+<li></li>
 </ol>
 <p>"""使用微元法求解速度的类"""</p>
 <ol start="123" type="1">
-<li><p>class CalcuVelDiff:</p></li>
-<li><p>    def __init__(self, theta0, a, t, v, fwd):</p></li>
-<li><p>        self.theta0_ = theta0  <em># 龙头的初始位置</em></p></li>
-<li><p>        self.a_ = a            <em># 参数a</em></p></li>
-<li><p>        self.t_ = t            <em># 时间t</em></p></li>
-<li><p>        self.v_ = v            <em># 速度v</em></p></li>
-<li><p>        self.fwd_ = fwd        <em># 方向</em></p></li>
-<li><p>        </p></li>
-<li><p>        """板子尺寸""" </p></li>
-<li><p>        self.head_width = 0.3    <em># 龙头宽</em></p></li>
-<li><p>        self.head_length = 3.41  <em># 龙头长</em></p></li>
-<li><p>        self.head_edge = 0.275   <em># 龙头把手到边缘距离</em></p></li>
-<li><p>        self.head_real_length = 3.41 - 2 * 0.275   <em># 龙头两个把手的距离</em></p></li>
+
 <li></li>
-<li><p>        self.middle_width = 0.3    <em># 中间板宽</em></p></li>
-<li><p>        self.middle_length = 2.2  <em># 中间长</em></p></li>
-<li><p>        self.middle_edge = 0.275   <em># 中间把手到边缘距离</em></p></li>
-<li><p>        self.middle_real_length = 2.20 - 2 * 0.275   <em># 中间两个把手的距离</em></p></li>
-<li><p>        </p></li>
-<li><p>    """使用微元法求解速度"""</p></li>
-<li><p>    def calcu_vel_diff(self, diff_time = 0.1):</p></li>
-<li><p>        points_v = []</p></li>
-<li><p>        <em># 取一段长度为diff_time的时间微分来初始化类</em></p></li>
-<li><p>        calcu_points_t1 = CalcuPoints(self.theta0_, self.a_, self.t_, self.v_, self.fwd_)</p></li>
-<li><p>        calcu_points_t2 = CalcuPoints(self.theta0_, self.a_, self.t_ + diff_time, self.v_, self.fwd_)</p></li>
-<li><p>        <em># 时间微分变换前的位置</em></p></li>
-<li><p>        points_0, thetas_0, v_0 = calcu_points_t1.get_points()</p></li>
-<li><p>        <em># 时间微分变化后的位置</em></p></li>
-<li><p>        points_t, thetas_t, v_t = calcu_points_t2.get_points()</p></li>
-<li><p>        <em># 求所有点的速率</em></p></li>
-<li><p>        for i in range(len(points_0)):</p></li>
-<li><p>            x_t = points_t[i][0]</p></li>
-<li><p>            y_t = points_t[i][1]</p></li>
-<li><p>            x_0 = points_0[i][0]</p></li>
-<li><p>            y_0 = points_0[i][1]</p></li>
-<li><p>            <em># 微元内近似为匀直</em></p></li>
-<li><p>            v = np.sqrt((x_t - x_0) ** 2 + (y_t - y_0) ** 2) / diff_time</p></li>
-<li><p>            points_v.append(v)</p></li>
-<li><p>            </p></li>
-<li><p>        return points_v</p></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+
+
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li></li>
 <li><p>"""定义优化目标函数"""</p></li>
-<li><p>def objective(x):</p></li>
-<li><p>    angle1, angle2 = GetAngle(alpha, x)</p></li>
-<li><p>    return angle1* x[2] + angle2 * x[3] + calcu_out(x[0]) + calcu_out(x[1])</p></li>
+
+
+<li></li>
 <li></li>
 <li><p>"""求解圆坐标"""</p></li>
-<li><p>def offset_x(theta):</p></li>
-<li><p>    return (np.sin(theta) + theta * np.cos(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
+
 <li></li>
-<li><p>def offset_y(theta):</p></li>
-<li><p>    return (-np.cos(theta) + theta * np.sin(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
 <li></li>
-<li><p>def o1(x):</p></li>
-<li><p>    x_o1 = alpha * x[0] * np.cos(x[0]) - x[2] * offset_x(x[0])</p></li>
-<li><p>    y_o1 = alpha * x[0] * np.sin(x[0]) - x[2] * offset_y(x[0])</p></li>
-<li><p>    return np.array([x_o1, y_o1])</p></li>
+
 <li></li>
-<li><p>def o2(x):</p></li>
-<li><p>    x_o2 = -alpha * x[1] * np.cos(x[1]) + x[3] * offset_x(x[1])</p></li>
-<li><p>    y_o2 = -alpha * x[1] * np.sin(x[1]) + x[3] * offset_y(x[1])</p></li>
-<li><p>    return np.array([x_o2, y_o2])</p></li>
 <li></li>
-<li><p>def distance_o1o2(x):</p></li>
-<li><p>    return np.sum((o1(x) - o2(x)) ** 2)</p></li>
+
+
+
+<li></li>
+<li></li>
+
+
+
+<li></li>
+<li></li>
+
+<li></li>
 <li></li>
 <li><p>"""定义等式约束函数"""</p></li>
-<li><p>def constraint_1(x):</p></li>
-<li><p>    return distance_o1o2(x) - (x[2] + x[3])**2</p></li>
+
 <li></li>
-<li><p>def constraint_2(x):</p></li>
-<li><p>    return x[2] - 2 * x[3]</p></li>
 <li></li>
-<li><p>def inequal_constraint_1(x):</p></li>
-<li><p>    return x[0]</p></li>
-<li><p>def inequal_constraint_2(x):</p></li>
-<li><p>    return x[1]</p></li>
-<li><p>def inequal_constraint_3(x):    <em># 约束范围是要调整的主要地方，模拟+二分检测碰撞来求解这个位置的值</em></p></li>
-<li><p>    return x[2] </p></li>
-<li><p>def inequal_constraint_4(x):</p></li>
-<li><p>    return x[3]</p></li>
-<li><p>def inequal_constraint_5(x):</p></li>
-<li><p>    return theta_s - x[0]</p></li>
-<li><p>def inequal_constraint_6(x):</p></li>
-<li><p>    return theta_s - x[1]</p></li>
+
 <li></li>
-<li><p><em># 定义约束条件</em></p></li>
-<li><p>constraints = [</p></li>
-<li><p>    {'type': 'eq', 'fun': constraint_1},  <em># 等式约束1</em></p></li>
-<li><p>    {'type': 'eq', 'fun': constraint_2},  <em># 等式约束2</em></p></li>
 <li></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_1},  <em># 不等式约束1</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_2},  <em># 不等式约束2</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_3},  <em># 不等式约束3</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_4},  <em># 不等式约束4</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_5},  <em># 不等式约束3</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_6},  <em># 不等式约束4</em></p></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+<li></li>
+
+
+
+
+<li></li>
+
+
+
+
+
+
 <li><p>]</p></li>
 <li></li>
-<li><p><em># 初始猜测值</em></p></li>
-<li><p>x0 = np.array([9 * np.pi, 5 * np.pi, 5, 2.5])</p></li>
+
+
 <li></li>
-<li><p><em># 调用minimize函数进行优化</em></p></li>
-<li><p>sol = minimize(objective, x0, method='SLSQP', constraints = constraints)</p></li>
+
+
 <li></li>
-<li><p><em># 打印结果</em></p></li>
-<li><p>print('最优解:', sol.x)</p></li>
-<li><p>print('目标函数值:', sol.fun)</p></li>
+
+
+
 <li></li>
-<li><p><em># 画图（可选）</em></p></li>
-<li><p>theta1 = np.linspace(-20, 20, 200)</p></li>
-<li><p>theta2 = np.linspace(-20, 20, 200)</p></li>
-<li><p>theta1_grid, theta2_grid = np.meshgrid(theta1, theta2)</p></li>
+
+
+
+
 <li></li>
-<li><p><em># 固定x[2]和x[3]为最优解的值</em></p></li>
-<li><p>r1_opt, r2_opt = sol.x[0], sol.x[1]</p></li>
+
+
 <li></li>
-<li><p>def grid_objective_function(theta1, theta2, r1, r2):</p></li>
-<li><p>    return objective(np.array([theta1, theta2, r1, r2]))</p></li>
+
 <li></li>
-<li><p><em># 计算网格上的目标函数值</em></p></li>
-<li><p>z = np.array([grid_objective_function(t1, t2, r1_opt, r2_opt)</p></li>
-<li><p>               for t1, t2 in zip(theta1_grid.ravel(), theta2_grid.ravel())])</p></li>
-<li><p>z = z.reshape(theta1_grid.shape)</p></li>
+<li></li>
+
+
+
+
 <li></li>
 <li><p>plt.figure()</p></li>
-<li><p>cp = plt.contourf(theta1_grid, theta2_grid, z, cmap='viridis')</p></li>
+
 <li><p>plt.colorbar(cp)</p></li>
-<li><p>plt.scatter(sol.x[0], sol.x[1], color='red', marker='x', label='Optimal Point')</p></li>
-<li><p>plt.xlabel('Theta 1')</p></li>
-<li><p>plt.ylabel('Theta 2')</p></li>
-<li><p>plt.title(f'Contour Plot of Objective Function with Constraints')</p></li>
-<li><p>plt.savefig('t4_result_2D.png', dpi=300, format='png')  <em># dpi参数可以控制图像分辨率</em></p></li>
+
+
+
+
+
 <li><p>plt.legend()</p></li>
 <li><p>plt.show()</p></li>
 <li><p>"""定义优化目标函数"""</p></li>
-<li><p>def objective(x):</p></li>
-<li><p>    angle1, angle2 = GetAngle(alpha, x)</p></li>
-<li><p>    return angle1* x[2] + angle2 * x[3] + calcu_out(x[0]) + calcu_out(x[1])</p></li>
+
+
+<li></li>
 <li></li>
 <li><p>"""求解圆坐标"""</p></li>
-<li><p>def offset_x(theta):</p></li>
-<li><p>    return (np.sin(theta) + theta * np.cos(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
+
 <li></li>
-<li><p>def offset_y(theta):</p></li>
-<li><p>    return (-np.cos(theta) + theta * np.sin(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
 <li></li>
-<li><p>def o1(x):</p></li>
-<li><p>    x_o1 = alpha * x[0] * np.cos(x[0]) - x[2] * offset_x(x[0])</p></li>
-<li><p>    y_o1 = alpha * x[0] * np.sin(x[0]) - x[2] * offset_y(x[0])</p></li>
-<li><p>    return np.array([x_o1, y_o1])</p></li>
+
 <li></li>
-<li><p>def o2(x):</p></li>
-<li><p>    x_o2 = -alpha * x[1] * np.cos(x[1]) + x[3] * offset_x(x[1])</p></li>
-<li><p>    y_o2 = -alpha * x[1] * np.sin(x[1]) + x[3] * offset_y(x[1])</p></li>
-<li><p>    return np.array([x_o2, y_o2])</p></li>
 <li></li>
-<li><p>def distance_o1o2(x):</p></li>
-<li><p>    return np.sum((o1(x) - o2(x)) ** 2)</p></li>
+
+
+
+<li></li>
+<li></li>
+
+
+
+<li></li>
+<li></li>
+
+<li></li>
 <li></li>
 <li><p>"""定义等式约束函数"""</p></li>
-<li><p>def constraint_1(x):</p></li>
-<li><p>    return distance_o1o2(x) - (x[2] + x[3])**2</p></li>
+
 <li></li>
-<li><p>def constraint_2(x):</p></li>
-<li><p>    return x[2] - 2 * x[3]</p></li>
 <li></li>
-<li><p>def inequal_constraint_1(x):</p></li>
-<li><p>    return x[0]</p></li>
-<li><p>def inequal_constraint_2(x):</p></li>
-<li><p>    return x[1]</p></li>
-<li><p>def inequal_constraint_3(x):    <em># 约束范围是要调整的主要地方，模拟+二分检测碰撞来求解这个位置的值</em></p></li>
-<li><p>    return x[2] </p></li>
-<li><p>def inequal_constraint_4(x):</p></li>
-<li><p>    return x[3]</p></li>
-<li><p>def inequal_constraint_5(x):</p></li>
-<li><p>    return theta_s - x[0]</p></li>
-<li><p>def inequal_constraint_6(x):</p></li>
-<li><p>    return theta_s - x[1]</p></li>
+
 <li></li>
-<li><p><em># 定义约束条件</em></p></li>
-<li><p>constraints = [</p></li>
-<li><p>    {'type': 'eq', 'fun': constraint_1},  <em># 等式约束1</em></p></li>
-<li><p>    {'type': 'eq', 'fun': constraint_2},  <em># 等式约束2</em></p></li>
 <li></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_1},  <em># 不等式约束1</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_2},  <em># 不等式约束2</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_3},  <em># 不等式约束3</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_4},  <em># 不等式约束4</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_5},  <em># 不等式约束3</em></p></li>
-<li><p>    {'type': 'ineq', 'fun': inequal_constraint_6},  <em># 不等式约束4</em></p></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+<li></li>
+
+
+
+
+<li></li>
+
+
+
+
+
+
 <li><p>]</p></li>
 <li></li>
-<li><p><em># 初始猜测值</em></p></li>
-<li><p>x0 = np.array([9 * np.pi, 5 * np.pi, 5, 2.5])</p></li>
+
+
 <li></li>
-<li><p><em># 调用minimize函数进行优化</em></p></li>
-<li><p>sol = minimize(objective, x0, method='SLSQP', constraints = constraints)</p></li>
+
+
 <li></li>
-<li><p><em># 打印结果</em></p></li>
-<li><p>print('最优解:', sol.x)</p></li>
-<li><p>print('目标函数值:', sol.fun)</p></li>
+
+
+
 <li></li>
-<li><p>def calcu_points(cur_path_points, t):</p></li>
-<li><p>    points = []</p></li>
-<li><p>    </p></li>
-<li><p>    iter_num = 224 <em># 223个板子, 计算把手迭代次数为223</em></p></li>
-<li><p>    p = 0</p></li>
-<li><p>    point_this = cur_path_points[f"{t:.2f}"]   <em># 获得龙头的位置</em></p></li>
-<li><p>    point_this_index = t</p></li>
-<li><p>    points.append(point_this)</p></li>
-<li><p>    while(p&lt;iter_num):</p></li>
-<li><p>        D = 0 <em># 计算的距离</em></p></li>
-<li><p>        if p == 0:</p></li>
-<li><p>            D = head_dist</p></li>
-<li><p>        else:</p></li>
-<li><p>            D = middle_dist</p></li>
-<li><p>        <em># 二分搜索</em></p></li>
-<li><p>        <em># 先初始化好start，往前采样8s即可</em></p></li>
-<li><p>        point_end_index = point_this_index</p></li>
-<li><p>        point_start_index = point_this_index-10</p></li>
-<li><p>        point_middle_index = (point_start_index + point_end_index) / 2 </p></li>
-<li><p>        cnt = 0</p></li>
-<li><p>        <em># 进入二分搜索，精确到3位小数W</em></p></li>
-<li><p>        while ( distance(cur_path_points[f"{point_start_index:.2f}"], cur_path_points[f"{point_end_index:.2f}"]) ) &gt; 0.025:</p></li>
-<li><p>            </p></li>
-<li><p>            if distance(cur_path_points[f"{point_middle_index:.2f}"], cur_path_points[f"{point_this_index:.2f}"]) &lt; D: <em># 靠前了，应该向后走</em></p></li>
-<li><p>                point_end_index = point_middle_index</p></li>
-<li><p>            else:</p></li>
-<li><p>                point_start_index = point_middle_index</p></li>
-<li><p>            <em>#print(point_middle_index, point_end_index, point_start_index)</em></p></li>
-<li><p>            <em>#print(cur_path_points[f"{point_middle_index:.3f}"], cur_path_points[f"{point_this_index:.3f}"])</em></p></li>
-<li><p>            point_middle_index = (point_start_index + point_end_index) / 2 </p></li>
-<li><p>            cnt += 1</p></li>
-<li><p>            <em># 陷入二分困境</em></p></li>
-<li><p>            if cnt &gt;= 10 :</p></li>
-<li><p>                break</p></li>
-<li><p>            <em># 陷入二分困境则直接开始暴力搜索</em></p></li>
-<li><p>            if(cnt &gt;= 10):</p></li>
-<li><p>                point_last_index = 0</p></li>
-<li><p>                while(1):</p></li>
-<li><p>                    point_last_index -= 0.01</p></li>
-<li><p>                    if(distance(cur_path_points[f"{point_this_index:.2f}"], cur_path_points[f"{point_last_index:.2f}"])-D)&lt;0.01:</p></li>
-<li><p>                        break</p></li>
-<li><p>            else:</p></li>
-<li><p>                point_last_index = (point_start_index + point_end_index) / 2</p></li>
-<li><p>        <em># 找到上一个之后保存</em></p></li>
-<li><p>        points.append([np.array(cur_path_points[f"{point_last_index:.2f}"][0]), np.array(cur_path_points[f"{point_last_index:.2f}"][1])])</p></li>
-<li><p>        <em># 记得更新</em></p></li>
-<li><p>        point_this_index = point_last_index</p></li>
-<li><p>       </p></li>
-<li><p>        p+=1</p></li>
-<li><p>        </p></li>
-<li><p>    return points</p></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li></li>
 <li></li>
 <li><p>"""使用微元法求解速度"""</p></li>
-<li><p>def calcu_vel_diff(cur_path_points, t, diff_time = 0.1):</p></li>
-<li><p>    points_v = []</p></li>
-<li><p>    <em># 时间微分变换前的位置</em></p></li>
-<li><p>    points_0 =  calcu_points(cur_path_points, t)</p></li>
-<li><p>    <em># 时间微分变化后的位置</em></p></li>
-<li><p>    points_t =  calcu_points(cur_path_points, t + diff_time)</p></li>
-<li><p>    <em># 求所有点的速率</em></p></li>
-<li><p>    for i in range(len(points_0)):</p></li>
-<li><p>        x_t = points_t[i][0]</p></li>
-<li><p>        y_t = points_t[i][1]</p></li>
-<li><p>        x_0 = points_0[i][0]</p></li>
-<li><p>        y_0 = points_0[i][1]</p></li>
-<li><p>        <em># 微元内近似为匀直</em></p></li>
-<li><p>        v = np.sqrt((x_t - x_0) ** 2 + (y_t - y_0) ** 2) / diff_time</p></li>
-<li><p>        points_v.append(v)</p></li>
-<li><p>            </p></li>
-<li><p>    return points_v</p></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li></li>
 </ol></td>
 </tr>
 </tbody>
