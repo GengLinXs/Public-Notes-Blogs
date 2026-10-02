@@ -1,0 +1,2000 @@
+---
+layout: single
+title: "基于迭代解析与数值算法的“板凳龙”运动几何研究"
+date: 2024-09-08
+header:
+  image: /images/blog/shumo-2024/cover.jpg
+excerpt: "2024年全国大学生数学建模竞赛参赛论文：基于迭代解析与数值算法研究“板凳龙”运动几何。"
+type: Note
+author_profile: true
+---
+
+{% raw %}
+<h1 id="问题重述">问题重述</h1>
+<h2 id="问题背景">问题背景</h2>
+<p>“板凳龙”是一种源自浙闽地区的传统民俗文化活动，参与者将多条板凳首尾相连，形成一条蜿蜒的“龙”。这种活动不仅考验舞龙队伍的协作能力，也展现了民间艺术的独特魅力。为了提高观赏性和舞龙的效率，有必要研究如何在有限的空间内，使板凳龙更加灵活地盘旋和移动。</p>
+<h2 id="问题提出">问题提出</h2>
+<p>在本文中，我们需要对一个由223节板凳组成的板凳龙进行数学分析。该板凳龙的结构包括一个特殊的龙头（长度为341厘米），221节相同的龙身（每节长度为220厘米），以及一个标准的龙尾（同样长度为220厘米）。所有板凳的宽度均为30厘米，并且每节板凳两端都有用于连接下一节板凳的孔洞。建立模型解决以下问题：</p>
+<p><strong>问题一：</strong>模拟舞龙队沿螺线盘入的过程，计算从初始状态到
+300 秒内每秒钟各板凳把手的位置和速度，并提供关键时间点的信息。</p>
+<p><strong>问题二：</strong>继续上述情景，确定舞龙队完全停止盘旋（即板凳之间开始接触或碰撞）的具体时刻，并记录该时刻舞龙队的位置与速度信息。</p>
+<p><strong>问题三：</strong>在从顺时针盘旋转向逆时针盘旋的过程中，舞龙队需要进入一个以螺旋线中心为圆心、直径为9米的圆形区域内完成调头动作。我们需要找到最小的螺距，使得龙头可以在不改变速度的情况下顺利进入这个圆形区域。</p>
+<p><strong>问题四：</strong>设计最短的调头路径，由两段圆弧组成的 S
+形曲线，计算从调头开始前 100
+秒到完成后的每秒钟位置和速度，并优化圆弧曲率半径与位置。</p>
+<p><strong>问题五：</strong>在已知条件下，舞龙队按照设定路径行进，龙头的速度保持恒定。我们需要确定龙头的最大可行速度，确保舞龙队其他部分的速度不会超过2米/秒的安全阈值。</p>
+<h1 id="问题分析">问题分析</h1>
+<h2 id="问题一分析">问题一分析：</h2>
+<p>考虑到板凳龙龙身较长，而除龙头外各板的几何参数相同，且均在同一已知曲线上运动，运动特征相似。则为了求解所需的大量板凳在不同时间的位置和速度参数，可以考虑任取某一板凳作前后位置的分析，求出其迭代关系的解析式，而后以龙头为迭代起点进行迭代求解。</p>
+<p>另外，也可以在迭代解得位置后利用数值微分法求解其速度的数值解。此种方法可行性高，但是精度不稳定；而解析法的精度较高，但是解析式的计算和逻辑问题可能难以察觉。可以考虑在建模求解部分采取解析法分析，而后在模型的验证部分采用数值法进行对照，以此来证明解析的正确性。</p>
+<h2 id="问题二分析">问题二分析：</h2>
+<p>问题二需要完成的核心任务在于碰撞的判断与临界求解。在对碰撞进行分析时，同样有两种方案：一种为直接取碰撞的临界条件，求解碰撞板临界位置，再结合问题一中完成的迭代关系导出其他参数；另一种则需要构建板凳龙的运动仿真模型，同时引入板凳矩形的几何碰撞判定，求解一定精度下的数值解。前者可以用来分析较为简单的碰撞，而对于运动过程中变量较多的碰撞，则可以优先选择效率更高、可读性更强的后者。</p>
+<p>另外，在盘入过程中，龙头总是位于曲率半径更小的内圈，且龙头板件的长度相较于龙身更长，因此更容易发生碰撞。因此，对于板凳龙的碰撞问题可以直接对龙头是否发生碰撞进行判定，以此来减少计算量。</p>
+<h2 id="问题三分析">问题三分析：</h2>
+<p>问题三可以作为问题二的逆问题来解答。在问题二中，我们已知螺距，要求龙头发生碰撞的临界位置；而问题三的求解则是已知龙头位置，要求临界螺距。则可以对第二问中构建的算法补充对螺距的遍历后运行直至满足临界条件以求得最终解。</p>
+<h2 id="问题四分析">问题四分析：</h2>
+<p>问题四的本质为在一定的约束条件下，对调头区内路径的总行程长度进行优化。则可以考虑先通过几何与向量分析等方法给出约束条件方程以及最终待优化的目标方程的表达式，随后选取合适的优化算法进行最小值求解。对于求解得到的最小值再进行碰撞检测，若无碰撞，则该结果即为最短调头路径，在指定调头区内无法再缩短行程长度。</p>
+<p>在得到路径曲线的解析式后，我们可以考虑如问题一一样求解速度位置的解析迭代式，也可以考虑直接采取数值算法求解。这部分的方案选择取决于最终路径曲线方程的复杂程度。若较为复杂，则可以考虑直接构建运动分析算法进行数值求解以提高问题求解效率。</p>
+<h2 id="问题五分析">问题五分析：</h2>
+<p>问题五可以作为问题四的逆问题进行解答。在问题四解答完成后，理论上我们将获得行程中的速度分布迭代关系或者可以用来求解速度分布的数值算法。对其进行二分法迭代直至速度峰值为<span
+class="math inline">\(2m/s\)</span>，此时的龙头速度即为问题五的答案。</p>
+<h1 id="模型假设">模型假设</h1>
+<ol type="1">
+<li><p>舞龙队的操作完全按照模型进行，忽略人为操作可能带来的误差。</p></li>
+<li><p>认为所涉及的几何形状均为理想几何，忽略实际物件几何的偏差</p></li>
+<li><p>不考虑板凳的厚度，认为板凳间碰撞可能发生在任意两个非相邻板凳之间</p></li>
+<li><p>把手为完美圆柱体，无粗细变化</p></li>
+</ol>
+<h1 id="符号说明">符号说明</h1>
+<table style="width:94%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 73%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><strong>符号</strong></th>
+<th style="text-align: center;"><strong>说明</strong></th>
+<th style="text-align: center;"><strong>单位</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[D_{0}\]</span></td>
+<td style="text-align: center;">龙头的长度</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[D\]</span></td>
+<td style="text-align: center;">龙身的长度</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[H\]</span></td>
+<td style="text-align: center;">板凳的宽度</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[d\]</span></td>
+<td style="text-align: center;">把手孔径</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[h\]</span></td>
+<td style="text-align: center;">把手孔距离最近的板头的距离</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[v\]</span></td>
+<td style="text-align: center;">龙头的速度</td>
+<td style="text-align: center;"><span
+class="math display">\[m/s\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[t\]</span></td>
+<td style="text-align: center;">龙头的运动时间</td>
+<td style="text-align: center;"><span
+class="math display">\[s\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[pitch\]</span></td>
+<td style="text-align: center;">等距螺线的螺距</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[\theta_{i}\]</span></td>
+<td style="text-align: center;">板凳位置<span
+class="math inline">\(i\)</span>上两个把手与原点连线的夹角</td>
+<td style="text-align: center;"><span
+class="math display">\[rad\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[r_{i}\]</span></td>
+<td style="text-align: center;">等距螺线上<span
+class="math inline">\(i\)</span>位置处与原点的距离</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[\Theta\]</span></td>
+<td style="text-align: center;">把手与原点连线的旋转角微元</td>
+<td style="text-align: center;"><span
+class="math display">\[rad\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[\sigma\]</span></td>
+<td style="text-align: center;">板凳的旋转倾斜角</td>
+<td style="text-align: center;"><span
+class="math display">\[rad\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[\rho\]</span></td>
+<td style="text-align: center;">曲率半径</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math inline">\(\Omega_{i}\)</span>，<span
+class="math inline">\(\Omega\)</span></td>
+<td style="text-align: center;">调头路径第<span
+class="math inline">\(i\)</span>段的长度、调头路径的总长</td>
+<td style="text-align: center;"><span
+class="math display">\[m\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[\phi_{AB}\]</span></td>
+<td style="text-align: center;">直线AB的倾角</td>
+<td style="text-align: center;"><span
+class="math display">\[rad\]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span
+class="math display">\[\epsilon_{i}\]</span></td>
+<td style="text-align: center;">调头路径所对圆周角</td>
+<td style="text-align: center;"><span
+class="math display">\[rad\]</span></td>
+</tr>
+</tbody>
+</table>
+<h1 id="模型的建立与求解">模型的建立与求解</h1>
+<h2 id="等距螺线方程的建立">等距螺线方程的建立</h2>
+<p>考虑到本题中所有的运动都以等距螺线为轨迹，故在正式讨论实际问题前，也要先对螺线方程模型进行明确。首先给出等距螺线的<strong>极坐标方程与直角坐标转换方程</strong>：</p>
+<p><span class="math display">\[\begin{array}{r}
+\rho = \alpha\theta\	ag{1}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\alpha = \frac{pitch}{2\pi}\	ag{2}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+x = \rho cos\theta = \alpha\theta cos\theta\	ag{3}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+y = \rho sin\theta = \alpha\theta sin\theta\	ag{4}
+\end{array}\]</span></p>
+<p>其中，<span class="math inline">\(pitch\)</span>为螺线的螺距。</p>
+<p>进一步地，可以通过对圆弧的极限求导得到<strong>线速度和转角对时间导数的关系</strong>，有：</p>
+<p><span class="math display">\[\begin{array}{r}
+v = \frac{ds}{dt} = \frac{1}{dt}\sqrt{dx^{2} + dy^{2}} =
+\sqrt{{\rho&#39;}^{2} + \rho^{2}}\frac{d\theta}{dt} = \alpha\sqrt{1 +
+\theta^{2}}\frac{d\theta}{dt}\	ag{5}
+\end{array}\]</span></p>
+<p>对于螺线而言，其合速度可以分解为切向分速度和法向分速度，由于顺时针旋入，其方向向量有：</p>
+<p><span class="math display">\[\begin{array}{r}
+\overrightarrow{e_{t}} = \left\lbrack \alpha\theta\sin\theta, -
+\alpha\theta\cos\theta \right\rbrack\	ag{6}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\overrightarrow{e_{n}} = \left( \alpha\cos\theta,\alpha\sin\theta
+\right)\	ag{7}
+\end{array}\]</span></p>
+<p>此后所有的有关计算均以上式为参考。</p>
+<h2 id="问题一模型的建立与求解">问题一模型的建立与求解</h2>
+<h3 id="空间位置迭代模型的建立与求解">空间位置迭代模型的建立与求解</h3>
+<h4 id="龙头位置的确定">龙头位置的确定</h4>
+<p>由于5.2中导出了转角与直角坐标的转换关系，求解板凳龙上任意一点的位置问题可转化为求解该点对应螺线的转角问题。由于龙头的速度和运动时间确定，我们首先求解龙头的位置，即对方程(5)在整个运动时间上积分：</p>
+<p><span class="math display">\[\begin{array}{r}
+\ \ \int_{\theta_{0}}^{\theta_{t}}\sqrt{1 + \theta^{2}}d\theta =
+\frac{2\pi v}{pitch}\int_{0}^{t}{dt}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \#
+\end{array}\]</span></p>
+<p><span class="math display">\[\Longrightarrow \left. \ \left(
+\frac{x}{2}\sqrt{x^{2} + 1} + \frac{1}{2}\ln\left( x + \sqrt{x^{2} + 1}
+\right) \right) \right|_{\theta_{0}}^{\theta_{t}} =
+\frac{2\pi}{pitch}vt\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\Longrightarrow \frac{\theta_{t}}{2}\sqrt{\theta_{t}^{2} + 1} +
+\frac{1}{2}\ln\left| \theta_{t} + \sqrt{\theta_{t}^{2} + 1} \right| =
+\frac{2\pi}{pitch}vt + \frac{\theta_{0}}{2}\sqrt{\theta_{0}^{2} + 1} +
+\frac{1}{2}\ln\left| \theta_{0} + \sqrt{\theta_{0}^{2} + 1} \right|\	ag{8}
+\end{array}\]</span></p>
+<p>在方程(8)中代入运动时间与速度即得龙头转角，进一步利用方程(3)和(4)转换直角坐标即可得到其位置。如不做特殊说明，此后所有龙头位置的求解均利用该方法实现。</p>
+<h4 id="龙身位置的确定">龙身位置的确定</h4>
+<p>进一步地，为了求得其他板凳的位置转角，我们考虑任取某一龙身板凳进行抽象处理分析其迭代关系。对于如图1所示的三角形，有余弦定理及其辅助方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+D^{2} = r_{p + 1}^{2} + r_{p}^{2} - 2r_{p}r_{p + 1}cos\Delta\theta\	ag{9}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+r_{i} = \theta_{i} \cdot \alpha\	ag{10}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\Delta\theta = \theta_{i + 1} - \theta_{i}\	ag{11}
+\end{array}\]</span></p>
+<p>其中，<span class="math inline">\(D\)</span>为龙身的长度；<span
+class="math inline">\(r_{i}\)</span>为位置<span
+class="math inline">\(i\)</span>到旋转中心的距离。</p>
+<p>联立方程(9)~(11)，可以得到<strong>转角的递推方程</strong>：</p>
+<p><span class="math display">\[\begin{array}{r}
+\theta_{p}^{2} + \theta_{p + 1}^{2} - 2\theta_{p}\theta_{p +
+1}\cos\left( \theta_{p + 1} - \theta_{p} \right) =
+\frac{D^{2}}{\alpha^{2}}\	ag{12}
+\end{array}\]</span></p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img1.png" alt="" style="max-width:100%;"></p></p>
+<p>图1：板凳位置分析三角形</p>
+<h3 id="运动过程迭代模型的建立">运动过程迭代模型的建立</h3>
+<p>为了导出任意位置的速度关系，我们取如图2所示时间微元前后的运动三角形进行几何分析。有余弦定理：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+D^{2} = r_{p}^{2} + r_{p + 1}^{2} - 2r_{p}r_{p + 1}\cos\left( \theta_{p
++ 1} - \theta_{p} \right) \\
+D^{2} = r_{p}^{&#39;2} + r_{p + 1}^{&#39;2} - 2r_{p}&#39;r_{p +
+1}&#39;\cos\left( \theta_{p + 1} - \theta_{p} \right)
+\end{array} \right.\ \	ag{13}
+\end{array}\]</span></p>
+<p>引入辅助方程组：</p>
+<p><span class="math display">\[\begin{array}{r}
+r_{i} = \alpha\theta_{i}\	ag{14}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+r_{i}&#39; = \alpha\left( \theta_{i} - \Theta_{i} \right)\	ag{15}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+\Theta_{p + 1} = d\theta_{p + 1} = \beta \\
+\Theta_{p} = d\theta_{p} = \gamma\beta
+\end{array} \right.\ \	ag{16}
+\end{array}\]</span></p>
+<p>其中，<span class="math inline">\(\Theta_{i}\)</span>是把手位置<span
+class="math inline">\(i\)</span>与原点连线的旋转角微元。</p>
+<p>联立可得：</p>
+<p><span class="math display">\[2\alpha^{2}\beta\left\lbrack \theta_{p}
++ \gamma\theta_{p + 1} - \left( \gamma\theta_{p} + \theta_{p + 1}
+\right)\cos\left( \theta_{p + 1} - \theta_{p} + (1 - \gamma)\beta
+\right) \right\rbrack = 2\alpha^{2}\theta_{p}\theta_{p + 1}\left\lbrack
+\cos\left( \theta_{p + 1} - \gamma\beta \right) - cos\theta_{p + 1} + (1
+- \gamma)\beta \right\rbrack\ \]</span></p>
+<p><span class="math display">\[\Longrightarrow \beta\left\lbrack
+\theta_{p} + \gamma\theta_{p + 1} - \left( \gamma\theta_{p} + \theta_{p
++ 1} \right)\cos\left( \theta_{p + 1} - \theta_{p} + (1 - \gamma)\beta
+\right) \right\rbrack = \theta_{p}\theta_{p + 1}\left\lbrack \cos\left(
+\theta_{p + 1} - \gamma\beta \right) - cos\theta_{p + 1} + (1 -
+\gamma)\beta \right\rbrack\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \]</span></p>
+<p><mark>约去小量</mark><span class="math inline">\((1 -
+\gamma)\beta\)</span><mark>，并对余弦项作泰勒展开</mark></p>
+<p><span class="math display">\[\Longrightarrow \ \beta\left\lbrack
+\theta_{p} + \gamma\theta_{p + 1} - \gamma\theta_{p}\cos\left( \theta_{p
++ 1} - \theta_{p} \right) - \theta_{p + 1}\cos\left( \theta_{p + 1} -
+\theta_{p} \right) \right\rbrack = \beta\left\lbrack \theta_{p}\theta_{p
++ 1}\sin\left( \theta_{p + 1} - \theta_{p} \right) -
+\gamma\theta_{p}\theta_{p + 1}\sin\left( \theta_{p + 1} - \theta_{p}
+\right) \right\rbrack\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\Longrightarrow \gamma = \frac{\theta_{p}\theta_{p + 1}\sin\left(
+\theta_{p + 1} - \theta_{p} \right) + \theta_{p + 1}\cos\left( \theta_{p
++ 1} - \theta_{p} \right){- \theta}_{p}}{\theta_{p + 1} -
+\theta_{p}\cos\left( \theta_{p + 1} - \theta_{p} \right) +
+\theta_{p}\theta_{p + 1}\sin\left( \theta_{p + 1} - \theta_{p} \right)}\
+\#\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (17)
+\end{array}\]</span></p>
+<p>又由式(5)和(16)，对相邻的两个速度表达式做比值即可得到<strong>速度的递推关系式</strong>：</p>
+<p><span class="math display">\[\frac{v_{p + 1}}{v_{p}} = \frac{\sqrt{1
++ \theta_{p + 1}^{2}}}{\sqrt{1 + \theta_{p}^{2}}} \cdot \frac{d\theta_{p
++ 1}}{d\theta_{p}} = \frac{1}{\gamma} \cdot \frac{\sqrt{1 + \theta_{p +
+1}^{2}}}{\sqrt{1 + \theta_{p}^{2}}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+= \frac{\theta_{p + 1} - \theta_{p}\cos\left( \theta_{p + 1} -
+\theta_{p} \right) + \theta_{p}\theta_{p + 1}\sin\left( \theta_{p + 1} -
+\theta_{p} \right)}{\theta_{p}\theta_{p + 1}\sin\left( \theta_{p + 1} -
+\theta_{p} \right) + \theta_{p + 1}\cos\left( \theta_{p + 1} -
+\theta_{p} \right){- \theta}_{p}} \cdot \frac{\sqrt{1 + \theta_{p +
+1}^{2}}}{\sqrt{1 + \theta_{p}^{2}}}\ \ \ \ \ \ \ \ \ \	ag{18}
+\end{array}\]</span></p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img2.png" alt="" style="max-width:100%;"></p></p>
+<p>图2：板凳运动分析三角形</p>
+<p>至此，我们已经完全完成了位置和速度迭代模型的建立。求解时利用Python编写迭代程序，首先以龙头转角为迭代起点，在每一个迭代内求解方程(12)的根，即为每一点的转角。进一步利用方程(3)和(4)即可得到每一点的位置。需要注意的是，第一组迭代时<span
+class="math inline">\(D\)</span>应取<span
+class="math inline">\(D_{0}\)</span>。接下来利用得到的转角对方程(18)进行迭代，即可得到每一点的速度大小。问题一求解完毕，部分结果如表1与表2所示：</p>
+<p>表1:问题一所求部分节点位置表</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">0s</th>
+<th style="text-align: center;">60s</th>
+<th style="text-align: center;">120s</th>
+<th style="text-align: center;">180s</th>
+<th style="text-align: center;">240s</th>
+<th style="text-align: center;">300s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">龙头x(m)</td>
+<td style="text-align: center;">8.800000</td>
+<td style="text-align: center;">5.799209</td>
+<td style="text-align: center;">-4.084887</td>
+<td style="text-align: center;">-2.963609</td>
+<td style="text-align: center;">2.594494</td>
+<td style="text-align: center;">4.420274</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙头y(m)</td>
+<td style="text-align: center;">-0.000000</td>
+<td style="text-align: center;">-5.771092</td>
+<td style="text-align: center;">-6.304479</td>
+<td style="text-align: center;">6.094780</td>
+<td style="text-align: center;">-5.356743</td>
+<td style="text-align: center;">2.320429</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身x(m)</td>
+<td style="text-align: center;">8.363824</td>
+<td style="text-align: center;">7.456758</td>
+<td style="text-align: center;">-1.445473</td>
+<td style="text-align: center;">-5.237118</td>
+<td style="text-align: center;">4.821221</td>
+<td style="text-align: center;">2.459489</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身y(m)</td>
+<td style="text-align: center;">2.826544</td>
+<td style="text-align: center;">-3.440399</td>
+<td style="text-align: center;">-7.405883</td>
+<td style="text-align: center;">4.359627</td>
+<td style="text-align: center;">-3.561949</td>
+<td style="text-align: center;">4.402476</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身x(m)</td>
+<td style="text-align: center;">-9.518732</td>
+<td style="text-align: center;">-8.686317</td>
+<td style="text-align: center;">-5.543150</td>
+<td style="text-align: center;">2.890455</td>
+<td style="text-align: center;">5.980011</td>
+<td style="text-align: center;">-6.301346</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身y(m)</td>
+<td style="text-align: center;">1.341137</td>
+<td style="text-align: center;">2.540108</td>
+<td style="text-align: center;">6.377946</td>
+<td style="text-align: center;">7.249289</td>
+<td style="text-align: center;">-3.827758</td>
+<td style="text-align: center;">0.465829</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身x(m)</td>
+<td style="text-align: center;">2.913983</td>
+<td style="text-align: center;">5.687116</td>
+<td style="text-align: center;">5.361939</td>
+<td style="text-align: center;">1.898794</td>
+<td style="text-align: center;">-4.917371</td>
+<td style="text-align: center;">-6.237722</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身y(m)</td>
+<td style="text-align: center;">-9.918311</td>
+<td style="text-align: center;">-8.001384</td>
+<td style="text-align: center;">-7.557638</td>
+<td style="text-align: center;">-8.471614</td>
+<td style="text-align: center;">-6.379874</td>
+<td style="text-align: center;">3.936008</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身x(m)</td>
+<td style="text-align: center;">10.861726</td>
+<td style="text-align: center;">6.682311</td>
+<td style="text-align: center;">2.388757</td>
+<td style="text-align: center;">1.005154</td>
+<td style="text-align: center;">2.965378</td>
+<td style="text-align: center;">7.040740</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身y(m)</td>
+<td style="text-align: center;">1.828753</td>
+<td style="text-align: center;">8.134544</td>
+<td style="text-align: center;">9.727411</td>
+<td style="text-align: center;">9.424751</td>
+<td style="text-align: center;">8.399721</td>
+<td style="text-align: center;">4.393013</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身x(m)</td>
+<td style="text-align: center;">4.555102</td>
+<td style="text-align: center;">-6.619664</td>
+<td style="text-align: center;">-10.627211</td>
+<td style="text-align: center;">-9.287720</td>
+<td style="text-align: center;">-7.457151</td>
+<td style="text-align: center;">-7.458662</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身y(m)</td>
+<td style="text-align: center;">10.725118</td>
+<td style="text-align: center;">9.025570</td>
+<td style="text-align: center;">1.359847</td>
+<td style="text-align: center;">-4.246673</td>
+<td style="text-align: center;">-6.180726</td>
+<td style="text-align: center;">-5.263384</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）x(m)</td>
+<td style="text-align: center;">-5.305444</td>
+<td style="text-align: center;">7.364557</td>
+<td style="text-align: center;">10.974348</td>
+<td style="text-align: center;">7.383896</td>
+<td style="text-align: center;">3.241051</td>
+<td style="text-align: center;">1.785033</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）y(m)</td>
+<td style="text-align: center;">-10.676584</td>
+<td style="text-align: center;">-8.797992</td>
+<td style="text-align: center;">10.843473</td>
+<td style="text-align: center;">7.492370</td>
+<td style="text-align: center;">9.469336</td>
+<td style="text-align: center;">9.301164</td>
+</tr>
+</tbody>
+</table>
+<p>表2:问题1所求部分节点速度表</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 12%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">0s</th>
+<th style="text-align: center;">60s</th>
+<th style="text-align: center;">120s</th>
+<th style="text-align: center;">180s</th>
+<th style="text-align: center;">240s</th>
+<th style="text-align: center;">300s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">龙头(m/s)</td>
+<td style="text-align: center;">1.000000</td>
+<td style="text-align: center;">1.000000</td>
+<td style="text-align: center;">1.000000</td>
+<td style="text-align: center;">1.000000</td>
+<td style="text-align: center;">1.000000</td>
+<td style="text-align: center;">1.000000</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身(m/s)</td>
+<td style="text-align: center;">0.999971</td>
+<td style="text-align: center;">0.999961</td>
+<td style="text-align: center;">0.999945</td>
+<td style="text-align: center;">0.999917</td>
+<td style="text-align: center;">0.999858</td>
+<td style="text-align: center;">0.999709</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身(m/s)</td>
+<td style="text-align: center;">0.999742</td>
+<td style="text-align: center;">0.999662</td>
+<td style="text-align: center;">0.999538</td>
+<td style="text-align: center;">0.999331</td>
+<td style="text-align: center;">0.998941</td>
+<td style="text-align: center;">0.998064</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身(m/s)</td>
+<td style="text-align: center;">0.999575</td>
+<td style="text-align: center;">0.999453</td>
+<td style="text-align: center;">0.999269</td>
+<td style="text-align: center;">0.998971</td>
+<td style="text-align: center;">0.998435</td>
+<td style="text-align: center;">0.997302</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身(m/s)</td>
+<td style="text-align: center;">0.999448</td>
+<td style="text-align: center;">0.999299</td>
+<td style="text-align: center;">0.999078</td>
+<td style="text-align: center;">0.998727</td>
+<td style="text-align: center;">0.998114</td>
+<td style="text-align: center;">0.996861</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身(m/s)</td>
+<td style="text-align: center;">0.999348</td>
+<td style="text-align: center;">0.999180</td>
+<td style="text-align: center;">0.998935</td>
+<td style="text-align: center;">0.998551</td>
+<td style="text-align: center;">0.997893</td>
+<td style="text-align: center;">0.996574</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）(m/s)</td>
+<td style="text-align: center;">0.999311</td>
+<td style="text-align: center;">0.999136</td>
+<td style="text-align: center;">0.998883</td>
+<td style="text-align: center;">0.998489</td>
+<td style="text-align: center;">0.997816</td>
+<td style="text-align: center;">0.996477</td>
+</tr>
+</tbody>
+</table>
+<h2 id="问题二模型的建立与求解">问题二模型的建立与求解</h2>
+<h3 id="碰撞情况的分析与初步排除">碰撞情况的分析与初步排除</h3>
+<p>从本问题开始，我们需要考虑运动过程中是否存在碰撞，以及求解碰撞带来的极限问题。潜在的碰撞风险来源于两个方面：1.
+板凳之间的碰撞；2.
+板凳与把手的碰撞。我们首先对第二种碰撞的可能性进行初步分析。</p>
+<p>板凳与把手的碰撞首先发生在相邻两周轨迹内，为简化分析，我们假定轨迹均为同心圆，对可能碰撞的临界最大曲率半径如图3所示进行几何分析，有内碰撞和外碰撞两组方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+\rho_{1}^{2} + \left( \frac{D}{2} - H \right)^{2} = \left( \rho_{1} +
+pitch \right)^{2}\	ag{19}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{D/2}{{\rho&#39;}_{1} + pitch} = \frac{1}{4}\frac{D -
+2H}{{\rho&#39;}_{1}}\	ag{20}
+\end{array}\]</span></p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img3.png" alt="" style="max-width:100%;"></p></p>
+<p>图3：板凳与把手碰撞临界分析；(a)内碰撞临界情况;(b)外碰撞临界情况。</p>
+<p>其中，<span
+class="math inline">\(\rho_{1}\)</span>为内碰撞发生的最大临界曲率半径；<span
+class="math inline">\(\rho_{1}&#39;\)</span>为外碰撞发生的最大临界曲率半径。</p>
+<p>分别解得发生该种碰撞的临界曲率半径约为34cm和0.125cm。考虑到实际螺线在最内圈的最大曲率半径为55cm，在运动过程中，板凳与把手的碰撞几乎是不可能的，因此可以先考虑板凳之间的碰撞。若该碰撞发生在第一周以外，则不必再考虑板凳与把手的碰撞。</p>
+<h3 id="板凳间的碰撞模型建立">板凳间的碰撞模型建立</h3>
+<p>由于板凳间碰撞设计复杂的解析几何，我们考虑在计算机中构建恰当的算法对板凳龙的运动进行模拟，并对是否发生碰撞进行判断。首先对板凳矩形几何所涉及的坐标关系进行建模。定义板凳的前端端点分别为<span
+class="math inline">\(A_{1}\)</span>和<span
+class="math inline">\(A_{2}\)</span>，后端端点分别为<span
+class="math inline">\(B_{1}\)</span>和<span
+class="math inline">\(B_{2}\)</span>，且1号位置总在外侧；定义前后把手分别为<span
+class="math inline">\(P_{1}\)</span>和<span
+class="math inline">\(P_{2}\)</span>,。其几何与旋转关系如图4所示，有：</p>
+<p>相对坐标系中四点的坐标：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+\binom{A_{1}\left( x_{p1} + h,y_{p1} + \frac{H}{2} \right)}{A_{2}\left(
+x_{p1} + h,y_{p1} - \frac{H}{2} \right)} \\
+\binom{B_{1}\left( x_{p2} - h,y_{p2} + \frac{H}{2} \right)}{B_{2}\left(
+x_{p2} - h,y_{p2} - \frac{H}{2} \right)}
+\end{array} \right.\ \	ag{21}
+\end{array}\]</span></p>
+<p>板凳的相对旋转倾角与旋转矩阵:</p>
+<p><span class="math display">\[\begin{array}{r}
+\sigma = arc\tan\left( \frac{y_{p1} - y_{p2}}{x_{p1} - x_{p2}}
+\right)\	ag{22}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+M = \begin{bmatrix}
+\cos\sigma &amp; \sin\sigma \\
+- sin\sigma &amp; \cos\sigma
+\end{bmatrix}\	ag{23}
+\end{array}\]</span></p>
+<p>则可得旋转<span
+class="math inline">\(\sigma\)</span>后四点在绝对坐标系中的坐标转换公式：<span
+class="math inline">\(\ \)</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+\binom{\overrightarrow{P_{1}A_{1}&#39;} = \overrightarrow{P_{1}A_{1}}
+\cdot M}{\overrightarrow{P_{1}A_{2}&#39;} = \overrightarrow{P_{1}A_{2}}
+\cdot M} \\
+\binom{\overrightarrow{P_{2}B_{1}&#39;} = \overrightarrow{P_{2}B_{1}}
+\cdot M}{\overrightarrow{P_{2}B_{2}&#39;} = \overrightarrow{P_{2}B_{2}}
+\cdot M}
+\end{array} \right.\  \Longrightarrow \begin{array}{r}
+\binom{\overrightarrow{OA_{1}&#39;} = \overrightarrow{{OP}_{1}}\  +
+\overrightarrow{P_{1}A_{1}} \cdot M}{\overrightarrow{OA_{2}&#39;} =
+\overrightarrow{{OP}_{1}}\  + \overrightarrow{P_{1}A_{2}} \cdot M} \\
+\binom{\overrightarrow{OB_{1}&#39;} = \overrightarrow{{OP}_{2}}\  +
+\overrightarrow{P_{2}B_{1}} \cdot M}{\overrightarrow{OB_{2}&#39;} =
+\overrightarrow{\overrightarrow{{OP}_{2}}\  + P_{2}B_{2}} \cdot M}
+\end{array}\	ag{24}
+\end{array}\]</span></p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img4.png" alt="" style="max-width:100%;"></p></p>
+<p>图4：板凳的解析几何分析：(a)
+板凳的基本几何示意；(b)板凳的旋转变换示意。</p>
+<p>进一步地，我们可以搭建碰撞检测算法。首先对所有矩形进行编号，设编号为<span
+class="math inline">\(p\)</span>的矩形四边的线段构成集合<span
+class="math inline">\(Rec(p)\)</span>，编号<span
+class="math inline">\((0\sim
+222)\)</span>的所有矩形四边的线段构成集合<span
+class="math inline">\(M\)</span>。其算法结构如下所示：</p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 3%" />
+<col style="width: 90%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="3"
+style="text-align: left;"><strong>算法1</strong>：碰撞检测算法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1：</td>
+<td colspan="2">输入：所有板凳矩形编号为(0~222)；</td>
+</tr>
+<tr>
+<td>2：</td>
+<td colspan="2">遍历<span class="math inline">\(M\)</span>，依次取<span
+class="math inline">\(Rec(i)\)</span>，<span class="math inline">\(i =
+0,1,\ldots,222\)</span>；</td>
+</tr>
+<tr>
+<td>3：</td>
+<td></td>
+<td>记录相邻矩形的编号分别为<span class="math inline">\(p_{\left\{ last
+\right\}} = \max\text{\{i} - 1,0\}\)</span>和<span
+class="math inline">\(p_{\left\{ next \right\}} = \min\left\{ i + 1,222
+\right\}\)</span>；</td>
+</tr>
+<tr>
+<td>4：</td>
+<td colspan="2">遍历<span class="math inline">\(M = \left\{ Rec\left(
+p_{\left\{ last \right\}} \right),Rec\left( p_{\left\{ next \right\}}
+\right),R(i) \right\}\)</span>；</td>
+</tr>
+<tr>
+<td>5：</td>
+<td></td>
+<td>依次取出<span class="math inline">\(Rec(j)\)</span>，判断<span
+class="math inline">\(Rec(i) \cap Rec(j) \neq
+\varnothing\)</span>是否成立；</td>
+</tr>
+<tr>
+<td>6：</td>
+<td></td>
+<td>如果第5行判断True，<strong>输出：“发生碰撞”</strong>；</td>
+</tr>
+<tr>
+<td>7：</td>
+<td></td>
+<td>如果第5行判断False，判断是否完成遍历；</td>
+</tr>
+<tr>
+<td>8：</td>
+<td></td>
+<td>如果未完成遍历，跳转到第4行继续遍历，否则<strong>输出：“不发生碰撞”</strong>；</td>
+</tr>
+</tbody>
+</table>
+<p>由于该算法以及相关辅助方程的推导过程并未涉及任何特殊位置假设，该碰撞判定算法可以适用于本问题框架下的所有碰撞分析。即对于任一运动时刻，依照此算法编译并运行程序，即可得到该时刻是否存在碰撞。</p>
+<h3 id="盘龙终止时刻状态的求解">盘龙终止时刻状态的求解</h3>
+<p>至此，我们完成了所有前置方程及算法的推导。对于以<span
+class="math inline">\(\Delta t_{1}\)</span>为时步的离散时间序列<span
+class="math inline">\(T_{1}\left( t_{0},t_{1},\ldots t_{n}
+\right)\)</span>分别按照递推公式计算龙头与各把手转角、位置及速度大小，并在每个时刻进行碰撞检测，在这里取时间步<span
+class="math inline">\(\Delta t =
+0.1s\)</span>进行推演，当累计时间步到达<span
+class="math inline">\(t_{p}\)</span>发生第一次碰撞。即在(<span
+class="math inline">\(t_{p} - \Delta t,\
+t_{p}\)</span>)的时刻发生碰撞。</p>
+<p>为了逼近(<span class="math inline">\(t_{p} - \Delta t,\
+t_{p}\)</span>)范围内碰撞时间的真实数值，使用二分迭代逼近的方法完成精确值的求解，令：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+t_{m} = t_{p} - \Delta t \\
+t_{n} = t_{p}
+\end{array} \right.\ \#\left. （25 \right.）
+\end{array}\]</span></p>
+<p>更新<span class="math inline">\(t_{m}\)</span>和<span
+class="math inline">\(t_{n}\)</span>：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+t_{m} = \frac{\left( t_{m} + t_{n} \right)}{2},该时刻会发生碰撞 \\
+t_{n} = \frac{\left( t_{m} + t_{n} \right)}{2},\ 该时刻不会发生碰撞
+\end{array} \right.\ \#\left. （26 \right.）
+\end{array}\]</span></p>
+<p>在Python中编译如上所述的程序进行运算，得到<strong>最终的终止时刻为412.473838秒</strong>。此时板凳龙状态如图5所示；板凳龙上部分节点的位置与速度如表3所示：</p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img5.png" alt="" style="max-width:100%;"></p></p>
+<p>图5</p>
+<p>表3</p>
+<table style="width:65%;">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 13%" />
+<col style="width: 18%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">位置</th>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">速度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">龙头x(m)</td>
+<td style="text-align: center;">1.209931</td>
+<td rowspan="2" style="text-align: center;">龙头(m/s)</td>
+<td rowspan="2" style="text-align: center;">0.999999</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙头y(m)</td>
+<td style="text-align: center;">1.942784</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身x(m)</td>
+<td style="text-align: center;">-1.643792</td>
+<td rowspan="2" style="text-align: center;">第1节龙身(m/s)</td>
+<td rowspan="2" style="text-align: center;">0.991547</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身y(m)</td>
+<td style="text-align: center;">1.753399</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身x(m)</td>
+<td style="text-align: center;">1.281201</td>
+<td rowspan="2" style="text-align: center;">第51节龙身(m/s)</td>
+<td rowspan="2" style="text-align: center;">0.976852</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身y(m)</td>
+<td style="text-align: center;">4.326588</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身x(m)</td>
+<td style="text-align: center;">-0.536246</td>
+<td rowspan="2" style="text-align: center;">第101节龙身(m/s)</td>
+<td rowspan="2" style="text-align: center;">0.974544</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身y(m)</td>
+<td style="text-align: center;">5.880138</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身x(m)</td>
+<td style="text-align: center;">0.968840</td>
+<td rowspan="2" style="text-align: center;">第151节龙身(m/s)</td>
+<td rowspan="2" style="text-align: center;">0.973602</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身y(m)</td>
+<td style="text-align: center;">-6.957479</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身x(m)</td>
+<td style="text-align: center;">-7.893161</td>
+<td rowspan="2" style="text-align: center;">第201节龙身(m/s)</td>
+<td rowspan="2" style="text-align: center;">0.973090</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身y(m)</td>
+<td style="text-align: center;">-1.230764</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）x(m)</td>
+<td style="text-align: center;">0.956217</td>
+<td rowspan="2" style="text-align: center;">龙尾（后）(m/s)</td>
+<td rowspan="2" style="text-align: center;">0.972932</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）y(m)</td>
+<td style="text-align: center;">8.322736</td>
+</tr>
+</tbody>
+</table>
+<h2 id="问题三模型的建立与求解">问题三模型的建立与求解</h2>
+<p>两问题所使用的基本模型一致，问题三可视作问题二的反解。我们首先求解调头区的边界点，有方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+2\alpha\theta = 9\	ag{27}
+\end{array}\]</span></p>
+<p>因此取<span class="math inline">\(\theta = \frac{4.5}{\alpha} =
+\frac{9\pi}{pitch}\)</span>
+，根据进入调头空间前不碰撞的要求，必然应当有龙头此时不与其他板凳碰撞，因此当<span
+class="math inline">\(pitch\)</span>取最小螺距条件下，龙头应当恰好发生第一次碰撞，从而可以反解最小螺距。</p>
+<p>对于整个模拟过程，取推演的螺距变化步长为<span
+class="math inline">\(\Delta pitch =
+0.02m\)</span>，顺序向前逼近可以取得相应步长宽幅下的碰撞店范围。推演得<span
+class="math inline">\({pitch}_{0} = 0.4179999\
+m\)</span>时候发生碰撞，即真实的最小螺距取值位于(<span
+class="math inline">\({pitch}_{0}\ ,\ {\ pitch}_{0} + \ \Delta
+pitch\)</span>)之间；</p>
+<p>进一步使用二分法逼近最小螺距的精确数值。令：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+{pitch_{m}\  = \ pitch}_{0} \\
+{pitch_{n}\  = \ pitch}_{0} + \ \Delta pitch
+\end{array} \right.\ \#\left. （28 \right.）
+\end{array}\]</span></p>
+<p>更新<span class="math inline">\({pitch}_{m}\)</span>以及<span
+class="math inline">\({pitch}_{n}\)</span>：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+pitch_{m}\  = \frac{\left( pitch_{m} + pitch_{n} \right)}{2},\
+该螺距下会发生碰撞 \\
+pitch_{n}\  = \frac{\left( pitch_{m} + pitch_{n} \right)}{2},\
+该螺距下不会发生碰撞
+\end{array} \right.\ \#\left. （29 \right.）
+\end{array}\]</span></p>
+<p>在<span
+class="math inline">\((pitch_{m},pitch_{n})\)</span>内重复求解迭代直到精度达到要求，停止迭代。得到最终最小满足要求的螺距为<strong>0.417138
+m</strong>。取该螺距下，板凳龙头碰撞临界状态如图6所示，可以恰好旋入调头区。</p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img6.png" alt="" style="max-width:100%;"></p></p>
+<p>图6：龙头恰好可旋入调头区的临界情况示意</p>
+<p>·</p>
+<h2 id="问题四模型的建立与求解">问题四模型的建立与求解</h2>
+<h3 id="盘出曲线的建模">盘出曲线的建模</h3>
+<p>从本问开始，我们需要考虑板凳龙的盘出路径。由中心对称可以推断盘出路线与盘入路线互为“蚊香线”，有参数方程及其极坐标方程与直角坐标转换方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+\rho = - \alpha\theta\	ag{30}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\alpha = \frac{pitch}{2\pi}\	ag{31}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+x = \rho cos\theta = - \alpha\theta cos\theta\	ag{32}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+y = \rho sin\theta = - \alpha\theta sin\theta\	ag{33}
+\end{array}\]</span></p>
+<p>另外，为后续分析方便，在此补充对螺线的曲率半径推导过程。如图8所示取螺线上任意一点的轨迹微元进行速度分析，记<span
+class="math inline">\(\beta\)</span>为速度矢量和极轴的夹角，<span
+class="math inline">\(a\)</span>为其加速度，有：</p>
+<p><span class="math display">\[\begin{array}{r}
+\beta = \theta + \arctan(\theta)\	ag{34}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{d\beta}{dt} = \left\lbrack 1 + \frac{1}{1 + \theta^{2}}
+\right\rbrack\frac{d\theta}{dt}\	ag{35}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+a = v \cdot \frac{d\beta}{dt} = v^{2}\frac{\theta^{2} + 2}{\alpha\left(
+\theta^{2} + 1 \right)^{\frac{3}{2}}}\	ag{36}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\rho = \frac{v^{2}}{a} = \frac{\alpha\left( \theta^{2} + 1
+\right)^{\frac{3}{2}}}{\theta^{2} + 2}\	ag{37}
+\end{array}\]</span></p>
+<p>方程(37)即为螺线上任意一点的<strong>曲率半径表达式</strong>。</p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img7.png" alt="" style="max-width:100%;"></p></p>
+<p>图7：螺线上任意一点曲率半径的推导示意</p>
+<h3 id="调头路径的优化问题建模">调头路径的优化问题建模</h3>
+<p>首先对优化模型的约束方程与目标方程进行明确。设<span
+class="math inline">\(\theta_{1}\)</span>为调头开始点的转角，位于盘入螺线上；<span
+class="math inline">\(\theta_{2}\)</span>调头结束点的转角，位于盘出螺线上，<span
+class="math inline">\(\rho_{1}\)</span>和<span
+class="math inline">\(\rho_{2}\)</span>代表构成S形曲线的两圆的半径，即题中共有4个待优化变量。</p>
+<p>并通过2个等式约束以及6个不等式约束限制待优化变量的取值：</p>
+<p><span class="math display">\[\begin{array}{r}
+constr.\left\{ \begin{array}{r}
+\begin{matrix}
+\left( \left| O_{1}O_{2} \right| \right)^{2} = \left( \rho_{1} +
+\rho_{2} \right)^{2} \\
+\rho_{1} = 2\rho_{2}
+\end{matrix} \\
+\rho_{1} &gt; \rho_{2} &gt; 0 \\
+\begin{matrix}
+\theta_{1} &gt; 0;\theta_{2} &gt; 0 \\
+2\alpha\theta_{1} &lt; 9;2\alpha\theta_{2} &lt; 9
+\end{matrix}
+\end{array} \right.\ \	ag{38}
+\end{array}\]</span></p>
+<p>对以上约束方程含义进行说明：两圆需要保证相切，且半径比为2:1；此外优化变量均须大于0，并且调头开始以及调头结束位置均应当位于调头区圆内。</p>
+<p>龙头在调头区內部的总行程可表示为待优化的目标方程，由三部分构成：</p>
+<p>1.由盘入螺线切入调头轨迹行程：</p>
+<p><span class="math display">\[\begin{array}{r}
+s_{1} = \int_{t_{01}}^{t_{1}}{vdt}\	ag{39}
+\end{array}\]</span></p>
+<p>2. 在S形调头轨迹上的行程（在调头轨迹内两圆弧的旋转角分别为<span
+class="math inline">\(\epsilon_{1}\)</span>、<span
+class="math inline">\(\epsilon_{2}\)</span>）：</p>
+<p><span class="math display">\[\begin{array}{r}
+s_{2} = \rho_{1}\epsilon_{1} + \rho_{2}\epsilon_{2}\	ag{40}
+\end{array}\]</span></p>
+<p>3. 由调头轨迹切入盘出螺线到走出调头区的行程：</p>
+<p><span class="math display">\[\begin{array}{r}
+s_{3} = \int_{t_{2}}^{t_{02}}{vdt}\	ag{41}
+\end{array}\]</span></p>
+<p>将<span class="math inline">\(s_{1}\)</span>和<span
+class="math inline">\(s_{3}\)</span>合并处理，记作<span
+class="math inline">\(\Omega_{1}\)</span>，并记<span
+class="math inline">\(s_{2}\)</span>为<span
+class="math inline">\(\Omega_{2}\)</span>，则待优化目标方程的完整表达为：</p>
+<p><span class="math display">\[\begin{array}{r}
+\Omega = \Omega_{1} + \Omega_{2} = \left( \int_{t_{01}}^{t_{1}}{vdt} +
+\int_{t_{2}}^{t_{02}}{vdt} \right) + \left( \rho_{1}\epsilon_{1} +
+\rho_{2}\epsilon_{2} \right)\	ag{42}
+\end{array}\]</span></p>
+<p>综上，问题转化为求解在非线性方程组(38))约束下的目标方程(42)的最小值问题。</p>
+<p>另外特别声明，上式中角标为01代表调头区的切入点相关量；角标02代表调头区切出点相关量。此后在调头线的讨论中，如无特殊说明，角标为<span
+class="math inline">\(1\)</span>即代表该物理量与调头开始点有关，角标为<span
+class="math inline">\(2\)</span>即代表与调头结束点有关。</p>
+<h3 id="调头路径的优化问题求解">调头路径的优化问题求解</h3>
+<p>在对方程优化前，首先需要求解方程中的各个参量。对于调头路径的曲率中心位置，先明确曲线上切向与法向的单位向量，有曲线微元：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+dx = \alpha\left( \cos\theta - \theta\sin\theta \right) \\
+dy = \alpha\left( \sin\theta + \theta\cos\theta \right)
+\end{array} \right.\ \	ag{43}
+\end{array}\]</span></p>
+<p>则切线与法线斜率有：</p>
+<p><span class="math display">\[\begin{array}{r}
+k_{\overrightarrow{e_{t}}} = \frac{dy}{dx} = \frac{\sin\theta +
+\theta\cos\theta}{\cos\theta - \theta\sin\theta}\	ag{44}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+k_{\overrightarrow{e_{n}}} = - \frac{dx}{dy} = \frac{\theta\sin\theta -
+cos\theta}{\sin\theta + \theta\cos\theta}\	ag{45}
+\end{array}\]</span></p>
+<p>则切向的单位向量：</p>
+<p><span class="math display">\[\begin{array}{r}
+\overrightarrow{e_{n1}} = \left( \frac{\theta_{1}\sin\theta_{1} -
+cos\theta_{1}}{\sqrt{\theta_{1}^{2} + 1}}, - \frac{\sin\theta_{1} +
+\theta_{1}\cos\theta_{1}}{\sqrt{\theta_{1}^{2} + 1}} \right)\	ag{46}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\overrightarrow{e_{n2}} = \left( - \frac{\theta_{2}\sin\theta_{2} -
+cos\theta_{2}}{\sqrt{\theta_{2}^{2} + 1}},\frac{\sin\theta_{2} +
+\theta_{2}\cos\theta_{2}}{\sqrt{\theta_{2}^{2} + 1}} \right)\	ag{47}
+\end{array}\]</span></p>
+<p>为了导出圆弧曲率中心坐标，我们如图8所示对切点处的速度进行同样的向量分析。仍取<span
+class="math inline">\(\beta\)</span>为速度矢量和极轴的夹角，记切点为<span
+class="math inline">\(S\left( x_{0},y_{0}
+\right)\)</span>，则由图8所示几何关系可导出曲率中心的坐标为：</p>
+<p><span class="math display">\[\overrightarrow{OO_{1}} = \left( x_{0} -
+\rho_{1}\sin\beta_{1},y_{0} - \rho_{1}\sin\beta_{1} \right)\ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+= \left( \alpha\theta_{1}\cos\theta_{1} - \rho_{1}\frac{\sin\theta_{1} +
+\theta_{1}\cos\theta_{1}}{\sqrt{\theta_{1}^{2} +
+1}},\alpha\theta_{1}\sin\theta_{1} -
+\rho_{1}\frac{\theta_{1}\sin\theta_{1} -
+cos\theta_{1}}{\sqrt{\theta_{1}^{2} + 1}} \right)\	ag{48}
+\end{array}\]</span></p>
+<p><span class="math display">\[\overrightarrow{OO_{2}} = \left( x_{0} -
+\rho_{2}\sin\beta_{2},y_{0} - \rho_{2}\sin\beta_{2} \right)\ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+= \left( \rho_{2}\frac{\sin\theta_{2} +
+\theta_{2}\cos\theta_{2}}{\sqrt{\theta_{2}^{2} + 1}} -
+\alpha\theta_{2}\cos\theta_{2},\rho_{2}\frac{\theta_{2}\sin\theta_{2} -
+cos\theta_{2}}{\sqrt{\theta_{2}^{2} + 1}} -
+\alpha\theta_{2}\sin\theta_{2} \right)\	ag{49}
+\end{array}\]</span></p>
+<p>接下来考虑展开优化方程，即在直径<span
+class="math inline">\(9m\)</span>调头区内路径的总长。蚊香线进出调头区点坐标可由方程(30)解得，展开方程(5)的积分，可得龙头在调头区内的螺线行程为：</p>
+<p><span class="math display">\[\begin{array}{r}
+\Omega_{1} = \int_{t_{01}}^{t_{1}}{vdt} + \int_{t_{2}}^{t_{02}}{vdt} =
+\alpha\left( \int_{\theta_{01}}^{\theta_{1}}{\sqrt{1 +
+\theta^{2}}d\theta} + \int_{\theta_{2}}^{\theta_{02}}{\sqrt{1 +
+\theta^{2}}d\theta} \right)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+= \alpha\left\lbrack \left. \ \left( \frac{x}{2}\sqrt{x^{2} + 1} +
+\frac{1}{2}\ln\left( x + \sqrt{x^{2} + 1} \right) \right)
+\right|_{\theta_{01}}^{\theta_{1}} + \left. \ \left(
+\frac{x}{2}\sqrt{x^{2} + 1} + \frac{1}{2}\ln\left( x + \sqrt{x^{2} + 1}
+\right) \right) \right|_{\theta_{2}}^{\theta_{02}} \right\rbrack\	ag{50}
+\end{array}\]</span></p>
+<p>而对于圆弧的长度计算，可以如图9所示在绝对直角坐标系下求解其角度值，记切入点和切出点分别为<span
+class="math inline">\(P_{1}\)</span>和<span
+class="math inline">\(P_{2}\)</span>，中间切点为<span
+class="math inline">\(S\)</span>，则有各圆曲率半径所在直线的倾角：</p>
+<p><span class="math display">\[\begin{array}{r}
+\phi_{{P_{1}O}_{1}} = arctan\frac{y_{O_{1}} - y_{P_{1}}}{x_{O_{1}} -
+x_{P_{1}}}\	ag{51}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\phi_{O_{1}S} = arctan\frac{y_{S} - y_{O_{1}}}{x_{S} - x_{O_{1}}}\	ag{52}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\phi_{SO_{2}} = arctan\frac{y_{O_{2}} - y_{S}}{{x_{O_{2}} -
+x}_{S}}\	ag{53}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\phi_{O_{2}P_{2}} = arctan\frac{y_{P_{2}} - y_{O_{2}}}{x_{P_{2}} -
+x_{O_{2}}}\	ag{54}
+\end{array}\]</span></p>
+<p>由几何关系可得：</p>
+<p><span class="math display">\[\begin{array}{r}
+\epsilon_{1} = \left\{ \begin{array}{r}
+\phi_{O_{1}S} - \phi_{{P_{1}O}_{1}}\ ,\phi_{O_{1}S} -
+\phi_{{P_{1}O}_{1}} &gt; 0\  \\
+\phi_{O_{1}S} - \phi_{{P_{1}O}_{1}} + 2\pi,\ \phi_{O_{1}S} -
+\phi_{{P_{1}O}_{1}} &lt; 0\
+\end{array} \right.\ \	ag{55}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\epsilon_{2} = \left\{ \begin{array}{r}
+\phi_{SO_{2}} - \phi_{O_{2}P_{2}},\ \phi_{SO_{2}} - \phi_{O_{2}P_{2}}
+&gt; 0 \\
+\phi_{SO_{2}} - \phi_{O_{2}P_{2}} + 2\pi,\ \phi_{SO_{2}} -
+\phi_{O_{2}P_{2}} &lt; 0
+\end{array} \right.\ \	ag{56}
+\end{array}\]</span></p>
+<p>则圆弧行程为：</p>
+<p><span class="math display">\[\begin{array}{r}
+\Omega_{2} = \rho_{1}\epsilon_{1} + \rho_{2}\epsilon_{2}\	ag{57}
+\end{array}\]</span></p>
+<p>则待优化方程，即总行程表示为：</p>
+<p><span class="math display">\[\Omega = \Omega_{1} + \Omega_{2}\ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\]</span></p>
+<p><span class="math display">\[= \alpha\left\lbrack \left. \ \left(
+\frac{x}{2}\sqrt{x^{2} + 1} + \frac{1}{2}\ln\left( x + \sqrt{x^{2} + 1}
+\right) \right) \right|_{\theta_{01}}^{\theta_{1}} + \left. \ \left(
+\frac{x}{2}\sqrt{x^{2} + 1} + \frac{1}{2}\ln\left( x + \sqrt{x^{2} + 1}
+\right) \right) \right|_{\theta_{2}}^{\theta_{02}} \right\rbrack +
+\rho_{1}\epsilon_{1} + \rho_{2}\epsilon_{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (58)\]</span></p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img8.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img9.png" alt="" style="max-width:100%;"></p></p>
+<p>图8：曲率中心坐标推导示意 图9：圆弧转角的推导示意</p>
+<p>由于约束条件及目标方程均较为复杂，采取SLSQP（顺序二次规划）算法在Python中编译求解程序进行优化，算法结构如下所示；优化所得解的分布如图10所示。<strong>取总路程的最小值为13.621m，此时</strong><span
+class="math inline">\(\mathbf{\theta}_{\mathbf{1}}\mathbf{=}\mathbf{\theta}_{\mathbf{2}}\mathbf{=
+16.632}\)</span><strong>。则在题给调头空间内，总路程无法再在此基础上缩短。</strong></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2"
+style="text-align: left;"><strong>算法2</strong>：SLSQP算法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1：</td>
+<td>给定<span class="math inline">\(x_{0} \in R^{n}，\lambda_{0} \in
+R^{m}，\lambda_{0} \geq 0\)</span>，<span
+class="math inline">\(H_{0}\)</span>是<span class="math inline">\(n
+\times n\)</span>的正定矩阵，<span
+class="math inline">\(r_{0}\)</span>，<span
+class="math inline">\(\epsilon_{0}\)</span>，<span
+class="math inline">\(\epsilon\)</span>是正常数，<span
+class="math inline">\(\beta\)</span>为非负常数，<span
+class="math inline">\(0 &lt; \sigma_{1} \leq \sigma_{2} &lt;
+1\)</span>，<span class="math inline">\(\gamma_{1} &gt;
+0\)</span>，<span class="math inline">\(1 &gt; \gamma_{2} &gt;
+0\)</span>，<span class="math inline">\(k ≔ 0\)</span>；</td>
+</tr>
+<tr>
+<td>2：</td>
+<td>解<span class="math inline">\(QP\left( x_{k},\lambda_{k},H_{k}
+\right)\)</span>。设<span
+class="math inline">\(d_{k}^{1}\)</span>是其解。如果<span
+class="math inline">\(\left\| d_{k}^{1}
+\right\|\)</span>，算法停止；</td>
+</tr>
+<tr>
+<td>3：</td>
+<td>令<span class="math inline">\(\widehat{I_{k}} = i \in I_{0\backslash
+I_{\left( x_{k},\lambda_{k},\epsilon_{k} \right)}}:\nabla c_{i}\left(
+x_{k} \right)^{T} \cdot d_{k}^{1} &lt; 0\)</span>，计算<span
+class="math inline">\(\delta_{k} = \min_{i \in j_{k}}{\frac{-
+c_{i}\left( x_{k} \right)}{\nabla c_{i}\left( x_{k} \right)^{T} \cdot
+d_{k}^{1}};1}\}\)</span>，令<span class="math inline">\(d_{k} =
+\delta_{k}d_{k}^{1}\)</span>；</td>
+</tr>
+<tr>
+<td>4：</td>
+<td>计算<span class="math inline">\(\Delta\left( x_{k}
+\right)\)</span>。若<span class="math inline">\(\Delta\left( x_{k}
+\right) = 0\)</span>或<span class="math inline">\(g\left( x_{k}
+\right)^{T}d_{k} + r_{k}\Delta\left( x_{k} \right) \leq -
+d_{k}^{T}H_{k}d_{k}\)</span>，置<span class="math inline">\(r_{k + 1} =
+r_{k}\)</span>，跳转第5行；否则置<span class="math inline">\(r_{k + 1} =
+max\frac{g\left( x_{k} \right)^{T}d_{k} + d_{k}^{T}H_{k}d_{k}}{-
+\Delta\left( x_{k} \right)},2r_{k} + \beta\)</span>；</td>
+</tr>
+<tr>
+<td>5：</td>
+<td>令<span class="math inline">\(\theta\left( x_{k},r_{k + 1} \right) =
+g\left( x_{k} \right)^{T}d_{k}\)</span>，选择<span
+class="math inline">\(\alpha_{k}\)</span>满足<span
+class="math inline">\(p\left( x_{k} + \alpha_{k}d_{k},r_{k + 1} \right)
+\leq p\left( x_{k},r_{k + 1} \right) + \sigma_{1}\alpha_{k}\theta\left(
+x_{k},r_{k + 1} \right)\)</span>，且对于满足<span
+class="math inline">\(\alpha_{k} \geq \gamma_{1}\)</span>或存在<span
+class="math inline">\(\overline{\alpha_{k}} &gt; 0\)</span>，满足<span
+class="math inline">\(\alpha_{k} \geq \gamma_{2}\overline{\alpha_{k}}
+&gt; 0\)</span>，都使得<span class="math inline">\(p\left( x_{k} +
+\alpha_{k}d_{k},r_{k + 1} \right) &gt; p\left( x_{k},r_{k + 1} \right) +
+\sigma_{2}\alpha_{k}\theta\left( x_{k},r_{k + 1} \right)\)</span></td>
+</tr>
+<tr>
+<td>6：</td>
+<td>置<span class="math inline">\(x_{k + 1} = x_{k} +
+\alpha_{k}d_{k}\)</span>，取<span class="math inline">\(\lambda_{k +
+1}^{(i)} = 0\)</span>，<span class="math inline">\(i \in I_{0\backslash
+I}\left( x_{k},\lambda_{k},\epsilon_{k}
+\right)\)</span>；根据拟牛顿公式计算<span class="math inline">\(H_{k +
+1}\)</span>；产生<span class="math inline">\(\epsilon_{k +
+1}\)</span>；置<span class="math inline">\(k = k +
+1\)</span>，跳转第一行。</td>
+</tr>
+</tbody>
+</table>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img10.png" alt="" style="max-width:100%;"></p></p>
+<p>图10：目标方程解的分布：(a)目标方程的解的三维分布；(b)目标方程的解的平面映射。</p>
+<p>进一步地，我们考虑对优化得到的调头轨迹进行位置和运动的分析。由于此时的轨迹较为复杂，放弃如5.2中对位置和速度通过迭代公式求解析解，直接求数值解，运动解析算法如下所示。</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 4%" />
+<col style="width: 1%" />
+<col style="width: 7%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="6"
+style="text-align: left;"><strong>算法3</strong>：运动解析算法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1：</td>
+<td colspan="5">输入：曲线轨迹与采样间隔<span
+class="math inline">\(h\)</span></td>
+</tr>
+<tr>
+<td>2：</td>
+<td colspan="5">遍历时间序列<span class="math inline">\(T\left(
+t_{\left\{ 01 \right\}},t_{\left\{ 01 \right\}} + h,\ldots,t_{\left\{ 02
+\right\}} \right)\)</span>，记录每一时刻的龙头位置点<span
+class="math inline">\(\left( x_{i},y_{i} \right)\)</span>；</td>
+</tr>
+<tr>
+<td>3：</td>
+<td colspan="5">遍历龙头位置<span class="math inline">\(\left\{ \left(
+x_{0},y_{0} \right),\left( x_{1},y_{1} \right),\ldots,\left( x_{i},y_{i}
+\right) \right\}\)</span>；</td>
+</tr>
+<tr>
+<td>4：</td>
+<td colspan="2">循环：</td>
+<td colspan="3">取位置坐标<span class="math inline">\(\left( x_{j}.y_{j}
+\right)\)</span>与<span class="math inline">\(\left( x_{k},y_{k}
+\right)\)</span>，令<span class="math inline">\(k = j -
+1\)</span>，记录把手位置序号<span class="math inline">\(n =
+1\)</span>;</td>
+</tr>
+<tr>
+<td>5：</td>
+<td colspan="2"></td>
+<td colspan="2">循环：</td>
+<td>求两点距离<span class="math inline">\(d_{j} = \sqrt{\left( x_{j} -
+x_{k} \right)^{2} + \left( y_{j} - y_{k} \right)^{2}}\)</span>；</td>
+</tr>
+<tr>
+<td>6：</td>
+<td colspan="2"></td>
+<td colspan="2"></td>
+<td>判断<span class="math inline">\(d_{j} =
+D\)</span>是否成立，若否，取<span class="math inline">\(k = min(k -
+1,0)\)</span>，跳转第5行运算；否则跳转第7行；</td>
+</tr>
+<tr>
+<td>7：</td>
+<td colspan="2"></td>
+<td colspan="2"></td>
+<td>判断<span class="math inline">\(n =
+223\)</span>是否成立，若否，取<span class="math inline">\(j =
+k\)</span>，<span class="math inline">\(n = n +
+1\)</span>，跳转第4行运算；否则退出循环，跳转第8行</td>
+</tr>
+<tr>
+<td>8：</td>
+<td
+colspan="5">利用碰撞检测算法对当前运动状态是否存在碰撞进行判断，若存在，则直接<strong>输出：“此路径存在碰撞，需重新优化”</strong>；否则跳转第9行；</td>
+</tr>
+<tr>
+<td>9：</td>
+<td colspan="5">遍历时间序列<span class="math inline">\(T\left(
+t_{\left\{ 01 \right\}},t_{\left\{ 01 \right\}} + h,\ldots,t_{\left\{ 02
+\right\}} \right)\)</span>；</td>
+</tr>
+<tr>
+<td>10：</td>
+<td></td>
+<td colspan="4">遍历此时刻除龙头外所有节点位置<span
+class="math inline">\(S_{i\left\{ \left( x_{1},y_{1} \right),\left(
+x_{2},y_{2} \right),\ldots,\left( x_{223},y_{223} \right)
+\right\}}\)</span>；</td>
+</tr>
+<tr>
+<td>11：</td>
+<td></td>
+<td colspan="2"></td>
+<td colspan="2"><p>利用数值微分求解每一节点在该时刻速度，有：</p>
+<p><span class="math inline">\(v_{i} = \sqrt{\frac{\left( x_{t} - x_{t -
+\mathrm{\Delta}t} \right)^{2} + \left( y_{t} - y_{t - \mathrm{\Delta}t}
+\right)^{2}}{\mathrm{\Delta}t}}\)</span>；</p></td>
+</tr>
+<tr>
+<td>12：</td>
+<td
+colspan="5"><strong>输出：所有采样时刻板凳龙所有节点的位置和速度。</strong></td>
+</tr>
+</tbody>
+</table>
+<p>通过该算法可以得到优化结果下任一采样时刻的板凳龙位置及速度分布，部分结果如表4和表5所示。为保证可以顺利调头，在此条件下继续套用5.3中给出的碰撞判定模型进行遍历，确定无碰撞，至此可以确定该方案可行。优化轨迹以及板凳龙在该轨迹上的运动过程如图11所示。</p>
+<p>表4:问题四所求部分节点位置表</p>
+<table style="width:87%;">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 14%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">-100s</th>
+<th style="text-align: center;">-50s</th>
+<th style="text-align: center;">0s</th>
+<th style="text-align: center;">50s</th>
+<th style="text-align: center;">100s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">龙头x(m)</td>
+<td style="text-align: center;">7.778034</td>
+<td style="text-align: center;">6.608301</td>
+<td style="text-align: center;">-2.719449</td>
+<td style="text-align: center;">1.332696</td>
+<td style="text-align: center;">-3.157229</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙头y(m)</td>
+<td style="text-align: center;">3.717164</td>
+<td style="text-align: center;">1.898865</td>
+<td style="text-align: center;">-3.584570</td>
+<td style="text-align: center;">6.175324</td>
+<td style="text-align: center;">7.548511</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身x(m)</td>
+<td style="text-align: center;">6.203945</td>
+<td style="text-align: center;">5.366738</td>
+<td style="text-align: center;">-0.072189</td>
+<td style="text-align: center;">3.858823</td>
+<td style="text-align: center;">-0.340846</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身y(m)</td>
+<td style="text-align: center;">6.114279</td>
+<td style="text-align: center;">4.475629</td>
+<td style="text-align: center;">-4.670260</td>
+<td style="text-align: center;">4.843826</td>
+<td style="text-align: center;">8.079221</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身x(m)</td>
+<td style="text-align: center;">-10.587957</td>
+<td style="text-align: center;">-3.737348</td>
+<td style="text-align: center;">2.243075</td>
+<td style="text-align: center;">-1.912438</td>
+<td style="text-align: center;">1.904737</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身y(m)</td>
+<td style="text-align: center;">2.899106</td>
+<td style="text-align: center;">-8.915988</td>
+<td style="text-align: center;">-7.835701</td>
+<td style="text-align: center;">-5.993723</td>
+<td style="text-align: center;">4.141336</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身x(m)</td>
+<td style="text-align: center;">-11.963597</td>
+<td style="text-align: center;">10.029829</td>
+<td style="text-align: center;">3.305055</td>
+<td style="text-align: center;">-7.353713</td>
+<td style="text-align: center;">-7.146728</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身y(m)</td>
+<td style="text-align: center;">-4.693001</td>
+<td style="text-align: center;">-6.124104</td>
+<td style="text-align: center;">10.007029</td>
+<td style="text-align: center;">5.489190</td>
+<td style="text-align: center;">2.465682</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身x(m)</td>
+<td style="text-align: center;">-14.367777</td>
+<td style="text-align: center;">12.907051</td>
+<td style="text-align: center;">-6.693894</td>
+<td style="text-align: center;">-5.019840</td>
+<td style="text-align: center;">9.251849</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身y(m)</td>
+<td style="text-align: center;">-1.833951</td>
+<td style="text-align: center;">-4.019096</td>
+<td style="text-align: center;">10.530776</td>
+<td style="text-align: center;">-10.180752</td>
+<td style="text-align: center;">-4.023838</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身x(m)</td>
+<td style="text-align: center;">-11.838568</td>
+<td style="text-align: center;">10.342333</td>
+<td style="text-align: center;">-6.519279</td>
+<td style="text-align: center;">-0.169541</td>
+<td style="text-align: center;">8.919563</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身y(m)</td>
+<td style="text-align: center;">10.690716</td>
+<td style="text-align: center;">-10.973925</td>
+<td style="text-align: center;">12.563798</td>
+<td style="text-align: center;">-13.170426</td>
+<td style="text-align: center;">8.177398</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）x(m)</td>
+<td style="text-align: center;">-1.185553</td>
+<td style="text-align: center;">0.443347</td>
+<td style="text-align: center;">-2.337136</td>
+<td style="text-align: center;">6.322032</td>
+<td style="text-align: center;">-11.273123</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）y(m)</td>
+<td style="text-align: center;">-16.513105</td>
+<td style="text-align: center;">15.711113</td>
+<td style="text-align: center;">-14.646898</td>
+<td style="text-align: center;">12.375970</td>
+<td style="text-align: center;">-6.244018</td>
+</tr>
+</tbody>
+</table>
+<p>表5:问题四所求部分节点速度表</p>
+<table style="width:87%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 12%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: center;">-100s</th>
+<th style="text-align: center;">-50s</th>
+<th style="text-align: center;">0s</th>
+<th style="text-align: center;">50s</th>
+<th style="text-align: center;">100s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">龙头(m/s)</td>
+<td style="text-align: center;">0.999994</td>
+<td style="text-align: center;">0.999991</td>
+<td style="text-align: center;">0.899966</td>
+<td style="text-align: center;">0.999990</td>
+<td style="text-align: center;">0.999994</td>
+</tr>
+<tr>
+<td style="text-align: center;">第1节龙身(m/s)</td>
+<td style="text-align: center;">0.999995</td>
+<td style="text-align: center;">0.999991</td>
+<td style="text-align: center;">0.999981</td>
+<td style="text-align: center;">0.999989</td>
+<td style="text-align: center;">0.999994</td>
+</tr>
+<tr>
+<td style="text-align: center;">第51节龙身(m/s)</td>
+<td style="text-align: center;">0.999997</td>
+<td style="text-align: center;">0.999996</td>
+<td style="text-align: center;">0.999994</td>
+<td style="text-align: center;">0.999989</td>
+<td style="text-align: center;">0.999980</td>
+</tr>
+<tr>
+<td style="text-align: center;">第101节龙身(m/s)</td>
+<td style="text-align: center;">0.999997</td>
+<td style="text-align: center;">0.999997</td>
+<td style="text-align: center;">0.999996</td>
+<td style="text-align: center;">0.999995</td>
+<td style="text-align: center;">1.389980</td>
+</tr>
+<tr>
+<td style="text-align: center;">第151节龙身(m/s)</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999997</td>
+<td style="text-align: center;">0.999997</td>
+<td style="text-align: center;">1.389989</td>
+</tr>
+<tr>
+<td style="text-align: center;">第201节龙身(m/s)</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">1.399992</td>
+</tr>
+<tr>
+<td style="text-align: center;">龙尾（后）(m/s)</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">0.999998</td>
+<td style="text-align: center;">1.389993</td>
+</tr>
+</tbody>
+</table>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img11.png" alt="" style="max-width:100%;"></p></p>
+<p>图11：最优轨迹运动模拟：(a)~(d)板凳龙在最优轨迹上的运动过程示意。</p>
+<h2 id="问题五模型的建立与求解">问题五模型的建立与求解</h2>
+<p>在5.6中已经通过数值方法给出了调头过程中的速度分布。该分布是一个数值解而非解析解，取时间步<span
+class="math inline">\(\mathrm{\Delta}t = 0.05\)</span>，则速度为：</p>
+<p><span class="math display">\[\begin{array}{r}
+v_{i} = \sqrt{\frac{\left( x_{t} - x_{t - \mathrm{\Delta}t} \right)^{2}
++ \left( y_{t} - y_{t - \mathrm{\Delta}t}
+\right)^{2}}{\mathrm{\Delta}t}}\#\left. （59 \right.）
+\end{array}\]</span></p>
+<p>其中(<span class="math inline">\(x_{t},\
+y_{t}\)</span>)是从曲线上采样得来。</p>
+<p>数值解无法从代数解析层面进行优化。因此考虑使用网格搜索算法对全局状态进行搜索，从而获取一个大致范围。可以看到，在大致范围内，存在有部分的值是大于2m/s的，对该部分所对应的网格领域进行进一步的二分迭代搜索，效果如图12所示。可以得到最终的<strong>最大龙头速度约为</strong><span
+class="math inline">\(\mathbf{v}_{\mathbf{\max}}\mathbf{= 1.384527\
+m/s}\)</span>。</p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img12.png" alt="" style="max-width:100%;"></p></p>
+<p>图12：二分搜索网格效果图</p>
+<h1 id="模型的分析与检验">模型的分析与检验</h1>
+<h2 id="对位置与速度迭代关系的验证">对位置与速度迭代关系的验证</h2>
+<p>为避免5.3中对位置和速度的迭代关系推导出现逻辑和计算纰漏，我们利用微分数值方法补充求解几组速度结果并与解析法得到的结果相比较。数值计算时，利用得到的各点位置坐标对时间进行数值微分，公式如下：</p>
+<p><span class="math display">\[\begin{array}{r}
+v_{i} = \sqrt{\frac{\left( x_{t} - x_{t - \mathrm{\Delta}t} \right)^{2}
++ \left( y_{t} - y_{t - \mathrm{\Delta}t}
+\right)^{2}}{\mathrm{\Delta}t}}\#\left. （60 \right.）
+\end{array}\]</span></p>
+<p>计算两种方法所得到的结果的均方误差（MSE），公式如下：</p>
+<p><span class="math display">\[\begin{array}{r}
+\delta = \frac{1}{N}\sum_{i = 1}^{N}{({x_{i}\  - \
+\widehat{x_{i}})}^{2}}\	ag{61}
+\end{array}\]</span></p>
+<p>计算结果如图13所示，这里计算了两种方法结果依据时间t和依据板子编号position上的MSE，注意到两种方法得到的结果差距极小(低于1e-5数量级)。且发现，在微分法中，随着微元步长的逐渐缩小，数值微分法的结果逐渐收敛至解析解的速度结果，由此可以说明利用推导出的速度递推解析式方法计算的正确性，同时解析法相较于微分数值法更加精确和高效。</p>
+<p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img13.png" alt="" style="max-width:100%;"></p></p>
+<p>图13：解析法求解速度与微分法求解速度在不同时间及不同板上的均方误差</p>
+<h2 id="优化调头路径合理性分析">优化调头路径合理性分析</h2>
+<p>求解在5.5中求得的优化调头路径曲线可知，该曲线在龙头进入调头区的瞬间开始进入调头圆弧，即调头区内不再包含螺线部分。我们可以简单计算螺线与调头圆弧的曲率来解释其合理性。</p>
+<p>由方程(37)可以得到切入点和切出点的螺线曲率，分别为<span
+class="math inline">\(\kappa_{01} = \kappa_{02} =
+0.223\)</span>；同时考虑螺线特征，则调头区内的螺线曲率位于<span
+class="math inline">\(\lbrack
+0.223,\infty)\)</span>区间内。而两圆弧曲率分别为0.3327与0.6655，始终大于调头区内的螺线曲率。由曲线微元的长度公式：</p>
+<p><span class="math display">\[\begin{array}{r}
+|ds| = \frac{1}{\kappa}d\theta\	ag{62}
+\end{array}\]</span></p>
+<p>由圆弧的曲率更大，且总转角显然小于螺线的总转角，可以知道优先选取圆弧调头可以尽可能减少路程，即问题四求解中所得结果合理。</p>
+<h2
+id="调头过程中节点速度突变合理性分析">调头过程中节点速度突变合理性分析</h2>
+<p>注意到表5中100s时后半截龙身的速度相较于其他位置时刻有一个相对较大的突变，我们利用理论力学中的刚体的速度分析来说明其合理性。</p>
+<p>对于同一板凳上前后把手的速度，记速度方向与板凳把手所在直线夹角分别为<span
+class="math inline">\(\beta_{1}\)</span>、<span
+class="math inline">\(\beta_{2}\)</span>，有刚体约束条件：</p>
+<p><span class="math display">\[\begin{array}{r}
+\overrightarrow{v_{p_{2}}}\cos\beta_{2} =
+\overrightarrow{v_{p_{1}}}\cos\beta_{1}\ \ \ \ \ \ \
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\Longrightarrow \overrightarrow{v_{p_{2}}} =
+\overrightarrow{v_{p_{1}}}\frac{\cos\beta_{1}}{\cos\beta_{2}}\#\left.
+（63 \right.）
+\end{array}\]</span></p>
+<p>可知同一板凳上两把手的速度关系与把手所在直线与曲线关系有关。对于100s时刻，由图可知在切出圆弧的位置附近把手所在直线与曲线的夹角较大，出现速度突变；而突变点前和突变点后的把手所在直线均可近似看作曲线的拟合折线，速度变化较为平滑。因此速度分布呈现平滑-突变-平滑的分布特征，问题四求解的答案较为合理。</p>
+<h1 id="模型的评价改进与推广">模型的评价、改进与推广</h1>
+<h2 id="模型的优点">模型的优点</h2>
+<p>1. 数学解析充分，结果说服性强</p>
+<p>2. 所使用算法均选择相同功能下较为简洁的算法，保证稳定性和低误差</p>
+<p>3. 数值算法和程序协同实现可视化，清晰美观</p>
+<h2 id="模型的缺点">模型的缺点</h2>
+<p>1. 模型的分析与检验较为薄弱</p>
+<p>2.
+模型中运用了较多的数值方法，而对不同数值方法的误差及稳定性检验较为确实</p>
+<h2 id="模型的改进">模型的改进</h2>
+<p>1.
+模型中主要以数学和几何关系作为推导依据，较少涉及刚体等物理条件。可以考虑添加此部分分析来补充模型，提高模型可信度。</p>
+<p>2.
+实际编程中发现所采用的算法中还存在较多奇点和条件判断，篇幅限制，模型中并未表述清晰。</p>
+<h2 id="模型的推广">模型的推广</h2>
+<p>模型主要涉及三部分内容：位置与运动的分析、碰撞的检测、以及路径的非线性优化。我们分别对其推广作讨论。</p>
+<p>对于位置及运动的分析部分，我们采取了两种策略求解：第一种为抽象几何元素解析迭代关系；第二种为数值方法求解。前者适用范围较窄，对于每一种具体情况都需要重新推导其几何和迭代关系，但是精度和可信度较高；而后者的精度依赖于具体的数值算法和算力，但是其算法适用范围较为广泛，就板凳龙问题而言，对于任何行进规矩，均可使用5.5中给出的算法3得到一定精度下的数值解。</p>
+<p>对于碰撞检测部分，前文已经点明我们在进行分析和算法搭建时未引入任何特殊假设，即该碰撞检测算法可以利用于任何相似几何的碰撞检测上。若所检测几何并非矩形，可以考虑依据其特征对算法中涉及的集合<span
+class="math inline">\(M\)</span>作简单修改，其他算法逻辑仍然适用。</p>
+<p>对于路径的非线性优化，我们采用了SLSQP（顺序二次规划）算法进行解答。该算法广泛适用于各种非线性约束问题，其优点包括收敛速度快、数值性质良好等。对于除此问题以外的其它非线性约束，均可使用该算法及其衍生改进算法进行求解。</p>
+<h1 id="参考文献">参考文献</h1>
+<p>[1] 同济大学应用数学系, 《高等数学》 (第六版, 上册)
+[M].北京:高等教育出版社, 2007年.</p>
+<p>[2]
+董铸九,董卫东.阿基米德螺线平板凸轮加工误差分析与工艺改进措施[J].现代车用动力,1994,(02):45-49.</p>
+<p>[3] 占海明. MATLAB数值计算实战[M]. 北京：机械工业出版社，2017</p>
+<p>[4]
+石国春．关于序列二次规划（SQP）算法求解非线性规划问题的研究[D]．兰州：兰州大学，2009</p>
+<p>附录</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 99%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">附录1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>核心计算代码（基于Python开发）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><p>"""计算点坐标与速度的类""" </p>
+<ol type="1">
+<li><p>class CalcuPoints:</p></li>
+<li><p>    def __init__(self, theta0, a, t, v, fwd):</p></li>
+<li><p>        self.theta0_ = theta0  <em># 龙头的初始位置</em></p></li>
+<li><p>        self.a_ = a            <em># 参数a</em></p></li>
+<li><p>        self.t_ = t            <em># 时间t</em></p></li>
+<li><p>        self.v_ = v            <em># 速度v</em></p></li>
+<li><p>        self.fwd_ = fwd        <em># 方向</em></p></li>
+<li><p>        </p></li>
+<li><p>        """板子尺寸""" </p></li>
+<li><p>        self.head_width = 0.3    <em># 龙头宽</em></p></li>
+<li><p>        self.head_length = 3.41  <em># 龙头长</em></p></li>
+<li><p>        self.head_edge = 0.275   <em># 龙头把手到边缘距离</em></p></li>
+<li><p>        self.head_real_length = 3.41 - 2 * 0.275   <em># 龙头两个把手的距离</em></p></li>
+<li></li>
+<li><p>        self.middle_width = 0.3    <em># 中间板宽</em></p></li>
+<li><p>        self.middle_length = 2.2  <em># 中间长</em></p></li>
+<li><p>        self.middle_edge = 0.275   <em># 中间把手到边缘距离</em></p></li>
+<li><p>        self.middle_real_length = 2.20 - 2 * 0.275   <em># 中间两个把手的距离</em></p></li>
+<li><p>        </p></li>
+<li><p>        """迭代中间量"""</p></li>
+<li><p>        self.theta_p = 0</p></li>
+<li><p>        self.theta_p_1 = 0</p></li>
+<li><p>        self.D = 0</p></li>
+<li><p>        self.v_p = 0</p></li>
+<li><p>        </p></li>
+<li><p>    </p></li>
+<li><p>    """计算龙头随时间变化的位置theta的方程""" </p></li>
+<li><p>    def func1(self, x):</p></li>
+<li><p>        x_array = np.array(x)</p></li>
+<li><p>        theta0_array = np.array([self.theta0_])</p></li>
+<li><p>        a_array = np.array([self.a_])</p></li>
+<li><p>        t_array = np.array([self.t_])</p></li>
+<li><p>        v_array = self.fwd_ * np.array([self.v_])</p></li>
+<li><p>        </p></li>
+<li><p>        return 0.5 * x_array * np.sqrt(x_array**2 + 1) + \</p></li>
+<li><p>               0.5 * np.log(np.fabs(x_array + np.sqrt(x_array**2 + 1))) - \</p></li>
+<li><p>               (1 / a_array) * v_array * t_array - \</p></li>
+<li><p>               0.5 * theta0_array * np.sqrt(theta0_array**2 + 1) - \</p></li>
+<li><p>               0.5 * np.log(np.fabs(theta0_array + np.sqrt(theta0_array**2 + 1)))</p></li>
+<li><p>    </p></li>
+<li><p>    """计算后续步骤迭代的方程""" </p></li>
+<li><p>    def func2(self, x):</p></li>
+<li><p>        x_array = np.array(x)</p></li>
+<li><p>        theta_p_array = np.array(self.theta_p)</p></li>
+<li><p>        delta_theta_array =  np.array(x - self.theta_p)</p></li>
+<li><p>        a_array = np.array([self.a_])</p></li>
+<li><p>        D_array = np.array([self.D])</p></li>
+<li><p>        <em>#print(f"theta_p = {self.theta_p}, a = {self.a_}, D = {self.D} , 1 = {(D_array/a_array)[0]}")</em></p></li>
+<li><p>        return theta_p_array**2 + x_array**2 - 2 * theta_p_array * x_array * np.cos(delta_theta_array) - (D_array/a_array)**2</p></li>
+<li><p>    </p></li>
+<li><p>    </p></li>
+<li><p>    """计算龙头随时间变化的位置(points + theta)"""</p></li>
+<li><p>    def calcu_head_pos(self):</p></li>
+<li><p>        <em># 计算龙头在任意时刻的位置</em></p></li>
+<li><p>        theta = fsolve(self.func1, [0 * np.pi])</p></li>
+<li><p>        <em>#print(f"theta:{theta}")</em></p></li>
+<li><p>        x = self.a_ * theta * fwd * np.cos(theta)</p></li>
+<li><p>        y = self.a_ * theta * fwd * np.sin(theta)</p></li>
+<li></li>
+<li><p>        return x, y, theta</p></li>
+<li><p>    </p></li>
+<li><p>    """计算后续点的位置迭代"""</p></li>
+<li><p>    def calcu_other_position(self, p) :</p></li>
+<li><p>        if(p==0):   <em># 是龙头</em></p></li>
+<li><p>            self.D = self.head_real_length</p></li>
+<li><p>        else:       <em># 不是龙头</em></p></li>
+<li><p>            self.D = self.middle_real_length       </p></li>
+<li><p>        <em># 解超越方程的数值解</em></p></li>
+<li><p>        theta_p_1 = fsolve(self.func2, [self.theta_p + 2])</p></li>
+<li><p>        x_p_1 = self.a_ * theta_p_1 * fwd * np.cos(theta_p_1)</p></li>
+<li><p>        y_p_1 = self.a_ * theta_p_1 * fwd * np.sin(theta_p_1)</p></li>
+<li><p>        </p></li>
+<li><p>        return x_p_1, y_p_1, theta_p_1</p></li>
+<li><p>    </p></li>
+<li><p>    """使用解析法求解速度"""</p></li>
+<li><p>    def calcu_vel_func(self):</p></li>
+<li><p>        upper_term = self.theta_p_1 * np.cos(self.theta_p_1 - self.theta_p) - self.theta_p + self.theta_p_1 * self.theta_p * np.sin(self.theta_p_1 - self.theta_p)</p></li>
+<li><p>        down_term = self.theta_p_1 - self.theta_p * np.cos(self.theta_p_1 - self.theta_p) + self.theta_p_1 * self.theta_p * np.sin(self.theta_p_1 - self.theta_p)</p></li>
+<li><p>        gamma = upper_term / down_term</p></li>
+<li><p>        v = (np.sqrt(1 + self.theta_p_1**2) / np.sqrt(1 + self.theta_p**2)) * gamma * self.v_p</p></li>
+<li><p>        <em>#print(M)</em></p></li>
+<li><p>        <em>#print(v)</em></p></li>
+<li><p>        return v</p></li>
+<li><p>        </p></li>
+<li><p>    """获取点坐标与速度的列表"""</p></li>
+<li><p>    def get_points(self):</p></li>
+<li><p>        <em># 所有点坐标的列表</em></p></li>
+<li><p>        points = []</p></li>
+<li><p>        thetas = []</p></li>
+<li><p>        <em># 所有的点速度的列表</em></p></li>
+<li><p>        points_v = []</p></li>
+<li><p>        </p></li>
+<li><p>        <em># 获取龙头点坐标</em></p></li>
+<li><p>        x_head, y_head, theta_head = self.calcu_head_pos()</p></li>
+<li><p>        thetas.append(theta_head)</p></li>
+<li><p>        points.append([x_head, y_head])</p></li>
+<li><p>        <em># 获取龙头点的速度</em></p></li>
+<li><p>        points_v.append(abs(self.v_))</p></li>
+<li><p>        </p></li>
+<li><p>        <em># 迭代求解后续点的坐标</em></p></li>
+<li><p>        iter_nums = 202 <em># 算上龙头和龙尾总共203个点，共需要迭代202次</em></p></li>
+<li><p>        self.theta_p = theta_head <em># 初始化</em></p></li>
+<li><p>        p = 0</p></li>
+<li><p>        self.v_p = self.v_</p></li>
+<li><p>        while(p &lt; iter_nums):</p></li>
+<li><p>            </p></li>
+<li><p>            <em># 计算坐标</em></p></li>
+<li><p>            x_p_1, y_p_1, self.theta_p_1 = self.calcu_other_position(p) </p></li>
+<li><p>            <em># 位置保存</em></p></li>
+<li><p>            thetas.append(self.theta_p_1)</p></li>
+<li><p>            points.append([x_p_1, y_p_1])</p></li>
+<li><p>            <em># 计算速度</em></p></li>
+<li><p>            v_p_1 = self.calcu_vel_func()</p></li>
+<li><p>            <em># 速度保存</em></p></li>
+<li><p>            points_v.append(abs(v_p_1))</p></li>
+<li><p>            <em># 更新theta_p</em></p></li>
+<li><p>            self.theta_p = self.theta_p_1</p></li>
+<li><p>            <em># 更新v_p</em></p></li>
+<li><p>            self.v_p = v_p_1</p></li>
+<li><p>            p += 1     </p></li>
+<li><p>            </p></li>
+<li><p>        return points, thetas, points_v</p></li>
+</ol>
+<p>"""使用微元法求解速度的类"""</p>
+<ol start="123" type="1">
+<li><p>class CalcuVelDiff:</p></li>
+<li><p>    def __init__(self, theta0, a, t, v, fwd):</p></li>
+<li><p>        self.theta0_ = theta0  <em># 龙头的初始位置</em></p></li>
+<li><p>        self.a_ = a            <em># 参数a</em></p></li>
+<li><p>        self.t_ = t            <em># 时间t</em></p></li>
+<li><p>        self.v_ = v            <em># 速度v</em></p></li>
+<li><p>        self.fwd_ = fwd        <em># 方向</em></p></li>
+<li><p>        </p></li>
+<li><p>        """板子尺寸""" </p></li>
+<li><p>        self.head_width = 0.3    <em># 龙头宽</em></p></li>
+<li><p>        self.head_length = 3.41  <em># 龙头长</em></p></li>
+<li><p>        self.head_edge = 0.275   <em># 龙头把手到边缘距离</em></p></li>
+<li><p>        self.head_real_length = 3.41 - 2 * 0.275   <em># 龙头两个把手的距离</em></p></li>
+<li></li>
+<li><p>        self.middle_width = 0.3    <em># 中间板宽</em></p></li>
+<li><p>        self.middle_length = 2.2  <em># 中间长</em></p></li>
+<li><p>        self.middle_edge = 0.275   <em># 中间把手到边缘距离</em></p></li>
+<li><p>        self.middle_real_length = 2.20 - 2 * 0.275   <em># 中间两个把手的距离</em></p></li>
+<li><p>        </p></li>
+<li><p>    """使用微元法求解速度"""</p></li>
+<li><p>    def calcu_vel_diff(self, diff_time = 0.1):</p></li>
+<li><p>        points_v = []</p></li>
+<li><p>        <em># 取一段长度为diff_time的时间微分来初始化类</em></p></li>
+<li><p>        calcu_points_t1 = CalcuPoints(self.theta0_, self.a_, self.t_, self.v_, self.fwd_)</p></li>
+<li><p>        calcu_points_t2 = CalcuPoints(self.theta0_, self.a_, self.t_ + diff_time, self.v_, self.fwd_)</p></li>
+<li><p>        <em># 时间微分变换前的位置</em></p></li>
+<li><p>        points_0, thetas_0, v_0 = calcu_points_t1.get_points()</p></li>
+<li><p>        <em># 时间微分变化后的位置</em></p></li>
+<li><p>        points_t, thetas_t, v_t = calcu_points_t2.get_points()</p></li>
+<li><p>        <em># 求所有点的速率</em></p></li>
+<li><p>        for i in range(len(points_0)):</p></li>
+<li><p>            x_t = points_t[i][0]</p></li>
+<li><p>            y_t = points_t[i][1]</p></li>
+<li><p>            x_0 = points_0[i][0]</p></li>
+<li><p>            y_0 = points_0[i][1]</p></li>
+<li><p>            <em># 微元内近似为匀直</em></p></li>
+<li><p>            v = np.sqrt((x_t - x_0) ** 2 + (y_t - y_0) ** 2) / diff_time</p></li>
+<li><p>            points_v.append(v)</p></li>
+<li><p>            </p></li>
+<li><p>        return points_v</p></li>
+<li><p>"""定义优化目标函数"""</p></li>
+<li><p>def objective(x):</p></li>
+<li><p>    angle1, angle2 = GetAngle(alpha, x)</p></li>
+<li><p>    return angle1* x[2] + angle2 * x[3] + calcu_out(x[0]) + calcu_out(x[1])</p></li>
+<li></li>
+<li><p>"""求解圆坐标"""</p></li>
+<li><p>def offset_x(theta):</p></li>
+<li><p>    return (np.sin(theta) + theta * np.cos(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
+<li></li>
+<li><p>def offset_y(theta):</p></li>
+<li><p>    return (-np.cos(theta) + theta * np.sin(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
+<li></li>
+<li><p>def o1(x):</p></li>
+<li><p>    x_o1 = alpha * x[0] * np.cos(x[0]) - x[2] * offset_x(x[0])</p></li>
+<li><p>    y_o1 = alpha * x[0] * np.sin(x[0]) - x[2] * offset_y(x[0])</p></li>
+<li><p>    return np.array([x_o1, y_o1])</p></li>
+<li></li>
+<li><p>def o2(x):</p></li>
+<li><p>    x_o2 = -alpha * x[1] * np.cos(x[1]) + x[3] * offset_x(x[1])</p></li>
+<li><p>    y_o2 = -alpha * x[1] * np.sin(x[1]) + x[3] * offset_y(x[1])</p></li>
+<li><p>    return np.array([x_o2, y_o2])</p></li>
+<li></li>
+<li><p>def distance_o1o2(x):</p></li>
+<li><p>    return np.sum((o1(x) - o2(x)) ** 2)</p></li>
+<li></li>
+<li><p>"""定义等式约束函数"""</p></li>
+<li><p>def constraint_1(x):</p></li>
+<li><p>    return distance_o1o2(x) - (x[2] + x[3])**2</p></li>
+<li></li>
+<li><p>def constraint_2(x):</p></li>
+<li><p>    return x[2] - 2 * x[3]</p></li>
+<li></li>
+<li><p>def inequal_constraint_1(x):</p></li>
+<li><p>    return x[0]</p></li>
+<li><p>def inequal_constraint_2(x):</p></li>
+<li><p>    return x[1]</p></li>
+<li><p>def inequal_constraint_3(x):    <em># 约束范围是要调整的主要地方，模拟+二分检测碰撞来求解这个位置的值</em></p></li>
+<li><p>    return x[2] </p></li>
+<li><p>def inequal_constraint_4(x):</p></li>
+<li><p>    return x[3]</p></li>
+<li><p>def inequal_constraint_5(x):</p></li>
+<li><p>    return theta_s - x[0]</p></li>
+<li><p>def inequal_constraint_6(x):</p></li>
+<li><p>    return theta_s - x[1]</p></li>
+<li></li>
+<li><p><em># 定义约束条件</em></p></li>
+<li><p>constraints = [</p></li>
+<li><p>    {'type': 'eq', 'fun': constraint_1},  <em># 等式约束1</em></p></li>
+<li><p>    {'type': 'eq', 'fun': constraint_2},  <em># 等式约束2</em></p></li>
+<li></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_1},  <em># 不等式约束1</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_2},  <em># 不等式约束2</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_3},  <em># 不等式约束3</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_4},  <em># 不等式约束4</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_5},  <em># 不等式约束3</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_6},  <em># 不等式约束4</em></p></li>
+<li><p>]</p></li>
+<li></li>
+<li><p><em># 初始猜测值</em></p></li>
+<li><p>x0 = np.array([9 * np.pi, 5 * np.pi, 5, 2.5])</p></li>
+<li></li>
+<li><p><em># 调用minimize函数进行优化</em></p></li>
+<li><p>sol = minimize(objective, x0, method='SLSQP', constraints = constraints)</p></li>
+<li></li>
+<li><p><em># 打印结果</em></p></li>
+<li><p>print('最优解:', sol.x)</p></li>
+<li><p>print('目标函数值:', sol.fun)</p></li>
+<li></li>
+<li><p><em># 画图（可选）</em></p></li>
+<li><p>theta1 = np.linspace(-20, 20, 200)</p></li>
+<li><p>theta2 = np.linspace(-20, 20, 200)</p></li>
+<li><p>theta1_grid, theta2_grid = np.meshgrid(theta1, theta2)</p></li>
+<li></li>
+<li><p><em># 固定x[2]和x[3]为最优解的值</em></p></li>
+<li><p>r1_opt, r2_opt = sol.x[0], sol.x[1]</p></li>
+<li></li>
+<li><p>def grid_objective_function(theta1, theta2, r1, r2):</p></li>
+<li><p>    return objective(np.array([theta1, theta2, r1, r2]))</p></li>
+<li></li>
+<li><p><em># 计算网格上的目标函数值</em></p></li>
+<li><p>z = np.array([grid_objective_function(t1, t2, r1_opt, r2_opt)</p></li>
+<li><p>               for t1, t2 in zip(theta1_grid.ravel(), theta2_grid.ravel())])</p></li>
+<li><p>z = z.reshape(theta1_grid.shape)</p></li>
+<li></li>
+<li><p>plt.figure()</p></li>
+<li><p>cp = plt.contourf(theta1_grid, theta2_grid, z, cmap='viridis')</p></li>
+<li><p>plt.colorbar(cp)</p></li>
+<li><p>plt.scatter(sol.x[0], sol.x[1], color='red', marker='x', label='Optimal Point')</p></li>
+<li><p>plt.xlabel('Theta 1')</p></li>
+<li><p>plt.ylabel('Theta 2')</p></li>
+<li><p>plt.title(f'Contour Plot of Objective Function with Constraints')</p></li>
+<li><p>plt.savefig('t4_result_2D.png', dpi=300, format='png')  <em># dpi参数可以控制图像分辨率</em></p></li>
+<li><p>plt.legend()</p></li>
+<li><p>plt.show()</p></li>
+<li><p>"""定义优化目标函数"""</p></li>
+<li><p>def objective(x):</p></li>
+<li><p>    angle1, angle2 = GetAngle(alpha, x)</p></li>
+<li><p>    return angle1* x[2] + angle2 * x[3] + calcu_out(x[0]) + calcu_out(x[1])</p></li>
+<li></li>
+<li><p>"""求解圆坐标"""</p></li>
+<li><p>def offset_x(theta):</p></li>
+<li><p>    return (np.sin(theta) + theta * np.cos(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
+<li></li>
+<li><p>def offset_y(theta):</p></li>
+<li><p>    return (-np.cos(theta) + theta * np.sin(theta)) / np.sqrt(theta ** 2 + 1)</p></li>
+<li></li>
+<li><p>def o1(x):</p></li>
+<li><p>    x_o1 = alpha * x[0] * np.cos(x[0]) - x[2] * offset_x(x[0])</p></li>
+<li><p>    y_o1 = alpha * x[0] * np.sin(x[0]) - x[2] * offset_y(x[0])</p></li>
+<li><p>    return np.array([x_o1, y_o1])</p></li>
+<li></li>
+<li><p>def o2(x):</p></li>
+<li><p>    x_o2 = -alpha * x[1] * np.cos(x[1]) + x[3] * offset_x(x[1])</p></li>
+<li><p>    y_o2 = -alpha * x[1] * np.sin(x[1]) + x[3] * offset_y(x[1])</p></li>
+<li><p>    return np.array([x_o2, y_o2])</p></li>
+<li></li>
+<li><p>def distance_o1o2(x):</p></li>
+<li><p>    return np.sum((o1(x) - o2(x)) ** 2)</p></li>
+<li></li>
+<li><p>"""定义等式约束函数"""</p></li>
+<li><p>def constraint_1(x):</p></li>
+<li><p>    return distance_o1o2(x) - (x[2] + x[3])**2</p></li>
+<li></li>
+<li><p>def constraint_2(x):</p></li>
+<li><p>    return x[2] - 2 * x[3]</p></li>
+<li></li>
+<li><p>def inequal_constraint_1(x):</p></li>
+<li><p>    return x[0]</p></li>
+<li><p>def inequal_constraint_2(x):</p></li>
+<li><p>    return x[1]</p></li>
+<li><p>def inequal_constraint_3(x):    <em># 约束范围是要调整的主要地方，模拟+二分检测碰撞来求解这个位置的值</em></p></li>
+<li><p>    return x[2] </p></li>
+<li><p>def inequal_constraint_4(x):</p></li>
+<li><p>    return x[3]</p></li>
+<li><p>def inequal_constraint_5(x):</p></li>
+<li><p>    return theta_s - x[0]</p></li>
+<li><p>def inequal_constraint_6(x):</p></li>
+<li><p>    return theta_s - x[1]</p></li>
+<li></li>
+<li><p><em># 定义约束条件</em></p></li>
+<li><p>constraints = [</p></li>
+<li><p>    {'type': 'eq', 'fun': constraint_1},  <em># 等式约束1</em></p></li>
+<li><p>    {'type': 'eq', 'fun': constraint_2},  <em># 等式约束2</em></p></li>
+<li></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_1},  <em># 不等式约束1</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_2},  <em># 不等式约束2</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_3},  <em># 不等式约束3</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_4},  <em># 不等式约束4</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_5},  <em># 不等式约束3</em></p></li>
+<li><p>    {'type': 'ineq', 'fun': inequal_constraint_6},  <em># 不等式约束4</em></p></li>
+<li><p>]</p></li>
+<li></li>
+<li><p><em># 初始猜测值</em></p></li>
+<li><p>x0 = np.array([9 * np.pi, 5 * np.pi, 5, 2.5])</p></li>
+<li></li>
+<li><p><em># 调用minimize函数进行优化</em></p></li>
+<li><p>sol = minimize(objective, x0, method='SLSQP', constraints = constraints)</p></li>
+<li></li>
+<li><p><em># 打印结果</em></p></li>
+<li><p>print('最优解:', sol.x)</p></li>
+<li><p>print('目标函数值:', sol.fun)</p></li>
+<li></li>
+<li><p>def calcu_points(cur_path_points, t):</p></li>
+<li><p>    points = []</p></li>
+<li><p>    </p></li>
+<li><p>    iter_num = 224 <em># 223个板子, 计算把手迭代次数为223</em></p></li>
+<li><p>    p = 0</p></li>
+<li><p>    point_this = cur_path_points[f"{t:.2f}"]   <em># 获得龙头的位置</em></p></li>
+<li><p>    point_this_index = t</p></li>
+<li><p>    points.append(point_this)</p></li>
+<li><p>    while(p&lt;iter_num):</p></li>
+<li><p>        D = 0 <em># 计算的距离</em></p></li>
+<li><p>        if p == 0:</p></li>
+<li><p>            D = head_dist</p></li>
+<li><p>        else:</p></li>
+<li><p>            D = middle_dist</p></li>
+<li><p>        <em># 二分搜索</em></p></li>
+<li><p>        <em># 先初始化好start，往前采样8s即可</em></p></li>
+<li><p>        point_end_index = point_this_index</p></li>
+<li><p>        point_start_index = point_this_index-10</p></li>
+<li><p>        point_middle_index = (point_start_index + point_end_index) / 2 </p></li>
+<li><p>        cnt = 0</p></li>
+<li><p>        <em># 进入二分搜索，精确到3位小数W</em></p></li>
+<li><p>        while ( distance(cur_path_points[f"{point_start_index:.2f}"], cur_path_points[f"{point_end_index:.2f}"]) ) &gt; 0.025:</p></li>
+<li><p>            </p></li>
+<li><p>            if distance(cur_path_points[f"{point_middle_index:.2f}"], cur_path_points[f"{point_this_index:.2f}"]) &lt; D: <em># 靠前了，应该向后走</em></p></li>
+<li><p>                point_end_index = point_middle_index</p></li>
+<li><p>            else:</p></li>
+<li><p>                point_start_index = point_middle_index</p></li>
+<li><p>            <em>#print(point_middle_index, point_end_index, point_start_index)</em></p></li>
+<li><p>            <em>#print(cur_path_points[f"{point_middle_index:.3f}"], cur_path_points[f"{point_this_index:.3f}"])</em></p></li>
+<li><p>            point_middle_index = (point_start_index + point_end_index) / 2 </p></li>
+<li><p>            cnt += 1</p></li>
+<li><p>            <em># 陷入二分困境</em></p></li>
+<li><p>            if cnt &gt;= 10 :</p></li>
+<li><p>                break</p></li>
+<li><p>            <em># 陷入二分困境则直接开始暴力搜索</em></p></li>
+<li><p>            if(cnt &gt;= 10):</p></li>
+<li><p>                point_last_index = 0</p></li>
+<li><p>                while(1):</p></li>
+<li><p>                    point_last_index -= 0.01</p></li>
+<li><p>                    if(distance(cur_path_points[f"{point_this_index:.2f}"], cur_path_points[f"{point_last_index:.2f}"])-D)&lt;0.01:</p></li>
+<li><p>                        break</p></li>
+<li><p>            else:</p></li>
+<li><p>                point_last_index = (point_start_index + point_end_index) / 2</p></li>
+<li><p>        <em># 找到上一个之后保存</em></p></li>
+<li><p>        points.append([np.array(cur_path_points[f"{point_last_index:.2f}"][0]), np.array(cur_path_points[f"{point_last_index:.2f}"][1])])</p></li>
+<li><p>        <em># 记得更新</em></p></li>
+<li><p>        point_this_index = point_last_index</p></li>
+<li><p>       </p></li>
+<li><p>        p+=1</p></li>
+<li><p>        </p></li>
+<li><p>    return points</p></li>
+<li></li>
+<li><p>"""使用微元法求解速度"""</p></li>
+<li><p>def calcu_vel_diff(cur_path_points, t, diff_time = 0.1):</p></li>
+<li><p>    points_v = []</p></li>
+<li><p>    <em># 时间微分变换前的位置</em></p></li>
+<li><p>    points_0 =  calcu_points(cur_path_points, t)</p></li>
+<li><p>    <em># 时间微分变化后的位置</em></p></li>
+<li><p>    points_t =  calcu_points(cur_path_points, t + diff_time)</p></li>
+<li><p>    <em># 求所有点的速率</em></p></li>
+<li><p>    for i in range(len(points_0)):</p></li>
+<li><p>        x_t = points_t[i][0]</p></li>
+<li><p>        y_t = points_t[i][1]</p></li>
+<li><p>        x_0 = points_0[i][0]</p></li>
+<li><p>        y_0 = points_0[i][1]</p></li>
+<li><p>        <em># 微元内近似为匀直</em></p></li>
+<li><p>        v = np.sqrt((x_t - x_0) ** 2 + (y_t - y_0) ** 2) / diff_time</p></li>
+<li><p>        points_v.append(v)</p></li>
+<li><p>            </p></li>
+<li><p>    return points_v</p></li>
+</ol></td>
+</tr>
+</tbody>
+</table>
+{% endraw %}

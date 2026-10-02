@@ -1,0 +1,374 @@
+---
+layout: single
+title: "变动工况对水相变特征的影响"
+date: 2025-12-04
+header:
+  image: /images/blog/variable-conditions-water/cover.jpg
+excerpt: "解析变动工况下水是否会发生沸腾，涉及传热与相变过程的建模分析。"
+type: Note
+author_profile: true
+---
+
+
+<ol>
+<li><h3>引入</h3></li>
+</ol>
+<blockquote>
+<p>本课题的目的是解析变动工况下的水是否会发生沸腾，主要涉及到的过程包括传热与相变。在前期的COMSOL试算中发现FEM并不能很好地解析该过程，原因有二：1.
+若给定水质量较小，则模拟开始后水会很快蒸发净，难以完整观测变动工况对水相变的影响；2.
+若给定水质量较大，则水内部温差变大，发生不等温流动，产生不必要的计资源消耗。因此最终选择直接在Matlab中编写一维传热仿真程序进行研究。</p>
+</blockquote>
+<ol start="2">
+<li><h3>结果建模与分析讨论</h3></li>
+</ol>
+<blockquote>
+<p>环境温度<em>T</em><sub>ex</sub>与压强<em>p</em><sub>ex</sub>按照三角波进行同频率波动。相变条件下的水-气表面传热形式包括对流、相变、辐射三种，分别满足方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+dQ_{a} = \alpha\left( T_{surf} - T_{ex} \right)dA\	ag{1}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+dQ_{b} = \beta\left( p_{surf} - p_{ex} \right)dA\	ag{2}
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+dQ_{c} = \varepsilon\sigma T_{surf}^{4}dA\	ag{3}
+\end{array}\]</span></p>
+<p>其中，<em>α</em>为对流散热系数[W m<sup>-2</sup>
+K<sup>-1</sup>]；<em>β</em>为蒸发系数[W m<sup>-2</sup>
+Pa<sup>-1</sup>]；<em>p</em><sub>ex</sub>和<em>p</em><sub>surf</sub>分别为湿空气中的水蒸汽分压力和水面薄饱和层的蒸汽压力；<em>ε</em>为黑度。由Bowen比：</p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{\alpha}{\beta} = \frac{p_{atm}C_{p,air}}{0.632L}\	ag{4}
+\end{array}\]</span></p>
+<p>则有：</p>
+<p><span class="math display">\[\begin{array}{r}
+dQ_{h} = dQ_{a} + dQ_{b} = \frac{p_{atm}}{0.623L}\beta\left\lbrack
+\left( C_{p,air}T_{surf} + \frac{0.623L}{p_{atm}}p_{surf} \right) -
+\left( C_{p,air}T_{ex} + \frac{0.623L}{p_{atm}}p_{ex} \right)
+\right\rbrack dA\	ag{5}
+\end{array}\]</span></p>
+<p>其中，<em>C</em><sub>p,air</sub>是干空气比热[kJ kg<sup>-1</sup>
+K<sup>-1</sup>]；<em>L</em>为水的汽化热[kJ
+kg<sup>-1</sup>]。<em>β</em>满足以下方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+\beta = 22 + 12.5u_{air} + 2\left( T_{surf} - T_{ex} \right)\	ag{6}
+\end{array}\]</span></p>
+<p>其中，<em>u</em><sub>air</sub>是表面空气流速。水内部的传热满足同相热传导的傅里叶定律。为减小计算量，在计算过程中假定发生池核沸腾条件判定，当发生判定时停止运算。若在一个充分稳定的循环内未发生沸腾，则判断该工况下不会发生沸腾。结合相关基础理论，局部过热和沸腾条件的判断分别为：</p>
+<p><span class="math display">\[\begin{array}{r}
+T_{surf} &gt; T_{sat}\left( p_{ex} \right)\	ag{7}
+\end{array}\]</span></p>
+</blockquote>
+<p><span class="math display">\[\begin{array}{r}
+p_{sat}\left( T_{surf} \right) &gt; p_{ex}\	ag{8}
+\end{array}\]</span></p>
+<blockquote>
+<p>针对以上方程在Matlab中建立程序求解并作图。应用到的基本参数如表1所示，代码源码如附录a)
+所示。</p>
+</blockquote>
+<p>表1：部分仿真参数</p>
+<table style="width:80%;">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">物理含义</th>
+<th style="text-align: center;">符号</th>
+<th style="text-align: center;">取值</th>
+<th style="text-align: center;">单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">大气压强</td>
+<td style="text-align: center;"><em>p</em><sub>atm</sub></td>
+<td style="text-align: center;">101.325</td>
+<td style="text-align: center;">kPa</td>
+</tr>
+<tr>
+<td style="text-align: center;">黑度</td>
+<td style="text-align: center;"><em>ε</em></td>
+<td style="text-align: center;">0.95</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">Stefan-Boltzmann常数</td>
+<td style="text-align: center;"><em>σ</em></td>
+<td style="text-align: center;">5.76e-8</td>
+<td style="text-align: center;">W m<sup>-</sup>²·K<sup>-</sup>⁴</td>
+</tr>
+<tr>
+<td style="text-align: center;">水密度</td>
+<td style="text-align: center;"><em>ρw</em></td>
+<td style="text-align: center;">1000</td>
+<td style="text-align: center;">kg m<sup>-3</sup></td>
+</tr>
+<tr>
+<td style="text-align: center;">水比热容</td>
+<td style="text-align: center;"><em>C</em><sub>p,w</sub></td>
+<td style="text-align: center;">4200</td>
+<td style="text-align: center;">J kg<sup>-1</sup> K<sup>-1</sup></td>
+</tr>
+<tr>
+<td style="text-align: center;">水气化潜热</td>
+<td style="text-align: center;"><em>L</em></td>
+<td style="text-align: center;">2.26e6</td>
+<td style="text-align: center;">J kg<sup>-1</sup></td>
+</tr>
+<tr>
+<td style="text-align: center;">干空气热容</td>
+<td style="text-align: center;"><em>C</em><sub>p,air</sub></td>
+<td style="text-align: center;">1005</td>
+<td style="text-align: center;">J kg<sup>-1</sup> K<sup>-1</sup></td>
+</tr>
+<tr>
+<td style="text-align: center;">水表面积</td>
+<td style="text-align: center;"><em>A</em></td>
+<td style="text-align: center;">0.01</td>
+<td style="text-align: center;">m<sup>-2</sup></td>
+</tr>
+<tr>
+<td style="text-align: center;">工况变动频率</td>
+<td style="text-align: center;"><em>ω</em></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">s-1</td>
+</tr>
+<tr>
+<td style="text-align: center;">湿度</td>
+<td style="text-align: center;"><em>RH</em></td>
+<td style="text-align: center;">0.6</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;">水初始温度</td>
+<td style="text-align: center;"><em>T</em><sub>0,w</sub></td>
+<td style="text-align: center;">298.15</td>
+<td style="text-align: center;">K</td>
+</tr>
+</tbody>
+</table>
+<p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img1.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img2.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img3.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img4.png" alt="" style="max-width:100%;"></p></p>
+<p>图1：外部压力在1.8bar-2.8bar之间变动，温度分别取80℃-120℃；100℃-140℃；120℃-160℃；140℃-180℃四种情况下的温度、压力、热通量变化。</p>
+<blockquote>
+<p>图1展示了不同温度范围下的结果。其中所有工况下都会发生表面过热，但是只有120℃-160℃和140℃-180℃两组工况的蒸汽饱和分压超过了外部总压且温度高于沸点，发生了实质性沸腾。同理，我们对其他参数进行研究：</p>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img5.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img6.png" alt="" style="max-width:100%;"></p></p>
+<p>图2：外部温度在80℃-120℃之间变动，压力分别取1.2bar-2.2bar；0.6bar-1.2bar两种情况下的温度、压力、热通量变化。</p>
+<blockquote>
+<p>可以看到当压力范围为0.6bar-1.2bar时发生了实质性沸腾。而在最低压力为常压以上的组别中均未发生。</p>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img7.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img8.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img9.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img10.png" alt="" style="max-width:100%;"></p></p>
+<p>图3：外部温度在80℃-120℃之间变动，外部压力在1.8bar-2.8bar之间变动，工况变动频率分别取0.5s<sup>-1</sup>；1s<sup>-1</sup>；5s<sup>-1</sup>；10s<sup>-1</sup>四种情况下的温度、压力、热通量变化。</p>
+<blockquote>
+<p>可以看到工况变动频率不会影响是否发生过热或沸腾，只会影响发生过热/沸腾的时间。频率越快，发生时间越早。类似地，调整空气湿度对于是否沸腾的影响也不大，但是可以显著影响过热点，如图4所示。</p>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img11.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img12.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img13.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img14.png" alt="" style="max-width:100%;"></p></p>
+<p>图4：外部温度在80℃-120℃之间变动，外部压力在1.8bar-2.8bar之间变动，湿度分别取0.0001；0.2；0.8；0.9999四种情况下的温度、压力、热通量变化。</p>
+<ol start="3">
+<li><h3>附录</h3>
+<ol type="a">
+<li><h3>Matlab完整代码</h3></li>
+</ol></li>
+</ol>
+<p>% surface_evaporation_with_RH.m<br />
+% 在 80~120°C、总压 1.8~2.8 bar
+条件下，考虑相对湿度与外界温度变化速率（2 °C/s）<br />
+% 输出：表面温度、环境温度、各热通量、以及两类相变判定：<br />
+% (A) 局域过热判定： T_surf &gt; T_sat(p_vapor_ext)
+（热力学上表面过热）<br />
+% (B) 真正沸腾判定： p_sat(T_surf) &gt;= p_total
+(表面饱和压达到外部总压)<br />
+<br />
+clear; close all; clc;<br />
+% 常数<br />
+sigma = 5.670374419e-8;<br />
+epsilon = 0.95;<br />
+p_atm_ref = 101325; % 参考大气压 Pa<br />
+Tmin_C = 80; Tmax_C = 120; % 摄氏度范围<br />
+Tmin = Tmin_C + 273.15; Tmax = Tmax_C + 273.15; % K<br />
+Ptot_min_bar = 1.8; Ptot_max_bar = 2.8; % bar 总压范围<br />
+Ptot_min = Ptot_min_bar * p_atm_ref; Ptot_max = Ptot_max_bar *
+p_atm_ref; % Pa<br />
+RH = 0.6;<br />
+dTdt_ext = 2; % 外部温度变化速率<br />
+% 其他环境/表面参数<br />
+u_air = 0; % 风速 m/s<br />
+A = 0.01; % 表面面积 m^2<br />
+water_thickness = 1e-3; % m, 有效表面水层厚度<br />
+rho_w = 1000; cp_w = 4184; % 水性质<br />
+m = rho_w * water_thickness * A;<br />
+% 潜热与空气热容<br />
+L = 2.26e6; % J/kg<br />
+cp_air = 1005; % J/kg/K<br />
+% Bowen 常数关系<br />
+bowen_coeff = p_atm_ref * cp_air / (0.632 * L);<br />
+% beta 经验式与尺度<br />
+beta_base = @(Tsurf, Tex, u) max(1e-6, (22 + 12.5*u + 0.02*(Tsurf -
+Tex))); % 无量纲经验式<br />
+beta_scale = 1e-3;<br />
+alpha_from_beta = @(beta_val) bowen_coeff * beta_val; % alpha = Bowen *
+beta<br />
+% 初始表面温度<br />
+Tsurf0 = 298;<br />
+% 时间设置：计算三角波周期<br />
+sweep_time_oneway = (Tmax_C - Tmin_C) / dTdt_ext; % s 单程时间<br />
+period = 2 * sweep_time_oneway;<br />
+t_end = period * 10; % 模拟时长<br />
+dt = 0.5; % 时间步长 s<br />
+time = 0:dt:t_end;<br />
+Nt = length(time);<br />
+%% ---------- Antoine 系数 ----------<br />
+% Antoine for water (valid approx 1~100+ C) - 以 mmHg 为单位<br />
+A_Ant = 8.07131; B_Ant = 1730.63; C_Ant = 233.426;<br />
+p_sat_from_T = @(T_K) (10.^(A_Ant - B_Ant./((T_K-273.15) + C_Ant))) *
+133.322368; % Pa<br />
+Tsat_from_p = @(p_Pa) find_Tsat_from_p_fast(p_Pa, A_Ant, B_Ant,
+C_Ant);<br />
+%% ---------- 预分配 ----------<br />
+Tsurf = zeros(1,Nt); Tsurf(1) = Tsurf0;<br />
+Tex = zeros(1,Nt);<br />
+Ptot = zeros(1,Nt);<br />
+P_v_ext = zeros(1,Nt); % 外部实际蒸汽偏压 (由 RH * p_sat(Tex))<br />
+Psat_surf = zeros(1,Nt);<br />
+Tsat_fromP_vext=zeros(1,Nt);%由外部蒸汽偏压反算的饱和温度（用于过热判定）<br />
+Qconv = zeros(1,Nt); Qevap = zeros(1,Nt); Qrad = zeros(1,Nt);<br />
+boil_flag_by_pv = false(1,Nt); % Tsurf &gt;
+Tsat(p_v_ext)（过热判定）<br />
+boil_flag_by_ptot = false(1,Nt); % p_sat(Tsurf) &gt;=
+Ptot(真沸腾判定)<br />
+deltaT_boil_threshold = 5; % 可选：若 Tsurf 超过对应 Tsat(pv)
+超过阈值则更可能核化（°C）<br />
+%% ---------- 外界温度与总压随时间（三角波 Tex + 三角波 Ptot，恒定
+RH）A_T = (Tmax - Tmin)/2;<br />
+O_T = (Tmax + Tmin)/2;<br />
+A_P = (Ptot_max - Ptot_min)/2;<br />
+O_P = (Ptot_max + Ptot_min)/2;<br />
+omega = 2*pi/period;<br />
+T0 = period;<br />
+<strong>for</strong> k = 1:Nt<br />
+t = time(k);<br />
+% 三角波周期相位（0~1）<br />
+phi = mod(t, T0) / T0;<br />
+<strong>if</strong> phi &lt; 0.5<br />
+tri = 4*phi - 1;<br />
+<strong>else</strong><br />
+tri = -4*phi + 3;<br />
+<strong>end</strong><br />
+% ---------- 外界温度 ----------<br />
+Tex(k) = A_T * tri + O_T;<br />
+% ---------- 外界总压 ----------<br />
+Ptot(k) = A_P * tri + O_P;<br />
+% ---------- 恒定相对湿度计算蒸汽偏压 ----------<br />
+P_v_ext(k) = RH * p_sat_from_T(Tex(k));<br />
+% ---------- 外界蒸汽偏压对应的饱和温度 ----------<br />
+Tsat_fromP_vext(k) = Tsat_from_p(P_v_ext(k));<br />
+<strong>end</strong><br />
+%% ---------- 时间积分（显式欧拉） ----------<br />
+<strong>for</strong> k = 1:Nt-1<br />
+% 当前值<br />
+T_e = Tex(k);<br />
+p_v_ext = P_v_ext(k);<br />
+p_tot = Ptot(k);<br />
+Psat = p_sat_from_T(Tsurf(k)); % 表面饱和蒸汽压<br />
+Psat_surf(k) = Psat;<br />
+% beta / alpha<br />
+beta_val = beta_base(Tsurf(k), T_e, u_air) * beta_scale;<br />
+alpha_val = alpha_from_beta(beta_val); % W/(m2*K)<br />
+% 通量（正表示从表面失去的能量）<br />
+Qconv(k) = alpha_val * (Tsurf(k) - T_e) * A;<br />
+Qevap(k) = beta_val * (Psat - p_v_ext) * A; % 若 Psat &gt; p_v_ext
+则为正（潜热耗散）<br />
+Qrad(k) = epsilon * sigma * (Tsurf(k)^4 - T_e^4) * A;<br />
+Qout = Qconv(k) + Qevap(k) + Qrad(k);<br />
+Qin = 0; % 可改为时间函数或底部热通量<br />
+dTdt = (Qin - Qout) / (m * cp_w);<br />
+Tsurf(k+1) = Tsurf(k) + dTdt * dt;<br />
+% 判定逻辑<br />
+% (A) 局域过热：表面温度 vs 由外部蒸汽偏压对应的饱和温度<br />
+Tsat_pvext = Tsat_fromP_vext(k);<br />
+boil_flag_by_pv(k) = (Tsurf(k) &gt; Tsat_pvext);<br />
+% (B) 真实沸腾（热力学条件）：表面饱和压 &gt;= 外部总压<br />
+boil_flag_by_ptot(k) = (Psat &gt;= p_tot);<br />
+<strong>end</strong><br />
+Psat_surf(<strong>end</strong>) =
+p_sat_from_T(Tsurf(<strong>end</strong>));<br />
+Qconv(<strong>end</strong>)=Qconv(<strong>end</strong>-1);
+Qevap(<strong>end</strong>)=Qevap(<strong>end</strong>-1);
+Qrad(<strong>end</strong>)=Qrad(<strong>end</strong>-1);<br />
+%% ---------- 输出首次满足条件的时刻 ----------<br />
+idx_pv = find(boil_flag_by_pv,1,'first');<br />
+idx_ptot = find(boil_flag_by_ptot,1,'first');<br />
+<strong>if</strong> isempty(idx_pv)<br />
+fprintf('在模拟时段内未出现局域过热（Tsurf &gt;
+Tsat(p_v_ext)）。\n');<br />
+<strong>else</strong><br />
+fprintf('首次出现局域过热（Tsurf &gt; Tsat(p_v_ext)）时间：t = %.2f s
+(%.3f h)\n', time(idx_pv), time(idx_pv)/3600);<br />
+<strong>end</strong><br />
+<strong>if</strong> isempty(idx_ptot)<br />
+fprintf('在模拟时段内未出现 p_sat(Tsurf) &gt;=
+P_total（未满足总压沸腾条件）。\n');<br />
+<strong>else</strong><br />
+fprintf('首次满足热力学沸腾条件（p_sat(Tsurf) &gt;= P_total）时间：t =
+%.2f s (%.3f h)\n', time(idx_ptot), time(idx_ptot)/3600);<br />
+<strong>end</strong><br />
+%% ---------- 绘图 ----------<br />
+figure('Position',[100 100 1000 700]);<br />
+subplot(3,1,1);<br />
+plot(time/60, Tsurf-273.15,'b-','LineWidth',1.5); hold on;<br />
+plot(time/60, Tex-273.15,'g--','LineWidth',1.5);<br />
+plot(time/60, Tsat_fromP_vext-273.15,'r:','LineWidth',1.5);<br />
+xlabel('时间 (min)'); ylabel('温度 (°C)');<br />
+legend('T_{surf}','T_{ext}','T_{sat}(p_{v,ext})','Location','best');<br />
+title('表面温度、外界温度与由外界蒸汽偏压对应的饱和温度');<br />
+subplot(3,1,2);<br />
+plot(time/60, Ptot/p_atm_ref,'b-','LineWidth',1.5); hold on;<br />
+plot(time/60, P_v_ext/p_atm_ref,'r--','LineWidth',1.5);<br />
+ylabel('压力 (bar)'); xlabel('时间 (min)');<br />
+legend('P_{total} (bar)','p_{v,ext} (bar)','Location','best');<br />
+title('外界总压与外界蒸汽偏压');<br />
+subplot(3,1,3);<br />
+plot(time/60, Qconv,'b-','LineWidth',1.5); hold on;<br />
+plot(time/60, Qevap,'r-','LineWidth',1.5);<br />
+plot(time/60, Qrad,'g-','LineWidth',1.5);<br />
+xlabel('时间 (min)'); ylabel('功率 (W)');<br />
+legend('Q_{conv}','Q_{evap}','Q_{rad}','Location','best');<br />
+title('各项热通量');<br />
+<strong>if</strong> ~isempty(idx_pv)<br />
+subplot(3,1,1);<br />
+hold on;<br />
+scatter(time(idx_pv)/60, Tsurf(idx_pv)-273.15, 80, 'r', 'filled');<br />
+text(time(idx_pv)/60, Tsurf(idx_pv)-273.15, sprintf(' 过热触发
+t=%.1fs',time(idx_pv)));<br />
+<strong>end</strong><br />
+<strong>if</strong> ~isempty(idx_ptot)<br />
+subplot(3,1,1);<br />
+hold on;<br />
+scatter(time(idx_ptot)/60, Tsurf(idx_ptot)-273.15, 80, 'k',
+'filled');<br />
+text(time(idx_ptot)/60, Tsurf(idx_ptot)-273.15, sprintf(' 真沸腾
+t=%.1fs',time(idx_ptot)));<br />
+<strong>end</strong><br />
+<strong>function</strong> <strong>TsatK</strong> =
+<strong>find_Tsat_from_p_fast</strong>(p_Pa, A_Ant, B_Ant, C_Ant)<br />
+% 快速逆求：给定 p (Pa)，返回 Tsat (K)<br />
+% 若 p 非物理解（超高），则钳位<br />
+<strong>if</strong> p_Pa &lt;= 0<br />
+TsatK = 273.15; <strong>return</strong>;<br />
+<strong>end</strong><br />
+p_mmHg = p_Pa / 133.322368;<br />
+% 使用简单的查表插值（T 0~300C）<br />
+Tc = linspace(-50,300,10000); % C<br />
+pvals = 10.^(A_Ant - B_Ant./(Tc + C_Ant));<br />
+% 若 p_mmHg 超出范围，做边界处理<br />
+<strong>if</strong> p_mmHg &lt; min(pvals)<br />
+Tc_est = Tc(1);<br />
+<strong>elseif</strong> p_mmHg &gt; max(pvals)<br />
+Tc_est = Tc(<strong>end</strong>);<br />
+<strong>else</strong><br />
+Tc_est = interp1(pvals, Tc, p_mmHg, 'linear');<br />
+<strong>end</strong><br />
+TsatK = Tc_est + 273.15;<br />
+<strong>end</strong></p>
+

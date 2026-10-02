@@ -1,0 +1,865 @@
+---
+layout: single
+title: "电化学能源材料基础理论"
+date: 2026-08-01
+header:
+  image: /images/blog/electrochem-energy-materials/cover.jpg
+excerpt: "电化学能源材料所需的高等数学、物理与电化学基础理论整理。"
+type: Note
+author_profile: true
+---
+
+
+<ol>
+<li><h3><strong>高等数学</strong></h3></li>
+</ol>
+<blockquote>
+<h3><strong>1.1 微积分</strong></h3>
+<p>泰勒级数展开：</p>
+<p><span class="math display">\[f(x) = \sum_{}^{}{\frac{f^{n}\left(
+x_{0} \right)}{n!}\left( x - x_{0} \right)^{n}}\]</span></p>
+<h3>拉格朗日乘数法：*求解条件极值</h3>
+<p>若目标函数<em>F</em>=<em>F</em>(<em>x</em><sub>1</sub>,<em>x</em><sub>2</sub>,<em>x</em><sub>3</sub>,…,<em>x</em><sub>n</sub>)取极值时，有d<em>F</em>=0。其全微分为：</p>
+<p><span class="math display">\[dF = \left( \frac{\partial F}{\partial
+x_{1}} \right)dx_{1} + \left( \frac{\partial F}{\partial x_{2}}
+\right)dx_{2} + \left( \frac{\partial F}{\partial x_{3}} \right)dx_{3} +
+\ldots + \left( \frac{\partial F}{\partial x_{n}}
+\right)dx_{n}\]</span></p>
+<p>若各变量相互独立，则上式成立时应各项均为0，可直接求解。若存在约束条件：</p>
+<p><span class="math display">\[\left\{ \begin{array}{r}
+\varphi_{1} = \varphi_{1}\left( x_{1},x_{2},\ldots,x_{n} \right) = 0 \\
+\varphi_{2} = \varphi_{2}\left( x_{1},x_{2},\ldots,x_{n} \right) = 0 \\
+\ldots \\
+\varphi_{m} = \varphi_{m}\left( x_{1},x_{2},\ldots,x_{n} \right) = 0
+\end{array} \right.\ ,\ \ \ n &lt; m\]</span></p>
+<p>则独立变量数为<em>n</em>-<em>m</em>。定义<em>m</em>个待定乘数<em>α</em><sub>i</sub>构造函数<em>Z</em>：</p>
+<p><span class="math display">\[Z = Z\left( x_{1},x_{2},\ldots,x_{n}
+\right) = F + \sum_{i = 1}^{m}{\alpha_{i}\varphi_{i}}\]</span></p>
+<p>因为<em>φ</em><sub>­i­</sub>=0，则d<em>F</em>=0时d<em>Z</em>=0也成立，使得(<em>n</em>-<em>m</em>)个独立的<em>x</em>变量对应的偏导数为零，即：</p>
+<p><span class="math display">\[\left\{ \begin{array}{r}
+\left( \frac{\partial Z}{\partial x_{1}} \right) = \left( \frac{\partial
+F}{\partial x_{1}} \right) + \sum_{i = 1}^{m}{\alpha_{i}\left(
+\frac{\partial\varphi_{i}}{\partial x_{1}} \right) =}0 \\
+\left( \frac{\partial Z}{\partial x_{2}} \right) = \left( \frac{\partial
+F}{\partial x_{2}} \right) + \sum_{i = 1}^{m}{\alpha_{i}\left(
+\frac{\partial\varphi_{i}}{\partial x_{2}} \right) =}0 \\
+\ldots \\
+\left( \frac{\partial Z}{\partial x_{n}} \right) = \left( \frac{\partial
+F}{\partial x_{n}} \right) + \sum_{i = 1}^{m}{\alpha_{i}\left(
+\frac{\partial\varphi_{i}}{\partial x_{n}} \right) =}0
+\end{array} \right.\ \]</span></p>
+<p>结合条件方程共(<em>n</em>+<em>m</em>)个方程联立求解，可解出所有的<em>x</em>变量以及待定系数的值。此时的所有自变量均符合条件，且可以令<em>F</em>取到极值。</p>
+<p>高斯误差函数：</p>
+<p><span class="math display">\[{erf}(\lambda) =
+\frac{2}{\sqrt{\pi}}\int_{0}^{\lambda}e^{- y^{2}}dy\]</span></p>
+<p>有性质：1. <em>λ</em>=0时erf(<em>λ</em>)=0；2.
+<em>λ</em>→∞时erf(<em>λ</em>)=1，一般只要<em>λ</em>&gt;2就有erf(<em>λ</em>)≈1；3.
+曲线起点斜率约为2/√π，一般当<em>λ</em>&lt;0.2时有erf(<em>λ</em>)≈2/√π。</p>
+<h3><strong>1.2 概率论与数理统计</strong></h3>
+<p>二项式系数：</p>
+<p><span class="math display">\[\begin{pmatrix}
+n \\
+k
+\end{pmatrix} = \frac{n!}{k!(n - k)!}\]</span></p>
+<p>n为总次数，k为二项分布中某事件的出现次数。</p>
+<p>正态分布：</p>
+<p><span class="math display">\[p(x) =
+\frac{1}{\sigma\sqrt{2\pi}}\exp\left( - \frac{x^{2}}{2\sigma^{2}}
+\right)\]</span></p>
+<h3><strong>1.3 线性代数与矢量分析</strong></h3>
+<p>当一个方阵<em>Q</em>满足<em>QQ</em><sup>T</sup>=<em>Q</em><sup>T</sup><em>Q</em>=<em>I</em>时，称其为正交矩阵。正交矩阵有性质：1.
+正交矩阵的行向量和列向量都是单位向量，并且两两正交；2.
+正交矩阵的逆矩阵等于它的转置矩阵；3. 正交矩阵的行列式的绝对值为1；4.
+两个正交矩阵的乘积仍然是正交矩阵。</p>
+<p>利用正交矩阵实现的线性变换称为正交变换，正交变换前后矢量内积不变，且保持矢量长度、夹角均不变。晶体学上常用的正交变换包括旋转、反演等。对于三阶对角正交矩阵<em>λ</em>(1,1,1)，其关于<em>x</em>、<em>y</em>、<em>z</em>轴逆时针旋转<em>θ</em>角的正交变换矩阵分别为：</p>
+<p><span class="math display">\[\begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; \cos\theta &amp; \sin\theta \\
+0 &amp; - \sin\theta &amp; \cos\theta
+\end{bmatrix},\ \ \ \begin{bmatrix}
+\cos\theta &amp; 0 &amp; - \sin\theta \\
+0 &amp; 1 &amp; 0 \\
+\sin\theta &amp; 0 &amp; \cos\theta
+\end{bmatrix},\ \ \ \begin{bmatrix}
+\cos\theta &amp; \sin\theta &amp; 0 \\
+- \sin\theta &amp; \cos\theta &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}\]</span></p>
+<p>中心反演的正交变换矩阵为：</p>
+<p><span class="math display">\[\begin{bmatrix}
+- 1 &amp; 0 &amp; 0 \\
+0 &amp; - 1 &amp; 0 \\
+0 &amp; 0 &amp; - 1
+\end{bmatrix}\]</span></p>
+<h3><strong>1.4 群论与拓扑分析</strong></h3>
+<p>数学上群的定义要求其内涵所有元素满足以下性质：1.
+闭合性：任意两元素的乘积仍然为群内元素；2.
+存在单位元素<em>E</em>，使得<em>AE</em>=<em>A</em>；3.
+对于任意元素<em>A</em>，存在其逆元素<em>A</em><sup>-1</sup>使得<em>AA</em><sup>-1</sup>=<em>E</em>；4.
+元素间乘法满足结合律。</p>
+</blockquote>
+<ol start="2">
+<li><h3><strong>普通物理学</strong></h3></li>
+</ol>
+<blockquote>
+<h3><strong>2.1 狭义相对论</strong></h3>
+<p>爱因斯坦物体动质量：</p>
+<p><span class="math display">\[m = \frac{m_{0}}{\sqrt{1 -
+\frac{v^{2}}{c^{2}}}}\]</span></p>
+<p>光速<em>c</em><sub>0</sub>≈3e8 m s<sup>-1</sup>。</p>
+<p>洛伦兹变换：</p>
+<p><span class="math display">\[\left\{ \begin{array}{r}
+\begin{matrix}
+x&#39; = \frac{x - ut}{\sqrt{1 - u^{2}/c^{2}}} \\
+y&#39; = y
+\end{matrix} \\
+\begin{matrix}
+z&#39; = z \\
+t&#39; = \frac{t - ux/c^{2}}{\sqrt{1 - u^{2}/c^{2}}}
+\end{matrix}
+\end{array} \right.\ \]</span></p>
+<p>爱因斯坦质能方程：</p>
+<p><span class="math display">\[E = mc^{2}\]</span></p>
+<h3><strong>2.2 电动力学</strong></h3>
+<p>电子电荷：<em>e</em><sub>m</sub>≈1.6e-19 C；</p>
+<p>电荷间作用力：</p>
+<p><span class="math display">\[\mathbf{F} =
+\frac{q_{1}q_{2}\mathbf{r}}{4\pi\varepsilon_{0}r^{3}}\]</span></p>
+<p><em>ε</em><sub>0</sub>≈8.85e-12 C<sup>2</sup> N<sup>-1</sup>
+m<sup>-2</sup>。</p>
+<h3><strong>2.3 量子力学初步</strong></h3>
+<p>能量的量子化：</p>
+<p><span class="math display">\[E = h\nu\]</span></p>
+<p>德布罗意波粒二象性：</p>
+<p><span class="math display">\[\lambda = \frac{h}{p}\]</span></p>
+<p>不确定性原理：</p>
+<p><span class="math display">\[\Delta x \cdot \Delta p_{x} \geq
+\frac{\hslash}{2}\]</span></p>
+<p>其中<em>ℏ</em>=<em>h</em>/2<em>π</em>为约化普朗克常量。</p>
+<p>自旋量子数为0或整数的粒子称为玻色子，如光子；为半整数的粒子称为费米子，如电子、质子、中子。该区别是由量子力学中全同粒子波函数的对称性决定。由于费米子要求轨道反对称，两个或两个以上的粒子不能占据同一个空间-自旋轨道，必须自旋方向相反。</p>
+<p>量子力学的四个基本假设：</p>
+</blockquote>
+<ol>
+<li><p>由<em>N</em>个粒子组成的微观系统，其状态可由<em>N</em>个粒子的状态函数<em>ψ</em>(t,x,y,z)表述，该函数称为波函数，是一个概率幅。波函数的平方|<em>ψ</em>|<sup>2</sup>表示在空间中某点发现该粒子的概率。</p></li>
+</ol>
+<blockquote>
+<p>此外，波函数是一个品优函数，具有三个性质：单值性、连续性、可归一化。</p>
+</blockquote>
+<ol start="2">
+<li><p>微观粒子的状态<em>ψ</em>(t,<em><strong>r</strong></em>)随时间的变化由薛定谔方程描述。</p></li>
+</ol>
+<blockquote>
+<p>薛定谔方程：</p>
+<p><span class="math display">\[-
+\frac{\hslash}{i}\frac{\partial\psi\left( t,\overrightarrow{r}
+\right)}{\partial t} =
+\widehat{H}\psi(t,\overrightarrow{r})\]</span></p>
+<p><span
+class="math inline">\(\widehat{H}\)</span>为哈密顿算符，表示为：</p>
+<p><span class="math display">\[\widehat{H} = - \sum_{j =
+1}^{N}{\frac{\hslash^{2}}{2m_{j}}\nabla_{j}^{2} + V\left(
+t,\overrightarrow{r} \right)}\]</span></p>
+<p><span
+class="math inline">\(\nabla^{2}\)</span>为拉普拉斯算符，表示为：</p>
+<p><span class="math display">\[\nabla^{2} =
+\frac{\partial^{2}}{\partial x^{2}} + \frac{\partial^{2}}{\partial
+y^{2}} + \frac{\partial^{2}}{\partial z^{2}}\]</span></p>
+<p>当系统势能不是时间的函数时，假设波函数是时间函数<em>T</em>(<em>t</em>)=exp(-<em>iEt/ℏ</em>)和坐标函数<em>ψ</em>(<em><strong>r</strong></em>)的乘积，可以导出定态薛定谔方程：</p>
+<p><span class="math display">\[-
+\frac{\hslash}{i}\frac{1}{T(t)}\frac{dT(t)}{dt}\psi(,\overrightarrow{r})
+= \widehat{H}\psi(,\overrightarrow{r})\]</span></p>
+<p>由假设④，哈密顿算符实际上是系统能量的算符，则进一步可导出表示系统总能量的哈密顿函数：</p>
+<p><span class="math display">\[H = \frac{1}{2m}\left( p_{x}^{2} +
+p_{y}^{2} + p_{z}^{2} \right) + V(t,x,y,z)\]</span></p>
+</blockquote>
+<ol start="3">
+<li><p>系统可观测量对应于算符。</p></li>
+</ol>
+<blockquote>
+<p>算符为表示某种变换的符号，分为线性算符和非线性算符，对线性算符可定义加和运算和乘积运算</p>
+<p>由于不确定性原理的存在，微观系统中的经典力学物理量无确定值，因而不成立。则需要将微观粒子系统中的力学量构造为量子力学算符，有两个基本对应关系：（1）每个坐标<em>q</em>对应坐标的数乘算符<span
+class="math inline">\(\widehat{q} = q
+\times\)</span>；（2）每个动量分量<em>p</em><sub>q</sub>对应算符<span
+class="math inline">\({\widehat{p}}_{q} =
+\frac{\hslash}{i}\frac{\partial}{\partial q} = -
+i\hslash\frac{\partial}{\partial q}\)</span>；<em>i</em>为虚数单位。</p>
+</blockquote>
+<ol start="4">
+<li><p>对系统物理量<em>O</em>进行测量，其结果为<em>O</em>所对应算符<span
+class="math inline">\(\widehat{O}\)</span>的本征值<em>λ</em>。此假设称为测量原理。</p></li>
+</ol>
+<blockquote>
+<p>构造关于函数<em>u</em>的方程：<span
+class="math inline">\(\widehat{A}u = \lambda
+u\)</span>，若可以找到这样一个常数<em>λ</em>，则该方程为算符<span
+class="math inline">\(\widehat{A}\)</span>的本征方程，<em>λ</em>为<span
+class="math inline">\(\widehat{A}\)</span>的本征方程，<em>u</em>为<span
+class="math inline">\(\widehat{A}\)</span>属于<em>λ</em>的本征函数。</p>
+<p>量子力学中可观测的算符属于厄米算符，均为线性算符且满足方程：</p>
+<p><span class="math display">\[\int u^{*}\widehat{A}wd\tau = \int
+w\left( \widehat{A}u \right)^{*}d\tau\]</span></p>
+<p>其中<em>u</em>和<em>w</em>为任意品优函数，*表示取复共轭量。厄米算符的本征值均为实数，且属于同一算符不同本征值的本征函数正交。</p>
+<p>此外，对于处于量子态<em>ψ</em>系统的可观测物理量<em>O</em>，若系统所处状态算子<span
+class="math inline">\(\widehat{O}\)</span>处于本征态，则观测值为本征值；若无法确定，则其平均值由概率密度计算。</p>
+<p>从以上假设出发，对于任一微观粒子，可通过列出其哈密顿函数后求解薛定谔方程的方式来求解其概率分布。求解出哈密顿算符的本征值即为粒子的能量，其取值是量子化的、不连续的。</p>
+<p>对应于量子力学系统能量最低的量子态称为基态，基态能量不为零，称为零点能。</p>
+<p>对于势阱中粒子状态的求解会在能量的解中引入主量子数<em>n</em>。</p>
+<p>类氢离子系统中，粒子的势能由原子核的电场决定，其取值的分布是球对称的。类似的问题称为中心力场问题，在球坐标下求解往往更方便。中心力场问题的求解会在解中引入角量子数<em>l</em>和磁量子数<em>m</em>。</p>
+<h3><strong>2.4 统计热力学初步</strong></h3>
+<p>统计热力学研究的系统包含粒子数的数量级至少为10<sup>24</sup>。根据粒子运动状态的不同将系统分为离域子系统和定域子系统。离域子系统中粒子可以在整个域上活动，彼此之间无法区分，如液体和气体，也称为全同粒子系统。定域子系统中粒子在一个相对稳定的位置上活动，因此可以编号来加以区分，如固体，也成为可辨粒子系统。此外，粒子间相互作用可忽略的系统称为独立子系统，如理想气体，反之为相依子系统。</p>
+<p>相依子系统的分析依赖于系综理论。</p>
+<p>不同量子态具有相同能量，即对应同一能级的现象称为简并，同一能级中所包含的量子态个数称为简并度<em>g</em>。<em>g</em>=1时也称非简并。</p>
+<p><em>n</em>原子分子存在外部的平动<em>t</em>、内部的转动<em>r</em>和振动<em>v</em>、以及电子运动<em>e</em>和核运动<em>n</em>共五种运动形式，各运动形式彼此独立，因此粒子动能为各个运动形式能量之和，且这些能量均是量子化的。</p>
+<p>对于独立子系统，其存在三个最基本的参数：粒子数<em>N</em>，热力学能<em>U</em>=∑<em>ε</em><sub>i</sub>，势能<em>V</em>。</p>
+<p>当质量为<em>m</em>的分子在三边长分别为<em>a</em>，<em>b</em>，<em>c</em>的势垒中平动时，其平动能级为<span
+class="math inline">\(\varepsilon_{t} = \frac{h^{2}}{8m}\left(
+\frac{n_{x}^{2}}{a^{2}} + \frac{n_{y}^{2}}{b^{2}} +
+\frac{n_{z}^{2}}{c^{2}}
+\right)\)</span>，<em>n</em><sub>x/y/z</sub>是平动量子数。平动子相邻能级的能量差非常小，容易被激发，且量子化不明显，在某些数学处理中可以看作连续变化。</p>
+<p>双原子分子AB中A和B的质量分别为<em>m</em><sub>A</sub>和<em>m</em><sub>B</sub>，AB之间平衡键长为<em>d</em>。在波恩-奥本海默近似下可看作刚性转子，其转动能级为：<span
+class="math inline">\(\varepsilon_{r} = \frac{h^{2}}{8\pi^{2}I}l(l +
+1)\)</span>。其中<span class="math inline">\(I = \frac{m_{A}m_{B}}{m_{A}
++
+m_{B}}d\)</span>，为分子的转动惯量；<em>l</em>为角量子数。转动能级的量子化也不明显，转动能级的简并度<em>g</em><sub>r</sub>=2<em>l</em>+1。</p>
+<p>双原子分子的振动可以近似为一维简谐振动，能级为<span
+class="math inline">\(\varepsilon_{v} = (\nu +
+1/2)h\nu\)</span>；<em>ν</em>为振动量子数。振动能级的量子化非常明显，不可以近似为连续化。一维简谐子的振动能级非简并。</p>
+<p>一种能级的总微态数<em>W</em><sub>D</sub>需要考虑能级分布和状态分布（各量子态的粒子数记作分布数）等。对于简并度<em>g</em><sub>i</sub>≠1；分布数<em>n</em><sub>i</sub>≠1的情况，定域子总微态数为<span
+class="math inline">\(W_{D} =
+N!\prod_{n}^{}\frac{g_{i}^{n_{i}}}{n_{i}!}\)</span>，离域子系统的总微态数满足<span
+class="math inline">\(W_{D} \approx
+\prod_{n}^{}\frac{g_{i}^{n_{i}}}{n_{i}!}\)</span>。实际系统中一般具有多个能级，则总微态数<em>Ω</em>需要对所有能级的<em>W</em><sub>D</sub>做加和。</p>
+<p>统计热力学最基本的假设是等概率假设，即认为<em>N</em>，<em>U，V</em>均确定的系统中所有微态出现的概率相同，为<em>P</em>=1/<em>Ω</em>。在此假设下容易得到，若某状态分布的微态数最多，则其为最大概率出现的分布状态，此分布称为最概然分布。最概然分布的概率随着粒子数的增大而减小，则对于一个粒子数极其庞大的系统，其最概然分布实际上可以代表其他任何一种分布，即最概然分布实际上就是平衡分布。</p>
+<p>最概然分布的求取需要考虑粒子数守恒和能量守恒的限制，是一个条件极值问题，用拉格朗日乘数法求取。</p>
+<p>独立子系统的最概然分布/平衡分布的定量描述为玻尔兹曼分布：能量为<em>ε</em><sub>j</sub>的量子态<em>j</em>的粒子数<em>n</em><sub>j</sub>正比于玻尔兹曼因子exp(-<em>ε</em><sub>j</sub>/<em>kT</em>)。对于简并度为<em>g</em><sub>i</sub>的能级，其总粒子数为<span
+class="math inline">\(n_{i} = g_{i}n_{j} = g_{i}\lambda\exp\left( -
+\varepsilon_{j}/kT
+\right)\)</span>，<em>λ</em>为比例系数。由粒子数守恒可以推导出<em>λ</em>的取值为：</p>
+<p><span class="math display">\[\lambda =
+\frac{N}{\sum_{j}^{}{\exp\left( - \frac{\varepsilon_{j}}{kT} \right)}} =
+\frac{N}{\sum_{i}^{}{g_{i}\exp\left( - \frac{\varepsilon_{i}}{kT}
+\right)}}\]</span></p>
+<p>定义配分函数<span class="math inline">\(q = \sum_{j}^{}{\exp\left( -
+\frac{\varepsilon_{j}}{kT} \right)} = \sum_{i}^{}{g_{i}\exp\left( -
+\frac{\varepsilon_{i}}{kT}
+\right)}\)</span>，则由玻尔兹曼分布的数学表达：<span
+class="math inline">\(n_{j} = \frac{N}{q}\exp\left( -
+\frac{\varepsilon_{j}}{kT} \right)\)</span>；<span
+class="math inline">\(n_{i} = \frac{N}{q}g_{i}\exp\left( -
+\frac{\varepsilon_{i}}{kT} \right)\)</span>。</p>
+<p>由于系统总能量的限制，只有小于1的玻尔兹曼因子才是有效分数，因此<span
+class="math inline">\(g_{i}\exp\left( - \varepsilon_{j}/kT
+\right)\)</span>称为能级<em>i</em>的有效量子态数，<em>q</em>为所有能级的有效态数之和。</p>
+<p>玻尔兹曼熵表达为<span class="math inline">\(S =
+kln\Omega\)</span>。在统计热力学的研究范畴内，即<em>N</em>≈10<sup>24</sup>，可以近似认为<span
+class="math inline">\(S = kln\Omega =
+klnW_{B}\)</span>，即用最概然分布的微态数代替总微态数。该近似称为摘取最大项原理。该方程计算出的熵称统计熵，从热力学第三定律导出的熵为量热熵，两种熵的差值称为残余熵，原因是量热熵测量过程中的误差。</p>
+</blockquote>
+<ol start="3">
+<li><h3><strong>基本化学原理与电化学</strong></h3></li>
+</ol>
+<blockquote>
+<h3><strong>3.1 原子结构</strong></h3>
+<p>电子的薛定谔方程：<span
+class="math inline">\(\frac{\partial^{2}\psi}{\partial x^{2}} +
+\frac{\partial^{2}\psi}{\partial y^{2}} +
+\frac{\partial^{2}\psi}{\partial z^{2}} + \frac{2m}{\hslash^{2}}(E -
+V)\psi =
+0\)</span>，其中<em>ψ</em>为电子的波函数，是电子空间坐标的函数，<em>m</em>为电子质量，<em>E</em>为体系总能量，<em>V</em>为势能。波函数本身不具有明确的物理意义，但<em>ψ</em><sup>2</sup>表示电子在某位置出现的概率密度。</p>
+<p>薛定谔方程描述了一个孤立量子系统的电子状态。对于一个特定系统的薛定谔方程求解，需要引入三个条件参量，称为量子数：</p>
+<p>主量子数<em>n</em>：表征原子轨道相对于原子核的远近，靠近原子核的位置能量更低，更稳定。<em>n</em>的取值为1，2，3……，也可以按照光谱学习惯标注为K，L，M，N等。</p>
+<p>角量子数<em>l</em>：表征原子轨道角动量的大小，与原子轨道的空间形状有关。取值为0，1，2，3，……，光谱学习惯标注为s，p，d，f等。</p>
+<p>磁量子数<em>m</em>：表征原子轨道角动量在外磁场方向上分量的大小，即电子云的取向。取值为0，±1，±2等。</p>
+<p>此外由于电子是费米子，在<em>nml</em>均相同的同一个轨道上可以填充最多两个自旋状态相反的电子，电子的自旋用自旋量子数<em>m</em><sub>s</sub>表征，取值为±1/2。</p>
+<p>实际电子排布能级的顺序受屏蔽效应和钻穿效应的影响，排布顺序服从泡利不相容原理，能量最低原理，和洪特规则。实际的能级填充顺序为：</p>
+<p>1s🡪2s🡪2p🡪3s🡪3p🡪4s🡪3d🡪4p🡪5s🡪4d🡪……</p>
+<h3><strong>3.2 元素周期表与元素周期律</strong></h3>
+<p>元素周期表包括7个周期16个族。能源材料主要研究对象为前三周期的元素，尤其是碱金属、非金属元素、和过渡金属元素。</p>
+<p>从左到右按顺序各族：</p>
+<p>ⅠA~ⅡA：s区，价电子层结构为ns<sup>1~2</sup>的元素，除氢外均为活泼金属，氧化数为+1和+2。其中ⅠA为碱金属，ⅡA为碱土金属。</p>
+<p>ⅢB~ⅦB：属于d区元素，价电子层结构为(n-1)d<sup>1~7</sup>ns<sup>0~2</sup>，除第六和第七周期的镧系和锕系元素之外均为过渡金属元素，具有多种氧化态。(n-1)d和ns层电子总和等于其族数。</p>
+<p>Ⅷ：属于d区元素，在周期表中占三个纵行，均为过渡金属元素，价电子层结构为(n-1)d<sup>1~10</sup>ns<sup>0~2</sup>。(n-1)d和ns层电子总和等于其族数。</p>
+<p>ⅠB~ⅡB：ds区，价电子层结构为(n-1)d<sup>10</sup>ns<sup>1~2</sup>，为过渡金属元素。</p>
+<p>ⅢA~ⅦA：属于p区元素，价电子层结构为ns<sup>2</sup>np<sup>1~5</sup>，该区域大多数为非金属元素，与ds区交界线附近的元素可能呈现半导体性质，左下角为低熔点金属。</p>
+<p>0：属于p区元素，价电子层结构除He为1s<sup>2</sup>外均为ns<sup>2</sup>np<sup>6</sup>，结构稳定，称为惰性气体元素。</p>
+<p>另外，镧系和锕系元素为f区，价电子层还包括(n-2)f，该区域内元素性质非常相似。</p>
+<p>元素周期律表现在原子半径、电离能（使基态原子/离子失去一个电子所需的能量）、电子亲和能（基态的气态原子获得一个电子变成一价阴离子所放出的能量）、电负性（原子在共价键中对成键电子的吸引能力，是相对比较的结果，定义F为电负性最强的元素）、金属性/非金属性。</p>
+</blockquote>
+<h3><strong>3.3 化学键和分子结构</strong></h3>
+<blockquote>
+<p>化学键包括离子键、共价键、金属键等。分子间作用力包括范德华力和氢键等。</p>
+<p>离子键是正负离子间的静电引力形成的化学键，无方向性；共价键是原子间共用电子对形成的化学键，依赖于未成对的价电子，成键时两电子自旋状态应相反。共价键的成键三原则：参与成键的原子轨道需对称性匹配、能量相近、最大重叠。包括两种：<em>σ</em>键为头碰头、<em>π</em>键为肩并肩。</p>
+<p>分子的极性判断依据为正负电荷中心是否重叠。偶极矩的定义为正负电荷中心的距离与一端电荷量的乘积。</p>
+<p>范德华力分为色散力、诱导力、取向力。</p>
+<p>氢键结构为X—H---Y。其意为H与强电负性元素X成共价键时，价电子受吸引而强烈偏向X，使得H原子核近乎裸露而产生正电场，该电场对Y产生吸引力，该吸引力即为氢键。氢键的强度强于范德华力，弱于化学键。</p>
+<p>晶体共分为四种：离子晶体、原子晶体、分子晶体、金属晶体。</p>
+</blockquote>
+<h3><strong>3.4 气体的<em>pVT</em>关系</strong></h3>
+<blockquote>
+<p>Boyle R定律：</p>
+<p><span class="math display">\[pV = Const.\ (n,T = Const.)\]</span></p>
+<p>Gay J-Lussac J定律：</p>
+<p><span class="math display">\[\frac{V}{T} = Const.\ (n,\ p =
+Const.)\]</span></p>
+<p>Avogadro A 定律：</p>
+<p><span class="math display">\[\frac{V}{n} = Const.(T,p =
+Const.)\]</span></p>
+<p>即理想气体状态方程：</p>
+<p><span class="math display">\[pV = nRT\]</span></p>
+<p><em>R</em> = 8.314 Pa m<sup>3</sup> mol<sup>-1</sup>
+K<sup>-1</sup></p>
+<p>理想气体的微观特征：1. 分子间无相互作用力；2.
+分子本身不占体积。现实气体使用是需在低压高温条件下才可以近似。</p>
+<p>气体分子动理论推导分子平均动能：</p>
+<p><span class="math display">\[\overline{\varepsilon_{t}} =
+\frac{3}{2}kT\]</span></p>
+<p><em>k</em> = 1.381×10<sup>-23</sup> J
+K<sup>-1</sup>，为玻尔兹曼常数。</p>
+<p>在密闭容器中气体凝结和液体蒸发达到平衡时称为气-液平衡态，分别为饱和液体、饱和气体，饱和蒸汽的压力为饱和蒸汽压，温度称为该压力下的沸点。总体而言，温度越高，使得气体液化所需的压力越大，临界温度指可以通过高压使得气体液化的最大温度。</p>
+<h3>真实气体状态可以用范德华方程描述</h3>
+<p><span class="math display">\[\left( p + \frac{a}{V_{m}^{2}} \right)(V
+- nb) = nRT\]</span></p>
+<p>范德华常数与临界参数的关系：<span class="math inline">\(a =
+\frac{27R^{2}T_{c}^{2}}{64p_{c}}\)</span>；<span class="math inline">\(b
+= \frac{RT_{c}}{8p_{c}}\)</span></p>
+</blockquote>
+<h3><strong>3.5 热力学三定律</strong></h3>
+<blockquote>
+<p>热力学基本概念：孤立系统/封闭系统/开放系统；状态函数：广度量（可加）/强度量（不可加）；途径函数；体积功<em>W</em>/非体积功<em>W’</em>；热力学能<em>U=U</em>(<em>V</em>,
+<em>T</em>)</p>
+<p>可逆过程：系统内部以及系统与环境之间均在无限接近平衡状态下进行的过程。</p>
+<h3>热力学第一定律：能量守恒定律</h3>
+<p>对于封闭系统，该定律表述为<span class="math inline">\(dU = \delta Q +
+\delta
+W\)</span>，<em>d</em>表示状态函数的微分，是恰当微分；<em>δ</em>表示途径函数的微分，是非恰当微分。</p>
+<p>恒容过程体积功<em>W</em>=0，有<span class="math inline">\(dU = \delta
+Q_{V}\)</span></p>
+<p>恒压过程定义焓<span class="math inline">\(H = U +
+pV\)</span>，有恒压热<span class="math inline">\(\delta Q_{p} =
+dH\)</span>（<em>dp</em>=0, <em>δW’=</em>0）</p>
+<p>摩尔定容热容<span class="math inline">\(C_{V,m} =
+\frac{1}{n}\frac{\delta Q_{V}}{dT} = \left( \frac{\partial
+U_{m}}{\partial T} \right)_{V}\)</span>；摩尔定压热容<span
+class="math inline">\(C_{p,m} = \frac{1}{n}\frac{\delta Q_{p}}{dT} =
+\left( \frac{\partial H_{m}}{\partial T} \right)_{p}\)</span></p>
+<p>恒容过程<span class="math inline">\(\Delta U = Q_{V} =
+n\int_{T_{1}}^{T_{2}}{C_{V,m}dT}\)</span>；恒压过程<span
+class="math inline">\(\Delta H = Q_{p} =
+n\int_{T_{1}}^{T_{2}}{C_{p,m}dT}\)</span></p>
+<p>对于理想气体，<span class="math inline">\(C_{p,m} - C_{V,m} =
+R\)</span></p>
+<p>理想气体的可逆过程最大体积功可以利用理想气体方程进行积分获得。</p>
+<h3>热力学第二定律：熵增原理</h3>
+<p>卡诺热机效率：<span class="math inline">\(\eta = 1 -
+\frac{T_{2}}{T_{1}}\)</span>；包含四个可逆过程：恒温膨胀🡪绝热膨胀🡪恒温压缩🡪绝热压缩。该热机效率为同温度热机所能达到的最高效率。</p>
+<p>玻尔兹曼熵定义：<span class="math inline">\(S =
+kln\Omega\)</span>。该熵由统计热力学理论导出，称为统计熵。</p>
+<p>克劳修斯熵定义：<span class="math inline">\(dS = \frac{\delta
+Q_{r}}{T}\)</span>，该方程给出绝热可逆过程为等熵过程。对于单纯的<em>pVT</em>过程变化，熵变由方程<span
+class="math inline">\(dS = \frac{dU + pdV}{T} = \frac{dH -
+Vdp}{T}\)</span>积分得到。相变等过程熵由过程焓与温度的比值得到。该熵称为量热熵。</p>
+<p>热力学第三定律：绝对零度不可达：纯物质、完美晶体、0 K时的熵为0。</p>
+</blockquote>
+<h3><strong>3.6 过程热力学与平衡</strong></h3>
+<blockquote>
+<p>由克劳修斯不等式<span class="math inline">\(dS \geq \frac{\delta
+Q}{T}\)</span>可构造亥姆霍兹函数<span class="math inline">\(A = U -
+TS\)</span>作为过程自发性判据。适用范围为恒温恒容、非体积功为0的孤立系统，当<em>A</em>减小时过程可自发进行，达到极小值时平衡，<em>A</em>增大的过程不可发生。</p>
+<p>对于恒温恒压、非体积功为0的孤立系统，定义吉布斯函数<span
+class="math inline">\(G = H -
+TS\)</span>作为过程自发性的判据。<em>G</em>和<em>A</em>的变化量均表示系统在对应条件下可对外做可逆非体积功的多少。</p>
+<p>封闭系统无非体积功的热力学基本方程：</p>
+<p><span class="math display">\[dU = TdS - pdV\]</span></p>
+<p><span class="math display">\[dH = TdS + Vdp\]</span></p>
+<p><span class="math display">\[dA = - SdT - pdV\]</span></p>
+<p><span class="math display">\[dG = - SdT + Vdp\]</span></p>
+<p>纯物质两相平衡用克拉佩龙方程描述：</p>
+<p><span class="math display">\[\frac{dp}{dT} =
+\frac{\Delta_{\alpha}^{\beta}H_{m}}{T\Delta_{\alpha}^{\beta}V_{m}}\]</span></p>
+<p>对于单相多组分体系，系统广度量<em>X</em>应当用偏摩尔量<em>X</em><strong><sub>B</sub></strong>修正。物理意义为在恒温恒压及除B组分以外其他各组分的量均保持不变的条件下，系统广度量<em>X</em>随组分B的物质的量的变化率。系统广度量满足关系：<span
+class="math inline">\(X = \sum_{B}^{}{n_{B}X_{B}}\)</span></p>
+<p>偏摩尔吉布斯函数是最重要的偏摩尔广度量，定义其为组分B的化学势，有：</p>
+<p><span class="math display">\[\mu_{B} = G_{B} = \left( \frac{\partial
+G}{\partial n_{B}} \right)_{T,p,n_{C}}\]</span></p>
+<p>对于单组分系统，化学势与摩尔吉布斯自由能的值相等。</p>
+<p>单相多组分系统的热力学基本方程需要在原本方程的基础上加上各组分的化学势影响项<span
+class="math inline">\(\sum_{B}^{}{\mu_{B}dn_{B}}\)</span>；多相多组分系统则需要将所有相的化学势影响相加<span
+class="math inline">\(\sum_{\alpha}^{}{\sum_{B}^{}{\mu_{B(\alpha)}dn_{B(\alpha)}}}\)</span></p>
+<p>稀溶液中溶剂的蒸汽压由拉乌尔定律表述：</p>
+<p><span class="math display">\[p_{A} = p_{A}^{*}x_{A}\]</span></p>
+<p>真实液态混合物中组分B的活度<em>a</em><sub>B</sub>及活度因子<em>f</em><sub>B</sub>定义为：</p>
+<p><span class="math display">\[\mu_{B(l)} = \mu_{B(l)}^{*} + RTlna_{B}
+= \mu_{B(l)}^{*} + RTlnf_{B}x_{B}\]</span></p>
+<p><em>μ</em><sup>*</sup>表示纯液态物质在一定温度、压力下的化学势。</p>
+<p>对于化学反应，其标准平衡常数的定义为：</p>
+<p><span class="math display">\[\Delta_{r}G_{m}^{\ominus} = -
+RTlnK^{\ominus}\]</span></p>
+<p>温度对标准平衡常数的影响由亥姆霍兹方程表述：</p>
+<p><span class="math display">\[\frac{dlnK^{\ominus}}{dT} =
+\frac{\Delta_{r}H_{m}^{\ominus}}{RT^{2}}\]</span></p>
+<p>对于多相系统的平衡状态由强度变量决定，有相律<span
+class="math inline">\(F = C - P +
+2\)</span>。其中，<em>F</em>为系统自由度数，定义为总变量数与对强度变量的独立限制条件个数；<em>C</em>为独立组分数；<em>P</em>为相数。</p>
+</blockquote>
+<h3><strong>3.7 界面化学</strong></h3>
+<blockquote>
+<p>界面的研究对象是两相之间的薄层，一般厚度为几个分子。当物质分散程度增大时，界面效应也会更显著。该分散程度用比表面积<span
+class="math inline">\(a_{s} = A_{s}/m\)</span>量化。</p>
+<p>界面相与体相性质不同产生了界面张力，界面张力是一切界面现象的根本原因。</p>
+<p>凝聚态相的表面张力定义为引起液体表面收缩的单位长度上的力[<em>F</em>
+<em>m</em><sup>-1</sup>]；或使系统增加单位表面积所需的可逆功，此时称表面功[<em>J</em>
+<em>m</em><sup>-2</sup>]；或定义为系统在恒温恒压条件下增加单位面积时所增加的吉布斯能，此时称表面吉布斯函数[<em>J</em>
+<em>m</em><sup>-2</sup>]。三者单位本质统一。</p>
+<p>对于弯曲液面的表面张力，定义附加压力<span
+class="math inline">\(\Delta p = p_{内} -
+p_{外}\)</span>，有拉普拉斯方程<span class="math inline">\(\Delta p =
+2\gamma/r\)</span>，即附加压力与表面张力成正比，与曲率半径成反比。对于毛细现象，毛细管中液面升高的高度<span
+class="math inline">\(h = \frac{2\gamma cos\theta}{r\rho
+g}\)</span>。<em>θ</em>为接触角。</p>
+<p>固体吸附的本质是通过降低表面能而降低表面吉布斯函数，分为物理吸附和化学吸附。物理吸附的本质是范德华力，吸附分子层可以是多层的，基本均为可逆过程，几乎不具有选择性；化学吸附本质为化学键，单层吸附，且具有强选择性，几乎不可逆。</p>
+<p>固体对气体的吸附的量化一般用Langmuir单分子层吸附理论。有Langmuir吸附等温式：</p>
+<p><span class="math display">\[\theta = \frac{bp}{1 + bp}\]</span></p>
+<p><span class="math inline">\(b = k_{1}/k_{-
+1}\)</span>，<em>θ</em>为固体表面气体分子的覆盖率；<em>k</em><sub>1</sub>和<em>k</em><sub>-1</sub>表示吸附和解吸的速率常数。</p>
+<p>多分子层的吸附常用BET理论分析，有BET公式：</p>
+<p><span class="math display">\[\frac{V^{a}}{V_{m}^{a}} = \frac{c\left(
+p/p^{*} \right)}{(1 - p/p^{*})\lbrack 1 + (c -
+1)p/p^{*}\rbrack}\]</span></p>
+<p>方程中<em>V</em><sup>a</sup>为压力<em>p</em>下的吸附量，下标m表示饱和吸附量；<em>p</em><sup>*</sup>为吸附温度下吸附质液体的饱和蒸汽压；<em>c</em>是与吸附热有关的常数。该方程也可以用于测定比表面积。</p>
+<p>对于固液界面，主要的研究对象集中于接触角<em>θ</em>和杨氏方程<span
+class="math inline">\(\gamma^{s} = \gamma^{sl} +
+\gamma^{l}cos\theta\)</span>。</p>
+<p>固体自稀溶液中的吸附可以用Langmuir单分子层吸附理论描述。</p>
+<p>纯液体中加入溶质后，为降低表面吉布斯能，溶质会在表面或体相富集，称为溶液表面的吸附。能显著降低表面张力的物质称为表面活性剂。</p>
+</blockquote>
+<h3><strong>3.8 化学动力学</strong></h3>
+<blockquote>
+<p>反应的化学计量式的标准写法为：</p>
+<p><span class="math display">\[0 = \sum_{B}^{}{\nu_{B}B}\]</span></p>
+<p>基于浓度的化学反应速率定义为单位体积的转化速率：</p>
+<p><span class="math display">\[v = \frac{\dot{\xi}}{V} =
+\frac{1}{\nu_{B}V} \cdot \frac{dn_{B}}{dt}\overset{V =
+Const.}{\Rightarrow}\frac{1}{\nu_{B}} \cdot \frac{dc_{B}}{dt}\
+\]</span></p>
+<p>化学反应中最小单位上分子层次的反应称为基元反应，基元反应中各反应物分子个数之和称为反应分子数；基元反应的反应速率服从质量作用定律<span
+class="math inline">\(v = k\Pi
+c_{i}^{\nu_{i}}\)</span>，<em>k</em>称为反应速率常数，<em>ν</em><sub>i</sub>称为反应分级数，各组分分级数之和称为该基元反应的反应级数。<em>n</em>级反应的半衰期为：</p>
+<p><span class="math display">\[t_{1/2} = \frac{2^{n - 1} - 1}{(n -
+1)k_{A}c_{A,0}^{n - 1}}\ \]</span></p>
+<p>温度对反应速率的影响用阿伦尼乌斯方程描述：</p>
+<p><span class="math display">\[\frac{dlnk}{dT} =
+\frac{E_{a}}{RT^{2}}\]</span></p>
+<p><em>E</em><sub>a</sub>为反应的活化能。有定积分形式和不定积分形式：</p>
+<p><span class="math display">\[\ln\frac{k_{2}}{k_{1}} = -
+\frac{E_{a}}{R}\left( \frac{1}{T_{2}} - \frac{1}{T_{1}}
+\right)\]</span></p>
+<p><span class="math display">\[k = Aexp\left( - \frac{E_{a}}{RT}
+\right)\]</span></p>
+</blockquote>
+<h3><strong>3.9 电化学热力学</strong></h3>
+<blockquote>
+<p>热力学的主要研究对象是过程发生的吉布斯自由能变，由于电化学过程大多发生在稀溶液中以及固液界面间，可以用化学势来代替。此外，也要考虑电荷转移带来的电能的变化，修正为电化学势。</p>
+<p>相间电位是指两相界面层间存在的电位差，产生原因为带电粒子和偶极子在界面层中的非均匀分布。离子双电层的结构为“+
+| —”；吸附双电层和偶极子双电层等表面电位双电层结构为“| +
+—”。双电层的电位差就是相间电位。</p>
+<p>能作为基准的、电极电位保持恒定的电极叫做参比电极。最重要的参比电极是1
+bar
+H<sub>2</sub>和离子活度为1的H<sup>+</sup>溶液组成的电极体系，以Pt为电子导电相，称为氢标电极，人为规定其相对电位为0
+V。</p>
+<p>盐桥的作用是消除液接电位。此电位发生在直接接触而组成不同的电解液界面上。</p>
+<p>原电池理论最大电动势由相应电极反应的吉布斯能变导出：</p>
+<p><span class="math display">\[E = - \Delta G/nF =
+\frac{RT}{nF}lnK\]</span></p>
+<p><em>n</em>为每摩尔反应转移电荷；<em>K</em>为反应的平衡常数。进一步地，有反应电池电动势与参加电池反应各物质活度关系的能斯特方程：</p>
+<p><span class="math display">\[E = E^{0} - \frac{RT}{nF}\ln\frac{\Pi
+a^{\nu&#39;}}{\Pi a^{\nu}}\]</span></p>
+<p>其中，<em>ν</em>和<em>ν</em>’分别为生成物的反应计量数，<em>a</em>为对应物质的活度。</p>
+</blockquote>
+<h3><strong>3.10 电极/溶液界面与电极过程</strong></h3>
+<blockquote>
+<p>理想极化电极指流经电荷全部用于构建双电层的电极。</p>
+<p>界面的剩余电荷量可根据电毛细现象与Lippman公式量化：</p>
+<p><span class="math display">\[q = - \left(
+\frac{\partial\sigma}{\partial\varphi} \right)_{\mu_{i}}\]</span></p>
+<p>其中，<em>σ</em>为界面张力。进一步可导出双电层的微分电容：</p>
+<p><span class="math display">\[C_{d} = -
+\frac{\partial^{2}\sigma}{\partial\varphi^{2}}\]</span></p>
+<p>剩余电荷在金属电极侧呈紧密排布，而在溶液侧则为分散排布。即双电层是由紧密层和分散层两部分组成的。紧密层的厚度为电极表面到最接近电极表面的水化阳离子电荷中心之间的距离。当电极表面荷负电时，大约为一个水分子的直径加一个水化离子的半径，该平面称外亥姆荷茨平面（OHP）；当电极表面荷正电时，大约为一个水化离子的半径，该平面称内亥姆荷茨平面（IHP）。</p>
+<p>分散层的量化使用GCS双电层模型，有：</p>
+<p><span class="math display">\[q =
+\sqrt{8cRT\varepsilon_{0}\varepsilon_{r}}\sinh\frac{|z|\psi_{l}F}{2RT}\]</span></p>
+<p>其中，<em>c</em>是溶液浓度，<em>ψ</em><sub>l</sub>是分散层电位差。则界面双电层的总电位差可以表示为：</p>
+<p><span class="math display">\[\varphi_{a} = \psi_{l} +
+\frac{1}{C_{紧}}\sqrt{2cRT\varepsilon_{0}\varepsilon_{r}}\left\lbrack
+\exp\left( \frac{|z|\psi_{l}F}{2RT} \right) - \exp\left( -
+\frac{|z|\psi_{l}F}{2RT} \right) \right\rbrack\]</span></p>
+<p>双电层结构的变化主要是分散层电位<em>ψ</em><sub>l</sub>的变化，因此该变化对动力学的影响称为<em>ψ</em><sub>l</sub>效应。该效应一方面会影响紧密层电位，一方面会影响电极表面带电反应粒子浓度。由紧密层电位和电极表面粒子浓度等于体相浓度推导得到的动力学方程均应当作出修正。</p>
+<p>电流经过是电极电位偏离平衡电位的过程称为电极极化，偏离量的绝对值称为过电位。对于原电池过程，极化会降低正极电位、升高负极电位，使得电池电压降低；对于电解池过程，极化会升高阳极电位、降低阴极电位，使得电解电压升高。</p>
+<p>电极电流密度可以从反应速率推导得到，有：</p>
+<p><span class="math display">\[j = nFv =
+nF\frac{1}{S}\frac{dc}{dt}\]</span></p>
+<p>电极反应的基本历程分为五个过程：</p>
+<p>液相传质🡪前置转化（吸附等无电子参与过程）🡪电化学反应🡪随后转化（解吸附等过程）🡪反应后液相传质</p>
+<p>控制电极过程速率的步骤为最慢速率的步骤。当电化学反应步骤为诀速步骤时，引起的极化现象为电化学极化。</p>
+<p>电极过程具有三个动力学特征：1. 符合一般异相催化反应的动力学规律；2.
+界面电场对电极过程进行速率有重大影响；3.
+电极过程是一个多步骤的、连续进行的复杂过程。</p>
+</blockquote>
+<p><strong>3.11 液相传质动力学与电子转移动力学</strong></p>
+<blockquote>
+<p>液相传质有三种方式：电迁移、对流和扩散。三者中作用最显著的是扩散通量。电迁移的作用在存在大量局外电解质的情况下可忽略，对流作用在原理电极表面的位置才需要考虑。</p>
+<p>电迁移通量：</p>
+<p><span class="math display">\[J_{i} = c_{i}u_{i}E\]</span></p>
+<p><em>u</em>为离子淌度；<em>E</em>为电场强度。离子淌度可以由扩散系数得到：</p>
+<p><span class="math display">\[D_{i} = \frac{RT}{zF}u_{i}\]</span></p>
+<p>对流通量：</p>
+<p><span class="math display">\[J_{i} = v_{x}c_{i}\]</span></p>
+<p><em>v</em><sub>x</sub>为与电极表面垂直方向上的液体流速。</p>
+<p>稳态扩散通量由Fick第一定律确定：</p>
+<p><span class="math display">\[J_{i} = - D_{i}\left( \frac{dc_{i}}{dx}
+\right)\]</span></p>
+<p><em>D</em>为扩散系数。当扩散为决速步骤时，电极过程的极限电流密度实际上是极限扩散电流，即电极表面浓度降为0时的稳态扩散电流：</p>
+<p><span class="math display">\[j_{d} =
+nFD_{i}\frac{c_{i}^{0}}{l}\]</span></p>
+<p><em>l</em>为电极表面到电解液体相的距离。</p>
+<p>液相传质的扩散步骤控制速率而引起的极化称为浓差极化。当产物不可溶时，其动力学方程为：</p>
+<p><span class="math display">\[\varphi = \varphi_{平} +
+\frac{RT}{nF}\ln\left( 1 - \frac{j}{j_{d}} \right)\]</span></p>
+<p>当产物可溶时，其动力学方程为：</p>
+<p><span class="math display">\[\varphi = \varphi_{1/2} +
+\frac{RT}{nF}\ln\left( 1 - \frac{j}{j_{d}} \right)\]</span></p>
+<p><em>φ</em><sub>1/2</sub>称为半波电位，为<em>j</em>=0.5<em>j</em>­­<sub>d</sub>时的电极电位，解析为：</p>
+<p><span class="math display">\[\varphi_{1/2} = \varphi^{0} +
+\frac{RT}{nF}\ln\frac{\gamma\delta
+D}{\gamma&#39;\delta&#39;D&#39;}\]</span></p>
+<p><em>δ</em>为扩散层厚度。</p>
+<p>非稳态扩散过程由Fick第二定律描述：</p>
+<p><span class="math display">\[\frac{\partial c}{\partial t} =
+D\frac{\partial^{2}c}{\partial t^{2}}\]</span></p>
+<p>该方程求解时需给出初始条件和边界条件。若认为无限远处有物质浓度为定值，这样的假设称半无限扩散条件，表示为<em>c</em>(∞,
+t)=<em>c</em>­<sub>0</sub>。</p>
+<p>对于电子转移步骤，影响其速率的方式主要是热力学方式，尤其是通过界面电位影响活化能，进而通过阿伦尼乌斯公式影响过程速率。当电位使用氢标电位时，有还原和氧化反应活化能：</p>
+<p><span class="math display">\[\Delta\overrightarrow{G} =
+\Delta{\overrightarrow{G}}_{0} + \alpha nF\varphi\]</span></p>
+<p><span class="math display">\[\Delta\overleftarrow{G} =
+\Delta{\overleftarrow{G}}_{0} - \beta nF\varphi\]</span></p>
+<p>电子转移步骤的研究对象为双电层的紧密层电位，即OHP内的电位，且假设不存在浓差，即OHP平面离子浓度等电解液体相浓度，有还原和氧化电流密度：</p>
+<p><span class="math display">\[\overrightarrow{j} =
+F\overrightarrow{K}c_{O}\exp\left( - \frac{\alpha F\varphi}{RT}
+\right)\]</span></p>
+<p><span class="math display">\[\overleftarrow{j} =
+F\overleftarrow{K}c_{R}\exp\left( \frac{\beta F\varphi}{RT}
+\right)\]</span></p>
+<p>定义<em>j</em><sub>0</sub>为还原和氧化反应平衡时的反应速率，称参考交换电流密度，满足：</p>
+<p><span class="math display">\[j_{0} =
+F\overrightarrow{K}c_{O}\exp\left( - \frac{\alpha F\varphi_{平}}{RT}
+\right) = F\overleftarrow{K}c_{R}\exp\left( \frac{\beta
+F\varphi_{平}}{RT} \right)\]</span></p>
+<p>电子转移步骤的净电流应当为这两个电流的差值，即有：</p>
+<p><span class="math display">\[j = \overrightarrow{j} -
+\overleftarrow{j} = F\overrightarrow{K}c_{O}\exp\left( - \frac{\alpha
+F\varphi}{RT} \right) - F\overleftarrow{K}c_{R}\exp\left( \frac{\beta
+F\varphi}{RT} \right)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \]</span></p>
+<p><span class="math display">\[= F\overrightarrow{K}c_{O}\exp\left( -
+\frac{\alpha F\left( \varphi_{平} + \Delta\varphi \right)}{RT} \right) -
+F\overleftarrow{K}c_{R}\exp\left( \frac{\beta F\left( \varphi_{平} +
+\Delta\varphi \right)}{RT} \right)\]</span></p>
+<p><span class="math display">\[= F\overrightarrow{K}c_{O}\exp{\left( -
+\frac{\alpha F\varphi_{平}}{RT} \right)\exp\left( - \frac{\alpha
+F\Delta\varphi}{RT} \right)} - F\overleftarrow{K}c_{R}\exp\left(
+\frac{\beta F\Delta\varphi}{RT} \right)\ \ \ \ \ \ \ \ \]</span></p>
+<p>用参考交换电流密度代替每项的项首并提出来，得到Butler-Volmer方程：</p>
+<p><span class="math display">\[j = j_{0}\left\lbrack \exp\left( -
+\frac{\alpha F\Delta\varphi}{RT} \right) - \exp\left( \frac{\beta
+F\Delta\varphi}{RT} \right) \right\rbrack\]</span></p>
+<p>对于阴极极化，有过电位<em>η</em>=-Δ<em>φ</em>，对于阳极极化，有过电位<em>η</em>=Δ<em>φ</em>。</p>
+<p>当极化电流非常大时，过电位变大，B-V方程中将有一项远大于另一项，约去小项并取对数后可得阴阳极的Tafel曲线，有：</p>
+<p><span class="math display">\[\eta_{c} = - \frac{2.3RT}{\alpha F}\lg
+j_{0} + \frac{2.3RT}{\alpha F}\lg j_{c}\]</span></p>
+<p><span class="math display">\[\eta_{a} = - \frac{2.3RT}{\beta F}\lg
+j_{0} + \frac{2.3RT}{\alpha F}\lg j_{a}\]</span></p>
+<p>二者均有<em>η=a+b</em>lg<em>j</em>的形式。</p>
+<p>过电位极小时对指数项进行级数展开，约去小项并整理，可得到近似公式：</p>
+<p><span class="math display">\[\Delta\varphi = -
+\frac{RT}{F}\frac{j}{j_{0}}\]</span></p>
+</blockquote>
+<h3><strong>3.12 P2D模型的推导</strong></h3>
+<blockquote>
+<p>P2D模型的关键是给出复合电极中的电荷与物质守恒。对于物质守恒，其核心在于描述液相和固相的离子输运。首先给出无源的一维的连续性方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{\partial c}{\partial t} + \frac{\partial N}{\partial x} =
+0\#(3.12.1)
+\end{array}\]</span></p>
+<p>接下来讨论离子通量。我们考虑离子的化学势：</p>
+<p><span class="math display">\[\begin{array}{r}
+\mu = \mu^{0} + RT\ln c + zF\phi\#(3.12.2)
+\end{array}\]</span></p>
+<p>其迁移的驱动力来自于化学势负梯度，在一维情况下有：</p>
+<p><span class="math display">\[\begin{array}{r}
+f = - \frac{\partial\mu}{\partial x} = - RT\frac{1}{c}\frac{\partial
+c}{\partial x} - zF\frac{\partial\phi}{\partial x}\#(3.12.3)
+\end{array}\]</span></p>
+<p>根据Einstein涨落耗散关系，离子迁移的速率与驱动力之间满足关系：</p>
+<p><span class="math display">\[\begin{array}{r}
+v = \frac{D}{RT}f\#(3.12.4)
+\end{array}\]</span></p>
+<p>由通量=浓度×迁移速率，有：</p>
+<p><span class="math display">\[\begin{array}{r}
+N = - \frac{cD}{RT}\left( RT\frac{1}{c}\frac{\partial c_{l}}{\partial x}
++ zF\frac{\partial\phi}{\partial x} \right) = - D\frac{\partial
+c}{\partial x} - \frac{zF}{RT}Dc\frac{\partial\phi}{\partial
+x}\#(3.12.5)
+\end{array}\]</span></p>
+<p>此即为忽略对流的Nernst-Planck本构方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+N = - D\nabla c - \frac{zF}{RT}Dc\nabla\phi\#(3.12.6)
+\end{array}\]</span></p>
+<p>在固相，假设电子导电性良好，近似看作颗粒径向不存在电势差。假设颗粒均为球状颗粒，用半径方向的球坐标代换方程(3.12.5)并省去电迁移项，有：</p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{\partial c_{s}}{\partial t} =
+\frac{1}{r^{2}}\frac{\partial}{\partial r}\left(
+D_{s}r^{2}\frac{\partial c_{s}}{\partial r} \right)\#(3.12.7)
+\end{array}\]</span></p>
+<p>此即球坐标下的Fick第二定律。而在液相，其表示为：</p>
+</blockquote>
+<p><span class="math display">\[\begin{array}{r}
+\frac{\partial c_{l}}{\partial t} = \frac{\partial}{\partial x}\left(
+D\frac{\partial c_{l}}{\partial x} +
+\frac{zF}{RT}Dc_{l}\frac{\partial\phi}{\partial x} \right)\#(3.12.8)
+\end{array}\]</span></p>
+<blockquote>
+<p>由传递数定义，其表示离子迁移电流中某一离子的贡献度。以阳离子为例，其表示为：</p>
+<p><span class="math display">\[\begin{array}{r}
+t_{+} = \frac{z_{+}FN_{mig, +}}{i_{l}}\#(3.12.9)
+\end{array}\]</span></p>
+<p>则对比(3.12.8)中的电迁移项，可用电流密度与迁移数代换，即阳离子液相物质守恒：</p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{\partial c_{l}}{\partial t} = \frac{\partial}{\partial x}\left(
+D\frac{\partial c_{l}}{\partial x} + \frac{z_{+}t_{+}}{F}i_{l}
+\right)\#(3.12.10)
+\end{array}\]</span></p>
+<p>进一步地，对于多孔介质中的液相物质守恒，我们需要补充考虑以下三个点：</p>
+</blockquote>
+<ol type="1">
+<li><p>考虑体相不是完全由液相充满，应当考虑孔隙率<em>ε</em>的影响，并用有效扩散系数代替电解液的本征扩散系数；</p></li>
+<li><p>P2D模型中主要考察的是盐浓度的变化。在阳离子与阴离子均为一价且满足局部电中性的假设下，三者的浓度应当处处相等。然而由于阴离子不参与反应，其更能反应盐浓度的净变化，因此电迁移项应利用阴离子来表示；</p></li>
+<li><p>对于电流密度关于空间坐标的偏导数，常使用的处理方法为引入多孔电极的比表面积<em>a</em>­<sub>s</sub>。</p></li>
+</ol>
+<blockquote>
+<p>则可以得到标准P2D格式下的液相物质守恒：</p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{\partial\varepsilon_{l}c_{l}}{\partial t} =
+\frac{\partial}{\partial x}\left( D_{eff}\frac{\partial c_{l}}{\partial
+x} \right) + \frac{1 - t_{+}}{F}a_{s}j\#(3.12.11)
+\end{array}\]</span></p>
+<p>其中，多孔电极的电流密度源<em>j</em>满足：</p>
+<p><span class="math display">\[\begin{array}{r}
+a_{s}j = \frac{\partial i_{l}}{\partial x} = - \frac{\partial
+i_{s}}{\partial x}\#(3.12.12)
+\end{array}\]</span></p>
+<p>此方程表示两相间电荷守恒。而交换电流密度由Butler-Volmer方程给出：</p>
+<p><span class="math display">\[\begin{array}{r}
+j = j_{0}\left\lbrack \exp\left( \frac{\alpha_{a}F\eta}{RT} \right) -
+\exp\left( - \frac{\alpha_{c}F\eta}{RT} \right) \right\rbrack\#(3.12.13)
+\end{array}\]</span></p>
+<p>接下来讨论两相内的电荷守恒。对于固相，其为电子和离子的混合导体，为方便，可直接使用欧姆定律：</p>
+<p><span class="math display">\[\begin{array}{r}
+i_{s} = - \sigma_{eff}\frac{\partial\phi_{s}}{\partial x}\#(3.12.14)
+\end{array}\]</span></p>
+<p>对于液相，其为离子的单一导体。回到N-P关系，有阴阳离子的通量：</p>
+<p><span class="math display">\[\begin{array}{r}
+N_{+} = - D_{+}\frac{\partial c_{+}}{\partial x} -
+\frac{z_{+}F}{RT}D_{+}c_{+}\frac{\partial\phi}{\partial x}\#(3.12.15a)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+N_{-} = - D_{-}\frac{\partial c_{-}}{\partial x} -
+\frac{z_{-}F}{RT}D_{-}c_{-}\frac{\partial\phi}{\partial x}\#(3.12.15b)
+\end{array}\]</span></p>
+<p>则液相电流密度可表示为：</p>
+<p><span class="math display">\[i_{l} = z_{+}FN_{+} + z_{-}FN_{-}\ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+= - z_{+}FD_{+}\frac{\partial c_{+}}{\partial x} -
+z_{-}FD_{-}\frac{\partial c_{-}}{\partial x} -
+\frac{z_{+}^{2}F^{2}}{RT}D_{+}c_{+}\frac{\partial\phi}{\partial x} -
+\frac{z_{-}^{2}F^{2}}{RT}D_{-}c_{-}\frac{\partial\phi}{\partial
+x}\#(3.12.16)
+\end{array}\]</span></p>
+<p>考虑在二元一价电解液中，有：</p>
+<p><span class="math display">\[\begin{array}{r}
+z_{+} = - z_{-} = 1;\ \ \ \ \ c_{+} = c_{-} = c_{l}\#(3.12.17)
+\end{array}\]</span></p>
+<p>则(3.12.16)可整理为：</p>
+<p><span class="math display">\[\begin{array}{r}
+i_{l} = F\frac{\partial c_{l}}{\partial x}\left( D_{-} - D_{+} \right) -
+\frac{F^{2}}{RT}c_{l}\left( D_{-} + D_{+}
+\right)\frac{\partial\phi}{\partial x}\#(3.12.18)
+\end{array}\]</span></p>
+<p>定义离子电导率：</p>
+<p><span class="math display">\[\begin{array}{r}
+\kappa = \frac{F^{2}}{RT}c_{l}\left( D_{-} + D_{+} \right)\#(3.12.19)
+\end{array}\]</span></p>
+<p>且传递数此时满足：</p>
+<p><span class="math display">\[\begin{array}{r}
+t_{+} = \frac{D_{+}}{D_{-} + D_{+}}\#(3.12.20)
+\end{array}\]</span></p>
+<p>则可用这两个参数代换(3.12.18)，得到：</p>
+<p><span class="math display">\[\begin{array}{r}
+i_{l} = - \kappa\frac{\partial\phi}{\partial x} -
+\kappa\frac{RT}{F}\frac{1 - t_{+}}{c_{l}}\frac{\partial c_{l}}{\partial
+x}\#(3.12.21)
+\end{array}\]</span></p>
+<p>至此，我们得到了较为简化的P2D完整方程组，即：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+\frac{\partial c_{s}}{\partial t} =
+\frac{1}{r^{2}}\frac{\partial}{\partial r}\left(
+D_{s}r^{2}\frac{\partial c_{s}}{\partial r} \right) \\
+\frac{\partial\varepsilon_{l}c_{l}}{\partial t} =
+\frac{\partial}{\partial x}\left( D_{eff}\frac{\partial c_{l}}{\partial
+x} \right) + \frac{1 - t_{+}}{F}a_{s}j \\
+i_{s} = - \sigma_{eff}\frac{\partial\phi_{s}}{\partial x} \\
+i_{l} = - \kappa\frac{\partial\phi_{l}}{\partial x} -
+\kappa\frac{RT}{F}\frac{1 - t_{+}}{c_{l}}\frac{\partial c_{l}}{\partial
+x} \\
+j = j_{0}\left\lbrack \exp\left( \frac{\alpha_{a}F\eta}{RT} \right) -
+\exp\left( - \frac{\alpha_{c}F\eta}{RT} \right) \right\rbrack
+\end{array} \right.\ \#(3.12.22)
+\end{array}\]</span></p>
+<p>此外，有若干辅助方程：</p>
+<p><span class="math display">\[\begin{array}{r}
+\left\{ \begin{array}{r}
+a_{s}j = \frac{\partial i_{l}}{\partial x} = - \frac{\partial
+i_{s}}{\partial x} \\
+\eta = \phi_{s} - \phi_{l} - U_{0} \\
+A_{eff} = \frac{\varepsilon}{\tau}A
+\end{array} \right.\ \#(3.12.23)
+\end{array}\]</span></p>
+</blockquote>
+<ol start="4">
+<li><h3><strong>晶体学、固体物理、材料科学基础</strong></h3></li>
+</ol>
+<h3><strong>4.1</strong> <strong>晶体结构</strong></h3>
+<blockquote>
+<p>晶体的本质特征是长程有序性。</p>
+<p>晶体中原子排列的具体形式称为晶体格子。常见的晶格有简单立方，体心立方（BCC），和最密堆积。最密堆积有两种形式：层间ABAB形式堆积的为六方最密，ABCABC的为面心立方。</p>
+<p>晶格的周期性用原胞和基矢来描述。原胞即为最小周期性单元，一般去平行六面体，基矢即为其边矢量<strong><em>a</em>­<sub>1</sub>=</strong><em>a</em><sub>1</sub><em><strong>i</strong></em>，<strong><em>a</em><sub>2</sub>=</strong><em>a</em><sub>2</sub><em><strong>j</strong></em>，<strong><em>a</em><sub>3</sub>=</strong><em>a</em><sub>3</sub><em><strong>k</strong></em>。FCC的原胞不是立方体，而是立方体中抽出的更小的平行六面体。进一步地，晶格中每一个原子的坐标均可以写成<strong><em>r</em>­<sub>i</sub>=<em>r</em><sub>α</sub>+</strong><em>l</em>­<sub>1</sub><strong><em>a</em>­<sub>1</sub>+</strong><em>l</em>­<sub>2</sub><strong><em>a</em>­<sub>2</sub>+</strong><em>l</em>­<sub>3</sub><strong><em>a</em>­<sub>3</sub></strong>，其中，<strong><em>r</em><sub>α</sub></strong>为原胞内各种等价原子之间的相对位移，则可以用{<em>l</em>­<sub>1</sub><strong><em>a</em>­<sub>1</sub>+</strong><em>l</em>­<sub>2</sub><strong><em>a</em>­<sub>2</sub>+</strong><em>l</em>­<sub>3</sub><strong><em>a</em>­<sub>3</sub></strong>}代表一个布拉伐空间格子，每组<em>l</em>的取值都代表了一个格点。</p>
+<p>晶格分为简单晶格和复式晶格两类。简单晶格即每个原胞仅包含一个原子，所有原子等效。复式晶格中不同原子间化学环境可能不同，环境相同的原子可构成简单晶格，即复式晶格是由简单晶格穿套而成。</p>
+<p>在布拉伐格子中的格点可以看作排列在一系列平行的直线上，称晶列。从某一原子出发，沿某一晶列到最近的原子的位移矢量{<em>l</em>­<sub>1</sub><strong><em>a</em>­<sub>1</sub>+</strong><em>l</em>­<sub>2</sub><strong><em>a</em>­<sub>2</sub>+</strong><em>l</em>­<sub>3</sub><strong><em>a</em>­<sub>3</sub></strong>}记作[<em>l</em>­<sub>1</sub><em>l</em>­<sub>2</sub><em>l</em><sub>3</sub>]，称为晶向指数，对应的矢量所标记的方向称为晶向。若晶向指数取负值，在对应指数上标短横线。等效晶向用&lt;<em>l</em>­<sub>1</sub><em>l</em>­<sub>2</sub><em>l</em><sub>3</sub>&gt;统一标记。布拉伐格子中的格点也可以看作分列在平行等距的平面系上，称晶面。晶面的标注使用密勒指数(<em>h</em><sub>1</sub><em>h</em><sub>2</sub><em>h</em><sub>3</sub>)。其取值与垂直于晶面的法向量的晶向指数相同。</p>
+<p>回到晶格的周期性，由于基矢定义时已考虑到其周期性，由傅里叶变换可知，对于任一周期性函数，可以将其变换到频域上进行处理，即得到倒格子基矢：</p>
+<p><span class="math display">\[\mathbf{b}_{\mathbf{1}} =
+2\pi\frac{\mathbf{a}_{\mathbf{2}} \times
+\mathbf{a}_{3}}{\mathbf{a}_{\mathbf{1}} \cdot
+\lbrack\mathbf{a}_{\mathbf{2}} \times
+\mathbf{a}_{3}\rbrack}\]</span></p>
+<p><span class="math display">\[\mathbf{b}_{\mathbf{2}} =
+2\pi\frac{\mathbf{a}_{\mathbf{3}} \times
+\mathbf{a}_{1}}{\mathbf{a}_{\mathbf{1}} \cdot \left\lbrack
+\mathbf{a}_{\mathbf{2}} \times \mathbf{a}_{3}
+\right\rbrack}\]</span></p>
+<p><span class="math display">\[\mathbf{b}_{\mathbf{3}} =
+2\pi\frac{\mathbf{a}_{\mathbf{1}} \times
+\mathbf{a}_{2}}{\mathbf{a}_{\mathbf{1}} \cdot
+\lbrack\mathbf{a}_{\mathbf{2}} \times
+\mathbf{a}_{3}\rbrack}\]</span></p>
+<p>以<em><strong>b</strong></em>为基矢构成的格子称倒格子，矢量<strong><em>G</em><sub>h1h2h3</sub>=</strong><em>h</em>­<sub>1</sub><strong><em>b</em><sub>1</sub>+</strong><em>h</em>­­­<sub>2</sub><strong><em>b</em><sub>2</sub></strong>+<em>h</em><sub>3</sub><strong><em>b</em><sub>3</sub></strong>称为倒格子矢量。倒格子基矢的量纲为m<sup>-1</sup>。<strong><em>G</em><sub>h1h2h3</sub></strong>是晶面(<em>h</em><sub>1</sub><em>h</em><sub>2</sub><em>h</em><sub>3</sub>)的法向。晶面间距为1/|<strong><em>G</em><sub>h1h2h3</sub></strong>|。</p>
+<p>对于一个确定的晶格，其对称性通过正交变换前后几何等效的操作数目来确定。主要包括沿某一晶向进行旋转、中心反演、以及二者的组合。若一个物体绕一转轴旋转2<em>π</em>/<em>n</em>以及它的倍数后保持不变，称该轴为物体的<em>n</em>重旋转轴；若转2<em>π</em>/<em>n</em>加上中心反演之后保持不变，称为<em>n</em>重旋转-反演轴，在上加标小横线。一个物体的旋转轴称为对称素。物体的所有对称操作属于一个群，由于群的闭合性的限制，晶体的宏观对称只可能存在1、2、3、4、6重旋转轴及其所对应的旋转-反演轴，共10种对称素。</p>
+<p>点群指晶格中若干格点所构成的具有一定对称性的群。10种对称素仅能构成32种点群，分别是：没有任何对称性的晶体<em>C</em><sub>1</sub>；只包含一个旋转轴的回转群：<em>C</em><sub>2/3/4/6</sub>；包含一个<em>n</em>重旋转轴以及<em>n</em>个与之垂直的二重轴的双面群：<em>D</em><sub>2/3/4/6</sub>；<em>C</em><sub>i</sub>群和<em>D</em><sub>i</sub>群加上反演中心或镜面对称所组成的新群；仅包含旋转反演轴的点群<em>S</em><sub>n</sub>群；高阶对称轴多于1个的点群<em>O</em>群、<em>T</em>群。</p>
+<p>根据对称性高低的不同，可以将布拉伐格子分成七个晶系，其对称性由低到高分别是：三斜、单斜、正交、菱方、四方、六方、立方。其中，单斜、正交、四方、立方可以通过添加体心、面心、底心格点而衍生出更多格子，共有十四种布拉伐格子。</p>
+<p>晶格的周期性也称平移对称性，所有平移对称操作的集合称为平移群，再加上旋转/旋转-反演群的所有对称操作称为空间群，用于描述整个晶体的完整的对称性。空间群分为点空间群和非点空间群。点空间群指一个平移群和一个点阵对称操作组合成的群，简单晶格所具有的空间群属于点空间群。不同的空间群共有230种，其中73种为点空间群。</p>
+<p>对于晶体的表面结构，用二维晶格研究。其二维基矢与晶体的基矢不一定相同，称为表面的再构。</p>
+<p>非晶态材料的原子排列不具有长程有序性，但仍具有短程有序性，包括近邻原子的数目和种类、键长、键角等。</p>
+</blockquote>
+<h3><strong>4.2 晶格的振动</strong></h3>
+<blockquote>
+<p>晶体中的格点实际上代表的是原子的平衡位置，晶格振动指的是原子在格点附近的振动。晶格具有周期性，因此晶格的振动具有波的模式，称为格波，与连续介质波具有类似的形式。</p>
+<p>研究格波时需引入简正坐标。由简正坐标代表的，体系中所有原子一起参与的共同振动，称为一个振动模。定义相邻原子距离为<em>a</em>，质量为<em>m</em>，位移为<em>μ</em>，格波形式的振动解与连续介质波的解析分别为：</p>
+<p><span class="math display">\[\mu_{nq} = Aexp\left\lbrack i(\omega t -
+naq) \right\rbrack\]</span></p>
+<p><span class="math display">\[u(x,t) = Aexp\left\lbrack i(\omega t -
+qx) \right\rbrack\]</span></p>
+<p>其中，<em>ω</em>为波的圆频率，<em>λ</em>为波长，<em>q</em>=2<em>π</em>/<em>λ</em>为波数。二者具有完全相同的形式，区别在于连续介质波中<em>x</em>代表任意一点，而格波中仅取<em>na</em>格点位置。由格波方程可知相邻原子相位差为<em>aq</em>，对<em>aq</em>取2<em>π</em>的整数倍，所得原子振动是相同的，即可以在-<em>π</em>/<em>a</em>&lt;<em>q</em>≤<em>π</em>/<em>a</em>的范围内完整地描述振动行为，该取值范围称为布里渊区。此外，类似<em>ω</em>与<em>q</em>之间关系的，由频率影响的关系，称为色散关系。</p>
+<p>格波的振幅对应系统的简正坐标，每种简正振动的能级是量子化的，则可以定义格波的量子为声子。则一个格波等价于一种振动模等价于一种声子。声子为准粒子，反映的是晶格原子集体运动状态的激发单元。类似这样多体系统集体运动的激发单元称为元激发。根据其振动形式不同，声子分为<em>ω</em><sub>+</sub>分支（光学波）和<em>ω</em><sub>-</sub>分支（声学波）。对于光学声子，在长波极限时表现为相邻格子的相对振动；对于声学声子，在长波极限时表现为原子间完全一致的振动。由于光学声子的相对振动会产生电偶极矩，可与电磁波相互作用，尤其是远红外光区域的强吸收峰，因此更为重要。此外，长声学波就是将晶体看作连续介质时的弹性波，而离子晶体中的长光学波会引起极化电场，极化电场的大小与有效电荷量有关。</p>
+<p>在研究三维晶格的振动时，应在第一布里渊区内进行研究。在倒格子空间内，由原点出发作各倒格子矢量的垂直平分面，由这些平面围成的最小体积即为第一布里渊区。</p>
+<p>晶体相干反射条件（布拉格方程）：</p>
+<p><span class="math display">\[2dsin\theta = n\lambda\]</span></p>
+<p><em>d</em>为晶面距离，<em>λ</em>为波长。</p>
+</blockquote>
+<ol start="5">
+<li><h3><strong>化工原理</strong></h3></li>
+</ol>
+<h3><strong>5.0 化学工程绪论</strong></h3>
+<blockquote>
+<p>化工过程的研究关键是化工单元/单元操作。常用单元操作包括流体动力过程、传热过程、传质过程、热质传递过程、热力过程、机械过程。本质上分为动量传递、热量传递、质量传递三个过程。</p>
+<p>化工原理分析问题的基本方法为质量衡算、能量衡算、动量衡算。</p>
+</blockquote>
+<h3><strong>5.1 流体力学初步</strong></h3>
+<blockquote>
+<p>牛顿粘性定律表达为：</p>
+<p><span class="math display">\[\tau = \mu\frac{du}{dy}\]</span></p>
+<p>即剪应力与法向速度梯度成正比，比例系数称动力粘度，单位为[Pa
+s]。若动力粘度在温度固定时为常数，称流体为牛顿流体。此外，有运动粘度<span
+class="math inline">\(\nu = \mu/\rho\)</span>，单位为[m<sup>2</sup>
+s<sup>-1</sup>]。</p>
+<p>理想流体假设为无粘、不可压、无张力、仅受体积力作用。</p>
+<p>对于流体静力学，其基本方程有：</p>
+<p><span class="math display">\[\frac{p}{\rho} + gz =
+Const.\]</span></p>
+<p><em>z</em>是垂直高度。此方程仅在同一不可压缩流体，且仅受重力作用的情况中成立。</p>
+<p>对于管道流，连续性方程可表达为：</p>
+<p><span class="math display">\[\frac{u_{2}}{u_{1}} = \left(
+\frac{d_{1}}{d_{2}} \right)^{2}\]</span></p>
+<p>伯努利方程：</p>
+<p><span class="math display">\[gz_{1} + \frac{1}{2}u_{1}^{2} +
+\frac{p_{1}}{\rho} = gz_{2} + \frac{1}{2}u_{2}^{2} +
+\frac{p_{2}}{\rho}\]</span></p>
+<p>使用条件为理想流体，不产生流动阻力，无能量损耗。</p>
+<p>雷诺数<span class="math inline">\(Re =
+du\rho/\mu\)</span>，小于2k时称层流，大于4k时称湍流。</p>
+<p>水流经管道的阻力以压力损失的形式给出，分为直管损失和局部损失两部分求解。</p>
+</blockquote>
+<h3><strong>5.2 颗粒流初步</strong></h3>
+<blockquote>
+<p>颗粒的大小一般用比表面积来表示。不同形状的颗粒中球体的比表面积最小。</p>
+<p>流对颗粒的作用力称为曳力<em>F</em><sub>D</sub>，利用曳力系数<em>C</em>­<sub>D</sub>求取：</p>
+<p><span class="math display">\[F_{D} = C_{D}A_{p}\frac{\rho
+u^{2}}{2}\]</span></p>
+<p>曳力系数的取值总体上随着颗粒雷诺数的升高而降低。此外，考虑形状系数<em>φ</em>来表示颗粒形状偏离球形的程度。该参数越大，<em>C</em><sub>D</sub>越大。</p>
+<p>粒度分布一般指不同直径颗粒所占质量分数的分布。</p>
+</blockquote>
+<h3><strong>5.3 传热</strong></h3>
+<blockquote>
+<p>传热的三种方式分别是热传导、热对流、热辐射。</p>
+<p>热传导的速率由傅里叶定律量化：</p>
+<p><span class="math display">\[q = - \lambda\nabla T\]</span></p>
+<p><em>λ</em>称导热系数。厚度为<em>δ</em>、截面积为<em>A</em>的平壁热阻定义为<span
+class="math inline">\(R = \delta/\lambda
+A\)</span>。推广至<em>n</em>层平壁，传导热通量可以写为：<span
+class="math inline">\(Q = \Delta T/\sum
+R_{i}\)</span>。而对于圆柱壁，需要考虑截面积<em>A</em>的变化。</p>
+<p>热扩散系数<em>a</em>定义为<span class="math inline">\(a =
+\lambda/\rho c_{p}\)</span>。有源三维瞬态导热方程：</p>
+<p><span class="math display">\[\frac{1}{a}\frac{\partial T}{\partial t}
+= \nabla^{2} \cdot T + \frac{\dot{Q}}{\lambda}\ \]</span></p>
+<p>若无内热源，则温度变化率与热扩散率成正比。</p>
+<p>热对流分为无相变强制对流、无相变自然对流、蒸汽冷凝、液体沸腾四种情况。均可以用牛顿公式求解：<span
+class="math inline">\(dQ = \alpha dA\Delta T\)</span></p>
+<p>层流中由于流体分层运动，大致以热传导为主；而湍流以对流换热为主；缓冲层中二者的作用强度接近。</p>
+<p>对于冷凝传热，根据冷凝液是否能够润湿壁面分为膜状冷凝和珠状冷凝。对于膜状冷凝，会由于液膜的存在而引发额外的热阻。</p>
+<p>黑体辐射的量化有Stefan-Boltzmann定律描述：</p>
+<p><span class="math display">\[E = \sigma_{0}T^{4}\]</span></p>
+<p>即辐射功率与表面温度的四次方成正比。</p>
+</blockquote>
+<h3><strong>5.4 传质</strong></h3>
+<blockquote>
+<p>单相中的传质主要是扩散过程，分为依赖分子热运动的分子扩散（表现为浓差扩散）和涡流扩散。分子扩散的定量描述依赖Fick定律，有Fick第一和第二定律：</p>
+<p><span class="math display">\[J = - \nabla \cdot (Dc)\]</span></p>
+<p><span class="math display">\[\frac{\partial c}{\partial t} =
+\nabla^{2} \cdot (Dc)\]</span></p>
+<p>对于流动流体与两相界面之间的传质，称为对流传质，分为固定界面和流动界面。</p>
+</blockquote>
+

@@ -1,0 +1,437 @@
+---
+layout: single
+title: "浆料配方对催化剂层开裂情况影响与裂纹成因分析"
+date: 2025-09-08
+header:
+  image: /images/blog/slurry-catalyst-cracking/cover.jpg
+excerpt: "解析质子交换膜催化层浆料水醇比对开裂情况的影响及裂纹成因。"
+type: Note
+author_profile: true
+---
+
+
+<ol>
+<li><h3>引入</h3></li>
+</ol>
+<blockquote>
+<p>本课题的目的是解析甲方的浆料样本制成湿膜厚度为50
+μm的催化层之后开裂情况与水醇比之间的关系。在质子交换膜催化层的制备中，浆料的水醇比不仅显著影响溶剂的蒸发行为，还决定了浆料的流变特性、微观结构、胶体稳定性与干燥应力，从而对催化层的裂纹形成产生深远影响。</p>
+<p>浆料的本质是含有高分子粘接剂的固体团聚颗粒悬浊液，其干燥过程可以简略的分成两个步骤：1.
+溶剂的大量蒸发与颗粒网络的动态收缩；2.
+膜接近最终干膜厚度后，溶剂经由颗粒间毛细网络进行蒸发，最终完全干燥。开裂与否也依赖于针对这两个方面的分析。有相当一部分文献对相关过程与浆料特性的关系进行了研究和归因。</p>
+<p>Y.
+Guo等人指出，溶剂介电常数<em>ε</em>与离聚物含量对浆料中颗粒的<em>ζ</em>电位和团聚体尺寸起关键作用，通过影响高分子结构稳定性来影响催化层抗裂纹能力。<sup>[1]</sup>而H.
+Liu等人则解析了流变性，也就是黏度对催化层裂纹的影响。<sup>[2]</sup> S.
+Khandavalli的研究指出，水醇比也会对离聚物的分布产生一定的影响，进而影响整体的强度。<sup>[3]</sup>考虑到我们的溶剂中含有互溶的多种沸点不尽相同的溶液，它们在干燥过程中的选择性以及蒸发速率也会进一步影响应力的产生，进而影响表面裂纹。<sup>[4-6]</sup>此外还有大量的研究都给出了自己的见解。<sup>[7-10]</sup>但是纵观这些研究，在整个过程中，开裂的判据说到底是局部应力集中是否超过了颗粒网络开裂强度极限。<sup>[11]</sup>而前者的局部应力集中来源于两个方面：结构缺陷与干燥后期产生的各种应力。<sup>[12]</sup>遗憾的是，目前针对上述过程的计算仿真研究仍然比较欠缺。G.
+Inoue
+教授在类似建模的工作上成果颇丰，但大多专注于在静态模型的传质以及电性能等方面，但其研究尚未延伸至湿膜干燥动态演化与裂纹形成机制的模拟。而干燥过程中湿膜厚度变化、蒸发速率、毛细力引发的应力场演变及裂纹扩展等是裂纹生成的关键因素，这些尚未在现有模型中得到充分考虑。<sup>[13-15]</sup>。比较值得参考的是利用离散元方法研究了溶剂和离聚物针对油墨团聚的影响，其中主要考虑了粒子与粒子之间的相互作用力，尺度仍然远小于我们所期望的。<sup>[16,17]</sup>比较有潜力的是同时考虑了微观尺度的分子作用力，又可以兼顾宏观流体作用的LBM模拟，但是目前利用LBM进行的仿真研究则更多的专注于电性能、质量传输等方面的研究，尚无针对于干燥开裂过程的专门介绍文章。<sup>[19-22]</sup></p>
+<p>综上所述，目前受限于技术，暂时无法对该过程进行有效的完整建模计算。作为补充，我们参考大量文献针对一些关键过程中的应力等进行了简单的试算以得到参考性结论。实验方面，本课题针对甲方提供的浆料样本，制造湿膜厚度为约
+50 μm
+的催化层，系统分析不同水/醇比下浆料的流变特性、微观结构与干燥行为，评估裂纹生成规律。总体上通过多角度解析水/醇比如何调控浆料流变性、
+<em>ζ</em>电位、粒度分布、表面缺陷等关键物理参数和过程，为浆料配方的选取和催化层的制造提供指导。</p>
+</blockquote>
+<ol start="2">
+<li><h3>样本制备与实验方法</h3></li>
+</ol>
+<blockquote>
+<p>本课题中使用的离聚物溶液密度约为1.3g
+ml<sup>-1</sup>；Pt比例约为50%，参考Johnson
+Matthey公司相关产品可近似取其密度为 0.45 g
+ml<sup>-1</sup>，平均粒径为2.8
+nm。醇选择质量比9：1的乙醇和二丙酮醇混合，并进而制成水醇比（WA）分别为3.0、2.4、2.0的三组浆料。最终浆料的固含量固定为10%，IC比约为1.1。</p>
+<p>制备时采取60℃底板加热，环境温度保持25℃恒温。湿膜厚度控制在50μm，在PTFE薄膜上刮涂并恒温加热1min使得溶剂尽可能干燥，得到最终的催化层。</p>
+<p>利用实验室内的流变仪、激光粒度仪、和载量分析仪对浆料的黏度、粒度分布、Pt载量进行了分析。同时，将少量样本寄送科学指南针进行委托测试。</p>
+</blockquote>
+<ol start="3">
+<li><h3>结构表征与形貌观测</h3></li>
+</ol>
+<blockquote>
+<p>在五倍和二十倍的光镜下对催化层的结构进行了观测。同时，制备了表面和截面的切片样本，送往电镜中心进行精细结构的观测与分析。</p>
+</blockquote>
+<ol start="4">
+<li><h3>结果建模与分析讨论</h3>
+<ol type="a">
+<li><h3>干燥应力的建模</h3></li>
+</ol></li>
+</ol>
+<blockquote>
+<p>相当一部分文献表明，干燥后期应力的主要形式是毛细管应力，由以下公式表示：</p>
+</blockquote>
+<p><span class="math display">\[\begin{array}{r}
+P_{cap} = \frac{2\gamma_{LV}\cos\theta}{r_{p}}\#(3.1)
+\end{array}\]</span></p>
+<blockquote>
+<p>其中，<em>γ</em>是液/气表面张力，<em>θ</em>是液/固接触角，<em>r<sub>p</sub></em>是孔隙半径。[23,24]分子的两个参量均与干燥后期的液体成分有关。具体而言，是与固体团聚物颗粒表面/PTFE基底表面与液体的表面作用有关。</p>
+<p>样本溶剂的主要成分为水、乙醇（EtOH）、以及二丙酮醇（DAA）。由于这三种液体的极性、相对质量、沸点的不同，在干燥过程中三者的气化并不是同步的，而是呈现一定选择性。为解析干燥后期产生毛细应力的主要溶剂成分，基于纯液相混合物薄膜的非稳态焓和质量平衡以及蒸发动力学，对纯液相的该过程建立模型并求解剩余薄膜中组分<em>i</em>的质量分数<em>x<sub>i</sub></em>、总溶剂质量<em>M</em>的减少以及薄膜温度<em>T</em>随干燥时间<em>t</em>的变化。有以下主要控制方程：<sup>[25]</sup></p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{dH_{film}}{dt} = \frac{d\left( M_{film}c_{p,film}\left( T_{film} -
+T_{0} \right) \right)}{dt} = \dot{Q_{cond}} - \dot{Q_{conv}} -
+\dot{H_{evap}}\#(3.2)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{dM}{dt} = - \dot{M} = - \left( \dot{M_{W}} + \dot{M_{E}} +
+\dot{M_{D}} \right)\#(3.3)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{dM_{i}}{dt} = x_{i}\frac{dM}{dt} + M\frac{dx_{i}}{dt} = -
+\dot{M_{i}}\#(3.4)
+\end{array}\]</span></p>
+<p>此外，有对流热通量与传导热通量：</p>
+<p><span class="math display">\[\begin{array}{r}
+Q_{conv} = h_{conv}\left( T_{s} - T_{a} \right)\#(3.5)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+Q_{cond} = h_{cond}\left( T_{h} - T_{s} \right)\#(3.6)
+\end{array}\]</span></p>
+<p>其中，<em>h</em>是对应过程的传热系数，<em>T<sub>s</sub></em>是液相接触表面温度，<em>T<sub>a</sub></em>是环境温度，<em>T<sub>h</sub></em>是底板加热温度。</p>
+<p>蒸发焓的计算：</p>
+<p><span class="math display">\[\begin{array}{r}
+H_{evap} = \sum_{}^{}{\Delta M_{i}J_{i}}\#(3.7)
+\end{array}\]</span></p>
+<p>组分<em>i</em>的气液平衡基于热力学平衡给出：</p>
+<p><span class="math display">\[\begin{array}{r}
+f_{i}^{L}\left( T,p,\omega_{l,i} \right) = f_{i}^{V}\left(
+T,p,\omega_{v,i} \right)\#(3.8)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+c_{eq,i} = \frac{p_{eq,i}}{RT}\#(3.9)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\omega_{eq,i} = \frac{p_{eq,i}M_{i}}{\rho}\#(3.10)
+\end{array}\]</span></p>
+<p>其中，<em>f</em>、<em>T</em>、<em>p</em>、<em>ω</em>、<em>c</em>、<em>R</em>、<em>ρ</em>分别代表组分逸度、温度、压力、质量分数、摩尔浓度、理想气体常数、密度。角标<em>i</em>代表组分，<em>L</em>代表液相，<em>V</em>代表气相，<em>eq</em>代表平衡状态。</p>
+<p>此外，考虑到本案例的小尺度、快速度等因素，假设各物质在厚度方向上的分布是均匀的，且仅允许经过外表面气液界面相变，因而省略了液相中各物质质量传递的相关计算。以上方程可以在<em>COMSOL
+Multiphysics</em>中进行解算。进一步地，对于干燥阶段的判断，S. Jaiser
+等人的研究指出第一阶段结束时的溶剂质量分数可以用以下方程解析：</p>
+<p><span class="math display">\[\begin{array}{r}
+x_{i} = \left( \frac{1 -
+\varepsilon}{\varepsilon}\frac{\rho_{solids}}{\rho_{solvent}\left( x_{i}
+\right)} + 1 \right)^{- 1}\#(3.11)
+\end{array}\]</span></p>
+<p>其中，<em>ρ</em><sub>solids</sub>和<em>ρ</em><sub>solvent</sub>分别是固体和溶剂混合物的密度，<em>ε</em>为干层孔隙率，可以取0.65作为参考。<sup>[26]</sup>结合相关数据，可以解得三组样本达到第二阶段时的临界混合物溶剂质量分数约为80%，结合针对三种水醇比的计算结果，可得临界溶剂组成约为95%的水与5%的DAA，WA=2.0组可能有少量的乙醇残留。水在第二阶段的最初10s内即干燥完全，而后为纯DAA参与的干燥。属于第二阶段干燥的曲线在图中以浅色表示。完整的结果如下：</p>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/slurry-catalyst-cracking/img1.png" alt="" style="max-width:100%;"></p></p>
+<p>图3.1：三组浆料溶剂在60℃底板温度干燥条件下中各组分的含量变化，纵轴表示组分在浆料中的累计质量占比，横轴干燥时间根据水消耗完的时间进行归一化。</p>
+<blockquote>
+<p>求解过程中观测到：由于尺度较小，液相温度会迅速达到加热板温度，仅在边缘处由于相变换热有微小的降低。因而，后续的建模和讨论可以近似看作液相温度均匀分布。</p>
+<p>热电偶/表面热像仪的观测，佐证温度计算结果等；气相测谱等方法校验模型；离聚物分布等对蒸发过程的影响；自然对流，伯纳德单元（特征尺寸等，非牛顿流体【分散过程中的颗粒大小变化，固液混合】的相关特征），面内应该存在自然形成的结构等；更新粗略假设，细化模型；不断细化模型，升维，参考前人工作；特征长度的大小，其与什么过程有关联；<strong>控制性因素是什么</strong>；近似条件？适用范围？哪里有些粗糙？下一步方向？可能需要改进什么？假设？合理性？不足？与我们体系的关联？实验趋势的整理，规律？<strong>综合分析</strong>。1.
+裂纹/不裂纹的配比区间？文献、自己实验、参数变化，<strong>规律性如何变化</strong>；2.
+裂纹出现的情况？随机分布？存在中心值，是否有相似性？离群点存在在何处？去掉后是否有相似性？<em>e.g.</em>粗大颗粒。是否可能规划处平面判定区？三维判定区等。无量纲分析【针对非牛顿流体】各种力的大小的匹配与消长：相关的物理量？<strong>简化物理问题。</strong>【量纲分析优先尝试】</p>
+<p>杨式方程给出了表面张力与接触角的关系：<sup>[27]</sup></p>
+<p>【变量斜体，函数符号和下标符号正体🡪注意正斜体的标准要求，规范表达，参考国家标准】</p>
+</blockquote>
+<p><span class="math display">\[\begin{array}{r}
+\cos\theta = \frac{\gamma_{SV} - \gamma_{SL}}{\gamma_{LV}}\#(3.12)
+\end{array}\]</span></p>
+<blockquote>
+<p>其中，<em>θ</em>为接触角，<em>γ</em><sub>SV</sub>、<em>γ</em><sub>SL</sub>、<em>γ</em><sub>LV</sub>分别是固-气、固-液、液-气界面张力。此外，对于PTFE基底，有Neumann关系的两种修正形式：<sup>[28]</sup></p>
+<p><span class="math display">\[\begin{array}{r}
+\gamma_{SL} = \gamma_{SV} + \gamma_{LV} -
+2\sqrt{\gamma_{S}\gamma_{L}}\exp\left\lbrack - \beta_{1}\left(
+\gamma_{S} - \gamma_{L} \right)^{2} \right\rbrack\#(3.13)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+\gamma_{SL} = \gamma_{SV} + \gamma_{LV} -
+2\sqrt{\gamma_{S}\gamma_{L}}\left\lbrack 1 - \beta_{2}\left( \gamma_{S}
+- \gamma_{L} \right)^{2} \right\rbrack\#(3.14)
+\end{array}\]</span></p>
+<p>其中，<em>γ</em><sub>S</sub>为固体在空气中的表面能，近似取<em>γ</em><sub>SV</sub>
+= <em>γ</em><sub>S</sub>，对于PTFE基底可取18 mN
+m<sup>-1</sup>；<em>β<sub>1</sub>与β<sub>2</sub>均</em>为经验常数，取<em>β<sub>1</sub></em>=1.24×10<sup>-4</sup>
+m<sup>2</sup>
+mN<sup>-2</sup>，<em>β<sub>2</sub></em>=1.057×10<sup>-4</sup>
+m<sup>2</sup>
+mN<sup>-2</sup>。由仿真结果可知20s以后液相成分较为稳定，参考对应时间段接触角测量数据，并在Python中对方程(3.12)~(3.14)进行数值方法求解。其中，利用方程（3.13）和（3.14）两种形式修正的结果误差小于0.01，认为结果可靠，有结果：</p>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/slurry-catalyst-cracking/img2.png" alt="" style="max-width:100%;"></p></p>
+<p>图3.2：接触角的测量结果与毛细收缩驱动指标的结果</p>
+<blockquote>
+<p>由计算结果得，WA=3.0组别的毛细收缩驱动指标<em>M</em> =
+<em>γ</em><sub>LV</sub>cos<em>θ</em>&lt;0，会进一步拉伸液体表面，增大破裂风险。而WA=2.4组别的<em>M</em>大于零且相较于WA=2.0的组别更小，可以认为破裂风险更小。</p>
+</blockquote>
+<ol start="2" type="a">
+<li><h3>结构缺陷与颗粒网强度</h3></li>
+</ol>
+<blockquote>
+<p>M.
+Yamamura等人研究了颗粒-粘接剂重量比（r<sub>c</sub>）与裂纹量之间的关系。<sup>[29]</sup>其结果指向在悬浮液中存在两种不同的开裂机制：低颗粒含量下表现为初级成核占主导地位，成星状开裂；而高颗粒负载下次级成核占主导地位，形成分支梯状裂纹。两种成核结果的叠加效应使得在r<sub>c</sub>≈3时裂纹量达到最大。目前样本的观测结果中未见论文描述的典型梯状裂纹，因此可以基本判断开裂的缺陷原因主要是初级成核，这与目前的样本配方（r<sub>c</sub>≈1.85）基本吻合。</p>
+<p>K. B.
+Singh等人的研究从Griffith平衡准则出发，结合弹性球网络的特性，给出了孤立裂纹发展的临界应力σ<sub>C</sub>条件：<sup>[30-32]</sup></p>
+<p><span class="math display">\[\begin{array}{r}
+\frac{\sigma_{C}R}{2\gamma_{LV}} = 0.1877\left( \frac{2R}{h_{\max}}
+\right)^{2\text{/}3}\left( \frac{GM\phi_{rcp}R}{2\gamma_{LV}}
+\right)^{1\text{/}3}\#(3.15)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+h_{\max} = \frac{37\gamma_{LV}}{GM\phi_{rcp}\left( 1 - \phi_{rcp}
+\right)^{3}}\#(3.16)
+\end{array}\]</span></p>
+<p><span class="math display">\[\begin{array}{r}
+G = \frac{E}{2(1 + \mu)}\#(3.17)
+\end{array}\]</span></p>
+<p>其中，<em>R</em>是颗粒半径，<em>h</em><sub>max</sub>是理论临界开裂厚度，<em>G</em>是颗粒剪切模量，<em>M</em>是配位数，<em>Φ</em><sub>rcp</sub>是颗粒填充体积分数。假设团聚物颗粒均质分布，泊松比取<em>μ</em>=0.3，杨氏模量取<em>E</em>=1.39×10<sup>4</sup>MPa。文献指出，<em>M</em>和<em>Φ</em><sub>rcp</sub>是影响极限应力的重要因素，结合催化层截面SEM照片进行观测可得。</p>
+<p>对浆料的粒径分布进行表征，有对三个样本的粒径D<sub>ave</sub>测量数据如下：</p>
+</blockquote>
+<p>表3.1：三组样本的团聚物平均粒径</p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">WA</th>
+<th style="text-align: center;">Test01</th>
+<th style="text-align: center;">Test02</th>
+<th style="text-align: center;">Test03</th>
+<th style="text-align: center;">Ave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">3.0</td>
+<td style="text-align: center;">460.6</td>
+<td style="text-align: center;">519.2</td>
+<td style="text-align: center;">529.6</td>
+<td style="text-align: center;">503.1</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.4</td>
+<td style="text-align: center;">618.6</td>
+<td style="text-align: center;">678.6</td>
+<td style="text-align: center;">625.4</td>
+<td style="text-align: center;">640.9</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: center;">852.5</td>
+<td style="text-align: center;">871.2</td>
+<td style="text-align: center;">821.8</td>
+<td style="text-align: center;">848.5</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>结合以上数据对方程(3.15)和(3.16)进行计算，得到以下结果：</p>
+</blockquote>
+<p>表3.2：三组样本的开裂极限厚度与临界应力</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">WA</th>
+<th style="text-align: center;"><em>h</em><sub>max</sub> / μm</th>
+<th style="text-align: center;">σ<sub>C</sub> / ×10<sup>4</sup> MPa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">3.0</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">2.4</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>N．
+Hasegawa等人的研究证实了团聚物的形成是催化层开裂的原因之一。<sup>[33]</sup>Y.
+Zhou等人则指出富水溶剂促进了催化剂颗粒与离聚物主链之间的吸附，以及侧链上磺酸基的解离；相反，富醇溶剂防止离聚物聚集成束，从而改善了它们的分散状态并强化了催化剂网络的结构。<sup>[34]</sup>更大的团聚物颗粒表现为更大可能形成结构缺陷，但也意味着更小的毛细应力。针对于此处的分析值得深入。</p>
+</blockquote>
+<ol start="5">
+<li><h3>附录</h3>
+<ol type="a">
+<li><h3>关于计算可信度的讨论</h3></li>
+</ol></li>
+</ol>
+<blockquote>
+<p>在讨论过程中受到质疑：第四部分中关于溶剂蒸发速率的仿真由于未考虑固形物的存在，对实际情况的参考价值不大。针对于该问题与小野老师展开讨论。老师认为可以适当补充不同样本的热重实验，若完整浆料的热重曲线与纯液相变化趋势接近，则可以认为有参考价值。</p>
+<p>实际制造过程中的肉眼观测干燥速度（液相在数秒内蒸发完毕）与仿真结果接近，但是仅凭此还不能作为模型准确的佐证。比较遗憾的是未能来得及补充相关实验。</p>
+</blockquote>
+<ol start="2" type="a">
+<li><h3>关于黏性预测方程的尝试</h3></li>
+</ol>
+<blockquote>
+<h3>对浆料的流变性进行了测量，结果如下</h3>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/slurry-catalyst-cracking/img3.svg" alt="" style="max-width:100%;"></p></p>
+<p>图4.1：三组浆料的黏性测试结果</p>
+<blockquote>
+<p>尝试性地，就黏性的测量结果针对拟合方程进行验证与修正，有针对浓颗粒悬浮液的黏性经验模型Krieger-Dougherty模型：<sup>[35]</sup></p>
+</blockquote>
+<p><span class="math display">\[\mu_{r} = \mu ’\ \text{/}\mu_{l} =
+\left( 1 - \frac{\phi}{\phi_{m}} \right)^{-
+\lbrack\mu\rbrack\phi_{m}}\]</span></p>
+<blockquote>
+<p>其中，<em>μ</em><sub>r</sub>是悬浮液相对于纯流体的相对粘度，Φ<sub>m</sub>是最大堆积分数，对于随机堆积取0.64，[<em>μ</em>]是悬浮液的固有黏度，一般取2.5。纯相的密度和黏度等参数依照各组分含量进行拟合，有计算结果：</p>
+</blockquote>
+<p>表4.1 黏性经验模型的验证</p>
+<table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">WA</th>
+<th style="text-align: center;"><em>ρ</em><sub>l</sub> / g
+ml<sup>-1</sup></th>
+<th style="text-align: center;"><em>Φ</em></th>
+<th style="text-align: center;"><em>μ</em><sub>l</sub> / mPa
+s<sup>-1</sup></th>
+<th style="text-align: center;"><em>μ’</em> / mPa s<sup>-1</sup></th>
+<th style="text-align: center;"><em>μ<sub>real</sub></em> / mPa
+s<sup>-1</sup></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">3.0</td>
+<td style="text-align: center;">0.951</td>
+<td style="text-align: center;">0.132</td>
+<td style="text-align: center;">0.922</td>
+<td style="text-align: center;">1.334</td>
+<td style="text-align: center;">7.3</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.4</td>
+<td style="text-align: center;">0.942</td>
+<td style="text-align: center;">0.131</td>
+<td style="text-align: center;">0.934</td>
+<td style="text-align: center;">1.347</td>
+<td style="text-align: center;">6.4</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: center;">0.934</td>
+<td style="text-align: center;">0.130</td>
+<td style="text-align: center;">0.932</td>
+<td style="text-align: center;">1.340</td>
+<td style="text-align: center;">6.2</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>拟合结果非常不理想，乃至于规律性也不吻合，模型的修正都无从下手，放弃。</p>
+</blockquote>
+<ol start="3" type="a">
+<li><h3>关于黏度仪的校准与维修</h3></li>
+</ol>
+<blockquote>
+<p>对于已经完成的黏性实验，测量结果单位为Pa，结合自变量为转速rpm，可以进一步处理得到以下结果并拟合得到三种浆料的动力黏度，经线性拟合可以发现三种浆料黏度几乎完全相同，可以认为动力粘度约为0.12
+mPa s<sup>-1</sup>左右，参考水的动力黏度约为0.9 mPa
+s<sup>-1</sup>，该数值反常偏小，怀疑设备有问题。随后联络工程师进行了校准，并整理了检修流程。</p>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/slurry-catalyst-cracking/img4.png" alt="" style="max-width:100%;"></p></p>
+<p>图4.：三种浆料的初步黏度测试结果</p>
+<ol start="4" type="a">
+<li><h3>对于孔径的拟合尝试</h3></li>
+</ol>
+<blockquote>
+<p>对于孔径，由于该案例中几乎不可能形成密堆积，考虑如图所示简单几何：</p>
+<p><p style="text-align:center;"><img src="/images/blog/slurry-catalyst-cracking/img5.png" alt="" style="max-width:100%;"></p></p>
+</blockquote>
+<p>图3.2：孔径拟合的简单几何示意</p>
+<blockquote>
+<p>结合粒径测试结果，DAA含量相对较高的WA=2.0组别表现出了较大的粒径分布，理论上也应伴随有更大的孔隙分布。结合方程(3.1)，(3.12)~(3.14)，计算得毛细应力理论值与实际偏差相当大，该拟合过于简化，不合理，放弃。</p>
+</blockquote>
+<ol start="5" type="a">
+<li><h3>对模量的数据处理</h3></li>
+</ol>
+<blockquote>
+<p>材料的损耗模量G’与储能模量G’’之比可以作为其表现为弹塑性还是脆裂性的参考指标。对相关模量进行了测试，考虑到实际干燥过程的受力特征，去除噪声后取低频结果如下：</p>
+</blockquote>
+<p><p style="text-align:center;"><img src="/images/blog/slurry-catalyst-cracking/img6.png" alt="" style="max-width:100%;"></p></p>
+<p>图4.2：浆料模量的测试结果</p>
+<blockquote>
+<p>结果非常杂乱，无法提供有效作证，放弃。</p>
+</blockquote>
+<ol start="6" type="a">
+<li></li>
+</ol>
+<ol start="6">
+<li><h3>参考文献</h3></li>
+</ol>
+<p>[1] Y. Guo, D. Yang, B. Li, D. Yang, P. Ming, C. Zhang, ACS Appl.
+Mater. Interfaces, 13(2021), 27119–27128</p>
+<p>[2] H. Liu, L. Ney, N. Zamel, X. Li, Appl. Sci. 12(2022), 3776</p>
+<p>[3] S. Khandavalli, R. Iyer, J. H. Park, D. J Myers, K C Neyerlin, M.
+Ulsh, S. A Mauger, Langmuir, 36(2020), 12247-12260</p>
+<p>[4] C. Lei, F. Yang, N. Macauley, M. Spinetta, G. Purdy, J. Jankovic,
+D. A. Cullen, K. L. More, Y. S. Kim, H. Xu, Electrochem. Soc.,
+168(2021), 044517</p>
+<p>[5] C.-H. Song, J.-S. Park, Energies, 12(2019), 549</p>
+<p>[6] D.-C. Huang, P.-J. Yu, F.-J. Liu, S.-L. Huang, K.-L. Hsueh, Y.-C.
+Chen, C.-H. Wu, W.-C. Chang, F.-H. Tsau, Int. J. Electrochem. Sci.,
+6(2011), 2551-2565</p>
+<p>[7] S. Chen, G. Øye, J. Sjöblom, J. Disper. Sci. Technol., 28(2006),
+845-853</p>
+<p>[8] A. H. Pelofsky, J. Chem. Eng. Data., 11(1966), 394-397</p>
+<p>[9] F.-C.Chang, P. Kumar, R. Singh, K. Balasundaram, J. Lee, J. Lee,
+R. K. Singh, Colloid Surface A, 389(2011), 33-37</p>
+<p>[10] A. SarkarMahesh, S. Tirumkudulu, Langmuir, 25(2009),
+4945-4953</p>
+<p>[11] Kowalski, S.J., Thermomechanics of Drying Processes., 8(2003),
+117-136</p>
+<p>[12] C. Lee, S. K. Babu, B. M. Patterson, K. S. Reeves, H. Yu, D. A.
+Cullen, R. Mukundan, R. L. Borup, J. S. Spendelow, J. Electrochem. Soc.,
+171(2024), 014502</p>
+<p>[13] G. Inoue, M. Kawase, J Power Sources, 327(2016), 1-10</p>
+<p>[14] G. Inoue, M. Kawase, Int. J. Hydro. Energy, 41(2016),
+21352-21365</p>
+<p>[15] H. Ishikawa, Y. Sugawara, G. Inoue, M. Kawase, J. Power Source,
+374(2018), 196-204</p>
+<p>[16] M. So, T. Ohnishi, K. Park, M. Ono, Y. Tsuge, G. Inoue, Int. J.
+Hydro. Energy, 44(2019), 28984-28995</p>
+<p>[17] Y. Saito, M. So, G. Inoue, ECS Meeting Abstracts, MA2023-02, <a
+href="https://iopscience.iop.org/article/10.1149/MA2023-02371730mtgabs">https://iopscience.iop.org/article/10.1149/MA2023-02371730mtgabs</a></p>
+<p>[19] L. Chen, G. Wu, Q. Kang, E. Holby, W.-Q. Tao, Electrochim. Acta
+158 (2015) 175–186.</p>
+<p>[20] Y. Wang, Int. J. Hydrogen Energy 40 (2015) 5169–5185</p>
+<p>[21] P. Satjaritanun, S. Shimpalee, I. V. Zenyuk, J. Electrochem.
+Soc. 168 (2021) 044508</p>
+<p>[22] B. Han, M. Ni, H. Meng, Entropy 18 (2016) 17, <a
+href="https://doi.org/10.3390/e18010017">https://doi.org/10.3390/e18010017</a></p>
+<p>[23] J. Kiennemann, T. Chartier, C. Pagnoux, J.F. Baumard, M. Huger,
+J.M. Lamerant, J. Eur. Ceram. Soc., 25(2005), 1551-1564</p>
+<p>[24] Donnelly R. E. et al., Pharm. Res., 28(2011), 41-57.</p>
+<p>[25] N. Zimmerer, P. Quarz, E. Terhorst, L. Janning, P. Scharfer, W.
+Schabel, Energy Tech., (2025), Early View.</p>
+<p>[26] S. Jaiser, J. Kumberg, J. Klaver, J. L. Urai, W. Schabel, J.
+Schmatz, et al., J. Power Sources 345(2017), 97-107</p>
+<p>[27] T. Young, Trans. R. Soc., 95(1805), 65−87</p>
+<p>[28] R. R. D. Pandey, S. Kaur, B. P. Akhouri, Int. J. Chem.
+Stu., 11(2023), 140-148.</p>
+<p>[29] M. Yamamura, H. Ono, T. Uchinomiya, Y. Mawatari, H. Kage,
+Collid. Surface. A, 342(2009), 65-69</p>
+<p>[30] K. B. Singh, M. S. Tirumkudulu, Phys. Rev. Lett., 98(2007),
+218302.</p>
+<p>[31] M.S. Tirumkudulu, W.B. Russel, Langmuir 21(2005), 4938.</p>
+<p>[32] A.A. Griffith, Phil. Trans. R. Soc. A, 163 (1920), 221.</p>
+<p>[33] N. Hasegawa, A. Kamiya, T. Matsunaga, N. Kitano, M. Harada.,
+Collid. Surface. A., 628(2021), 127153</p>
+<p>[34] Y. Zhou, J. Kang, B. Chen, W. Zheng, C. Zhang, P. Ming, F. Pan,
+J. Wang, B. Li, Adv. Colloid Interface Sci. 340(2025), 103468</p>
+<p>[35] Krieger, I. M., Dougherty, Trans. Soc. Rheol., 3(1959),
+137-152</p>
+
