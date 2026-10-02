@@ -2,8 +2,7 @@
 layout: single
 title: "基于迭代解析与数值算法的“板凳龙”运动几何研究"
 date: 2024-09-08
-header:
-  image: /images/blog/shumo-2024/cover.jpg
+cover: /images/blog/shumo-2024/cover.jpg
 excerpt: "2024年全国大学生数学建模竞赛参赛论文：基于迭代解析与数值算法研究“板凳龙”运动几何。"
 type: Note
 author_profile: true
@@ -219,7 +218,7 @@ v = \frac{ds}{dt} = \frac{1}{dt}\sqrt{dx^{2} + dy^{2}} =
 \frac{2\pi v}{pitch}\int_{0}^{t}{dt}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-\ \ \ \ \#
+\ \ \ \ 
 \end{array}\]</span></p>
 <p><span class="math display">\[\Longrightarrow \left. \ \left(
 \frac{x}{2}\sqrt{x^{2} + 1} + \frac{1}{2}\ln\left( x + \sqrt{x^{2} + 1}
@@ -310,7 +309,7 @@ class="math inline">\(i\)</span>与原点连线的旋转角微元。</p>
 + 1} - \theta_{p} \right){- \theta}_{p}}{\theta_{p + 1} -
 \theta_{p}\cos\left( \theta_{p + 1} - \theta_{p} \right) +
 \theta_{p}\theta_{p + 1}\sin\left( \theta_{p + 1} - \theta_{p} \right)}\
-\#\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (17)
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (17)
 \end{array}\]</span></p>
 <p>又由式(5)和(16)，对相邻的两个速度表达式做比值即可得到<strong>速度的递推关系式</strong>：</p>
 <p><span class="math display">\[\frac{v_{p + 1}}{v_{p}} = \frac{\sqrt{1
@@ -726,7 +725,7 @@ t_{p}\)</span>)范围内碰撞时间的真实数值，使用二分迭代逼近�
 \left\{ \begin{array}{r}
 t_{m} = t_{p} - \Delta t \\
 t_{n} = t_{p}
-\end{array} \right.\ \#\left. （25 \right.）
+\end{array} \right.\ \left. （25 \right.）
 \end{array}\]</span></p>
 <p>更新<span class="math inline">\(t_{m}\)</span>和<span
 class="math inline">\(t_{n}\)</span>：</p>
@@ -734,7 +733,7 @@ class="math inline">\(t_{n}\)</span>：</p>
 \left\{ \begin{array}{r}
 t_{m} = \frac{\left( t_{m} + t_{n} \right)}{2},该时刻会发生碰撞 \\
 t_{n} = \frac{\left( t_{m} + t_{n} \right)}{2},\ 该时刻不会发生碰撞
-\end{array} \right.\ \#\left. （26 \right.）
+\end{array} \right.\ \left. （26 \right.）
 \end{array}\]</span></p>
 <p>在Python中编译如上所述的程序进行运算，得到<strong>最终的终止时刻为412.473838秒</strong>。此时板凳龙状态如图5所示；板凳龙上部分节点的位置与速度如表3所示：</p>
 <p><p style="text-align:center;"><img src="/images/blog/shumo-2024/img5.png" alt="" style="max-width:100%;"></p></p>
@@ -849,7 +848,7 @@ pitch\)</span>)之间；</p>
 \left\{ \begin{array}{r}
 {pitch_{m}\  = \ pitch}_{0} \\
 {pitch_{n}\  = \ pitch}_{0} + \ \Delta pitch
-\end{array} \right.\ \#\left. （28 \right.）
+\end{array} \right.\ \left. （28 \right.）
 \end{array}\]</span></p>
 <p>更新<span class="math inline">\({pitch}_{m}\)</span>以及<span
 class="math inline">\({pitch}_{n}\)</span>：</p>
@@ -859,7 +858,7 @@ pitch_{m}\  = \frac{\left( pitch_{m} + pitch_{n} \right)}{2},\
 该螺距下会发生碰撞 \\
 pitch_{n}\  = \frac{\left( pitch_{m} + pitch_{n} \right)}{2},\
 该螺距下不会发生碰撞
-\end{array} \right.\ \#\left. （29 \right.）
+\end{array} \right.\ \left. （29 \right.）
 \end{array}\]</span></p>
 <p>在<span
 class="math inline">\((pitch_{m},pitch_{n})\)</span>内重复求解迭代直到精度达到要求，停止迭代。得到最终最小满足要求的螺距为<strong>0.417138
@@ -1017,7 +1016,7 @@ class="math inline">\(9m\)</span>调头区内路径的总长。蚊香线进出�
 \alpha\left( \int_{\theta_{01}}^{\theta_{1}}{\sqrt{1 +
 \theta^{2}}d\theta} + \int_{\theta_{2}}^{\theta_{02}}{\sqrt{1 +
 \theta^{2}}d\theta} \right)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
 \end{array}\]</span></p>
 <p><span class="math display">\[\begin{array}{r}
 = \alpha\left\lbrack \left. \ \left( \frac{x}{2}\sqrt{x^{2} + 1} +
@@ -1499,7 +1498,7 @@ class="math inline">\(\mathrm{\Delta}t = 0.05\)</span>，则速度为：</p>
 <p><span class="math display">\[\begin{array}{r}
 v_{i} = \sqrt{\frac{\left( x_{t} - x_{t - \mathrm{\Delta}t} \right)^{2}
 + \left( y_{t} - y_{t - \mathrm{\Delta}t}
-\right)^{2}}{\mathrm{\Delta}t}}\#\left. （59 \right.）
+\right)^{2}}{\mathrm{\Delta}t}}\left. （59 \right.）
 \end{array}\]</span></p>
 <p>其中(<span class="math inline">\(x_{t},\
 y_{t}\)</span>)是从曲线上采样得来。</p>
@@ -1514,7 +1513,7 @@ m/s}\)</span>。</p>
 <p><span class="math display">\[\begin{array}{r}
 v_{i} = \sqrt{\frac{\left( x_{t} - x_{t - \mathrm{\Delta}t} \right)^{2}
 + \left( y_{t} - y_{t - \mathrm{\Delta}t}
-\right)^{2}}{\mathrm{\Delta}t}}\#\left. （60 \right.）
+\right)^{2}}{\mathrm{\Delta}t}}\left. （60 \right.）
 \end{array}\]</span></p>
 <p>计算两种方法所得到的结果的均方误差（MSE），公式如下：</p>
 <p><span class="math display">\[\begin{array}{r}
@@ -1547,7 +1546,7 @@ class="math inline">\(\beta_{2}\)</span>，有刚体约束条件：</p>
 \end{array}\]</span></p>
 <p><span class="math display">\[\begin{array}{r}
 \Longrightarrow \overrightarrow{v_{p_{2}}} =
-\overrightarrow{v_{p_{1}}}\frac{\cos\beta_{1}}{\cos\beta_{2}}\#\left.
+\overrightarrow{v_{p_{1}}}\frac{\cos\beta_{1}}{\cos\beta_{2}}\left.
 （63 \right.）
 \end{array}\]</span></p>
 <p>可知同一板凳上两把手的速度关系与把手所在直线与曲线关系有关。对于100s时刻，由图可知在切出圆弧的位置附近把手所在直线与曲线的夹角较大，出现速度突变；而突变点前和突变点后的把手所在直线均可近似看作曲线的拟合折线，速度变化较为平滑。因此速度分布呈现平滑-突变-平滑的分布特征，问题四求解的答案较为合理。</p>

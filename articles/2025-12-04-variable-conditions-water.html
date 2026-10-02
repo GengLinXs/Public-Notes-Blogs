@@ -2,8 +2,7 @@
 layout: single
 title: "变动工况对水相变特征的影响"
 date: 2025-12-04
-header:
-  image: /images/blog/variable-conditions-water/cover.jpg
+cover: /images/blog/variable-conditions-water/cover.jpg
 excerpt: "解析变动工况下水是否会发生沸腾，涉及传热与相变过程的建模分析。"
 type: Note
 author_profile: true
@@ -13,15 +12,15 @@ author_profile: true
 <ol>
 <li><h3>引入</h3></li>
 </ol>
-<blockquote>
+
 <p>本课题的目的是解析变动工况下的水是否会发生沸腾，主要涉及到的过程包括传热与相变。在前期的COMSOL试算中发现FEM并不能很好地解析该过程，原因有二：1.
 若给定水质量较小，则模拟开始后水会很快蒸发净，难以完整观测变动工况对水相变的影响；2.
 若给定水质量较大，则水内部温差变大，发生不等温流动，产生不必要的计资源消耗。因此最终选择直接在Matlab中编写一维传热仿真程序进行研究。</p>
-</blockquote>
+
 <ol start="2">
 <li><h3>结果建模与分析讨论</h3></li>
 </ol>
-<blockquote>
+
 <p>环境温度<em>T</em><sub>ex</sub>与压强<em>p</em><sub>ex</sub>按照三角波进行同频率波动。相变条件下的水-气表面传热形式包括对流、相变、辐射三种，分别满足方程：</p>
 <p><span class="math display">\[\begin{array}{r}
 dQ_{a} = \alpha\left( T_{surf} - T_{ex} \right)dA\	ag{1}
@@ -55,14 +54,14 @@ kg<sup>-1</sup>]。<em>β</em>满足以下方程：</p>
 <p><span class="math display">\[\begin{array}{r}
 T_{surf} &gt; T_{sat}\left( p_{ex} \right)\	ag{7}
 \end{array}\]</span></p>
-</blockquote>
+
 <p><span class="math display">\[\begin{array}{r}
 p_{sat}\left( T_{surf} \right) &gt; p_{ex}\	ag{8}
 \end{array}\]</span></p>
-<blockquote>
+
 <p>针对以上方程在Matlab中建立程序求解并作图。应用到的基本参数如表1所示，代码源码如附录a)
 所示。</p>
-</blockquote>
+
 <p>表1：部分仿真参数</p>
 <table style="width:80%;">
 <colgroup>
@@ -150,19 +149,19 @@ p_{sat}\left( T_{surf} \right) &gt; p_{ex}\	ag{8}
 </table>
 <p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img1.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img2.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img3.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img4.png" alt="" style="max-width:100%;"></p></p>
 <p>图1：外部压力在1.8bar-2.8bar之间变动，温度分别取80℃-120℃；100℃-140℃；120℃-160℃；140℃-180℃四种情况下的温度、压力、热通量变化。</p>
-<blockquote>
+
 <p>图1展示了不同温度范围下的结果。其中所有工况下都会发生表面过热，但是只有120℃-160℃和140℃-180℃两组工况的蒸汽饱和分压超过了外部总压且温度高于沸点，发生了实质性沸腾。同理，我们对其他参数进行研究：</p>
-</blockquote>
+
 <p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img5.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img6.png" alt="" style="max-width:100%;"></p></p>
 <p>图2：外部温度在80℃-120℃之间变动，压力分别取1.2bar-2.2bar；0.6bar-1.2bar两种情况下的温度、压力、热通量变化。</p>
-<blockquote>
+
 <p>可以看到当压力范围为0.6bar-1.2bar时发生了实质性沸腾。而在最低压力为常压以上的组别中均未发生。</p>
-</blockquote>
+
 <p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img7.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img8.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img9.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img10.png" alt="" style="max-width:100%;"></p></p>
 <p>图3：外部温度在80℃-120℃之间变动，外部压力在1.8bar-2.8bar之间变动，工况变动频率分别取0.5s<sup>-1</sup>；1s<sup>-1</sup>；5s<sup>-1</sup>；10s<sup>-1</sup>四种情况下的温度、压力、热通量变化。</p>
-<blockquote>
+
 <p>可以看到工况变动频率不会影响是否发生过热或沸腾，只会影响发生过热/沸腾的时间。频率越快，发生时间越早。类似地，调整空气湿度对于是否沸腾的影响也不大，但是可以显著影响过热点，如图4所示。</p>
-</blockquote>
+
 <p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img11.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img12.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img13.png" alt="" style="max-width:100%;"></p><p style="text-align:center;"><img src="/images/blog/variable-conditions-water/img14.png" alt="" style="max-width:100%;"></p></p>
 <p>图4：外部温度在80℃-120℃之间变动，外部压力在1.8bar-2.8bar之间变动，湿度分别取0.0001；0.2；0.8；0.9999四种情况下的温度、压力、热通量变化。</p>
 </li>
